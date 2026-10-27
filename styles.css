@@ -353,6 +353,62 @@ h1 {
 .fact dt { color: var(--text-2); flex: none; }
 .fact dd { margin: 0; text-align: right; font-weight: 500; min-width: 0; }
 
+.section-label.pad { padding: 0 4px 8px; }
+.plan {
+  margin: 0;
+  padding: 4px 16px;
+  list-style: none;
+  counter-reset: step;
+}
+.plan li {
+  counter-increment: step;
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.plan li + li { border-top: 1px solid var(--sep); }
+.plan li::before {
+  content: counter(step);
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--elev-3);
+}
+.tip {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--r-lg);
+  background: rgba(30, 86, 64, .28);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text);
+}
+.tip b {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--green-text);
+}
+.note.miss {
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  background: rgba(242, 169, 189, .08);
+  color: var(--pink);
+}
+.note.miss b { font-weight: 600; }
 .note {
   display: flex;
   gap: 8px;

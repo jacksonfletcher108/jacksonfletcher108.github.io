@@ -12,7 +12,7 @@
   const BUDGET = ["Free", "$", "$$", "$$$"];
 
   const FILTERS = [
-    { key: "budget", label: "Budget",      options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"]] },
+    { key: "budget", label: "Max budget",      options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"]] },
     { key: "energy", label: "Energy",      options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]] },
     { key: "time",   label: "Time",        options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]] },
     { key: "tier",   label: "Setting",     options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]] },
@@ -82,17 +82,23 @@
   });
 
   /* ---------- Filtering & picking ---------- */
-  function matches(idea) {
-    if (!inSeason(idea)) return false;
-    const f = state.filters;
-    if (f.budget != null && idea.budget !== f.budget) return false;
-    if (f.energy && idea.energy !== f.energy) return false;
-    if (f.time && idea.time !== f.time) return false;
-    if (f.tier && idea.tier !== f.tier) return false;
-    if (f.when && idea.when !== "any" && idea.when !== f.when) return false;
-    return true;
+  function fits(idea, key, val) {
+    if (key === "budget") return idea.budget <= val;          // budget means "up to"
+    if (key === "when") return idea.when === "any" || idea.when === val;
+    return idea[key] === val;
   }
-  const pool = () => IDEAS.filter(matches);
+
+  // Filters an idea doesn't fit (empty = perfect match)
+  const misses = idea => FILTERS.filter(f => state.filters[f.key] != null && !fits(idea, f.key, state.filters[f.key]));
+  const seasonal = () => IDEAS.filter(inSeason);
+  const pool = () => seasonal().filter(i => !misses(i).length);
+
+  // When nothing fits every filter, use the ideas that miss the fewest
+  function closest() {
+    const all = seasonal();
+    const fewest = Math.min(...all.map(i => misses(i).length));
+    return all.filter(i => misses(i).length === fewest);
+  }
 
   function weightOf(idea) {
     let w = 1;
@@ -140,16 +146,16 @@
 
   function renderCount() {
     const list = pool();
-    const seasonal = list.filter(i => i.months).length;
+    const inSeasonCount = list.filter(i => i.months).length;
     const el = $("#pick-count");
-    $("#pick-btn").disabled = !list.length;
+    $("#pick-btn").disabled = !IDEAS.length;
     if (!IDEAS.length) {
       el.textContent = "Couldn't read ideas.js. Check it for a missing comma.";
     } else if (!list.length) {
-      el.textContent = "Nothing matches these filters. Try loosening one.";
+      el.textContent = "No perfect match for all of these. You'll get the closest one.";
     } else {
       el.textContent = `${list.length} idea${list.length === 1 ? "" : "s"} match` +
-        (seasonal ? ` · ${seasonal} in season` : "");
+        (inSeasonCount ? ` · ${inSeasonCount} in season` : "");
     }
   }
 
@@ -177,7 +183,8 @@
         <div class="title-window"><h2 class="card-title ${titleClass || ""}">${esc(idea.title)}</h2></div>`;
   }
 
-  function cardHTML(idea) {
+  function cardHTML(idea, showMisses) {
+    const missed = showMisses ? misses(idea) : [];
     const badges = [];
     if (idea.months) badges.push(`<span class="badge season">In season</span>`);
     if (idea.age21) badges.push(`<span class="badge adult">21+</span>`);
@@ -189,23 +196,30 @@
         <div class="badges">${badges.join("")}</div>
       </div>
       <div class="details in">
+        ${missed.length ? `<p class="note miss">${icon("info", "i-sm")}<span>Closest match. Nothing fit every filter, so this one ignores your <b>${missed.map(f => f.label.toLowerCase()).join(" and ")}</b> setting.</span></p>` : ""}
+        ${idea.plan && idea.plan.length ? `
+        <section>
+          <h3 class="section-label pad">The plan</h3>
+          <ol class="group plan">${idea.plan.map(step => `<li>${esc(step)}</li>`).join("")}</ol>
+        </section>` : ""}
         <dl class="group facts">
           <div class="fact"><dt>Cost</dt><dd>${esc(idea.cost || BUDGET[idea.budget])}</dd></div>
           <div class="fact"><dt>Takes</dt><dd>${esc(idea.duration || "")}</dd></div>
           <div class="fact"><dt>Where</dt><dd>${esc(idea.area || "")}</dd></div>
           <div class="fact"><dt>Best</dt><dd>${WHEN[idea.when] || WHEN.any}</dd></div>
         </dl>
+        ${idea.tip ? `<p class="tip"><b>Tip</b>${esc(idea.tip)}</p>` : ""}
         ${idea.verify ? `<p class="note">${icon("info", "i-sm")}<span>This is a real business. Places close and change hours, so check before you go.</span></p>` : ""}
         ${idea.place ? `<button class="btn btn-secondary" id="dir-btn">${icon("nav")}Directions</button>` : ""}
       </div>`;
   }
 
-  function showIdea(idea) {
+  function showIdea(idea, fromPick) {
     state.current = idea;
     state.recent = [idea.id, ...state.recent.filter(id => id !== idea.id)].slice(0, 8);
     const card = $("#card");
     card.dataset.tier = idea.tier;
-    card.innerHTML = cardHTML(idea);
+    card.innerHTML = cardHTML(idea, fromPick);
     updateSaveBtn();
     setActionsDisabled(false);
   }
@@ -240,7 +254,8 @@
   function spin() {
     if (state.spinning) return;
     $("#result").hidden = false;
-    const list = pool();
+    const exact = pool();
+    const list = exact.length ? exact : closest();
     if (!list.length) { emptyCard(); return; }
 
     const final = pickFrom(list, state.current && state.current.id);
@@ -259,7 +274,7 @@
         `</div><div class="skeleton"><span></span><span></span><span></span></div>`;
       delay *= 1.16;
       if (delay < 280) setTimeout(step, delay);
-      else setTimeout(() => { state.spinning = false; showIdea(final); }, 220);
+      else setTimeout(() => { state.spinning = false; showIdea(final, true); }, 220);
     };
     step();
   }
