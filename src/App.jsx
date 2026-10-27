@@ -62,9 +62,9 @@ export default function App() {
   const setTarget = (id, v) => update(st => ({ ...st, targets: { ...st.targets, [id]: v } }))
 
   return (
-    <div className="min-h-screen pb-28 md:pb-16">
+    <div className="min-h-screen overflow-x-clip pb-28 md:pb-16">
       <div className="backdrop" />
-      <Navbar tab={tab} onTab={t => { setTab(t); window.scrollTo({ top: 0, behavior: 'smooth' }) }} theme={dark ? 'dark' : 'light'}
+      <Navbar onAdd={() => setAdding(true)} tab={tab} onTab={t => { setTab(t); window.scrollTo({ top: 0, behavior: 'smooth' }) }} theme={dark ? 'dark' : 'light'}
         onTheme={() => setState(st => ({ ...st, theme: dark ? 'light' : 'dark' }))} monthLabel={s.mi.label}
         onSample={() => { setState({ ...sampleState(), theme: state.theme }); say('Sample month loaded') }}
         onReset={() => { const prev = state; setState(blankState(state.theme)); setTab('plan'); say('Cleared. Start with your income.', { label: 'Undo', run: () => setState(prev) }) }} />
@@ -78,16 +78,16 @@ export default function App() {
           </div>
         )}
 
-        <div className="mb-6 animate-rise">
+        <div key={tab} className="mb-6 animate-rise">
           <h1 className="text-[26px] font-extrabold leading-tight tracking-tight sm:text-[32px]">
-            {tab === 'overview' && <>Hey there. <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-indigo-400 bg-clip-text text-transparent">{money(s.safeToday)}</span> is safe to spend today.</>}
-            {tab === 'plan' && <>Set up your month in <span className="bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent">under a minute</span>.</>}
-            {tab === 'whatif' && <>Play with the <span className="bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent">future</span>.</>}
+            {tab === 'overview' && <><span className="text-emerald-500 dark:text-emerald-400">{money(s.safeToday)}</span> is safe to spend today</>}
+            {tab === 'plan' && <>Your monthly plan</>}
+            {tab === 'whatif' && <>What if…</>}
           </h1>
           <p className="mt-1.5 text-[15px] text-slate-500 dark:text-slate-400">
             {tab === 'overview' && (state.income > 0 ? `${s.mi.daysLeft} days left in ${s.mi.label.split(' ')[0]} · ${money(s.flexLeft)} left of your flexible budget` : 'Add your income on the Plan tab to get started.')}
             {tab === 'plan' && 'Income, fixed bills, then a target for each category. Everything saves as you type.'}
-            {tab === 'whatif' && 'See how small changes today move your goal.'}
+            {tab === 'whatif' && 'Try a change before you make it and see how it moves your goal.'}
           </p>
         </div>
 

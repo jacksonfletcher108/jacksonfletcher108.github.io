@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { LayoutDashboard, SlidersHorizontal, FlaskConical, Moon, Sun, MoreHorizontal, RotateCcw, Eraser } from 'lucide-react'
+import { LayoutDashboard, SlidersHorizontal, FlaskConical, Moon, Sun, MoreHorizontal, RotateCcw, Eraser, Plus } from 'lucide-react'
 import { cn } from '../lib/utils'
 
 export const TABS = [
@@ -8,7 +8,7 @@ export const TABS = [
   { id: 'whatif', label: 'What-If', icon: FlaskConical },
 ]
 
-export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset, onSample }) {
+export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset, onSample, onAdd }) {
   const [menu, setMenu] = useState(false)
   const ref = useRef(null)
   useEffect(() => {
@@ -20,12 +20,12 @@ export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset
 
   return (
     <>
-      <header className="sticky top-0 z-30 pt-[env(safe-area-inset-top)] border-b border-slate-900/[.06] bg-slate-50/70 backdrop-blur-xl dark:border-white/[.06] dark:bg-[#0b0d14]/70">
+      <header className="sticky top-0 z-30 pt-[var(--sat)] border-b border-slate-900/[.06] bg-slate-50/70 backdrop-blur-xl dark:border-white/[.06] dark:bg-[#0b0d14]/70">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
           <div className="flex items-center gap-2.5">
             <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" className="size-8 rounded-[10px] shadow-lg shadow-indigo-500/20" />
             <div className="leading-none">
-              <p className="text-[17px] font-extrabold tracking-tight">Ledgerly</p>
+              <p className="text-[17px] font-extrabold tracking-tight">Tally</p>
               <p className="mt-1 text-[12px] font-medium text-slate-500 dark:text-slate-400">{monthLabel}</p>
             </div>
           </div>
@@ -66,14 +66,17 @@ export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset
       </header>
 
       {/* phone tab bar */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-900/[.06] bg-white/80 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden dark:border-white/[.06] dark:bg-[#0b0d14]/80" aria-label="Sections">
-        <div className="mx-auto grid max-w-md grid-cols-3">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-900/[.06] bg-white/80 pb-[var(--sab)] backdrop-blur-xl md:hidden dark:border-white/[.06] dark:bg-[#0b0d14]/80" aria-label="Sections">
+        <div className="mx-auto grid max-w-md grid-cols-4">
           {TABS.map(t => (
             <button key={t.id} type="button" onClick={() => onTab(t.id)} aria-current={tab === t.id ? 'page' : undefined}
               className={cn('flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold transition', tab === t.id ? 'text-emerald-500 dark:text-emerald-400' : 'text-slate-400')}>
               <t.icon className="size-5" strokeWidth={tab === t.id ? 2.4 : 2} />{t.label}
             </button>
           ))}
+          <button type="button" onClick={onAdd} className="flex flex-col items-center gap-1 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-300">
+            <span className="grid size-7 place-items-center rounded-full bg-emerald-500 text-white shadow-md shadow-emerald-500/30"><Plus className="size-4" strokeWidth={2.8} /></span>Add
+          </button>
         </div>
       </nav>
     </>

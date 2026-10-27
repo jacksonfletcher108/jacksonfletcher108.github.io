@@ -80,13 +80,13 @@ export function MoneyInput({ value, onChange, className, inputClassName, size = 
     <label className={cn(
       'group flex items-center rounded-xl border border-slate-900/10 bg-white/70 transition focus-within:border-emerald-400/70 focus-within:ring-4 focus-within:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20',
       size === 'lg' ? 'px-4 py-3' : 'px-3 py-2', className)}>
-      <span className={cn('text-slate-400', size === 'lg' ? 'text-2xl font-semibold' : 'text-sm')}>$</span>
+      <span className={cn('text-slate-400', size === 'lg' ? 'text-2xl font-semibold' : 'text-base')}>$</span>
       <input
         type="number" inputMode="decimal" min="0" step="any"
         value={value === 0 || value === '' ? '' : value}
         placeholder="0"
         onChange={e => onChange(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
-        className={cn('tabular w-full min-w-0 bg-transparent pl-1 outline-none placeholder:text-slate-400/60', size === 'lg' ? 'text-3xl font-bold tracking-tight' : 'text-sm font-semibold', inputClassName)}
+        className={cn('tabular w-full min-w-0 bg-transparent pl-1 outline-none placeholder:text-slate-400/60', size === 'lg' ? 'text-3xl font-bold tracking-tight' : 'text-base font-semibold', inputClassName)}
         {...props}
       />
     </label>

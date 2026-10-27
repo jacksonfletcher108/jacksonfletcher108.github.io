@@ -46,7 +46,7 @@ export default function ExpenseModal({ open, onClose, onSave, lastCategory, rece
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-labelledby="add-title">
       <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm animate-fade" onClick={onClose} />
       <form onSubmit={submit} onKeyDown={e => { if (e.key === 'Enter' && e.target.type !== 'date' && !e.target.closest('[aria-label="Close"]')) { e.preventDefault(); submit() } }}
-        className="relative w-full max-w-md rounded-t-[28px] border border-slate-900/10 bg-white/95 p-5 pb-[calc(20px+env(safe-area-inset-bottom))] shadow-2xl backdrop-blur-2xl animate-pop sm:rounded-[28px] sm:pb-5 dark:border-white/10 dark:bg-[#121522]/95">
+        className="relative w-full max-w-md rounded-t-[28px] border border-slate-900/10 bg-white/95 p-5 pb-[calc(20px+var(--sab))] shadow-2xl backdrop-blur-2xl animate-pop sm:rounded-[28px] sm:pb-5 dark:border-white/10 dark:bg-[#121522]/95">
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-slate-900/15 sm:hidden dark:bg-white/15" />
         <div className="flex items-center justify-between">
           <h2 id="add-title" className="text-[17px] font-bold">Log an expense</h2>
@@ -85,7 +85,7 @@ export default function ExpenseModal({ open, onClose, onSave, lastCategory, rece
 
         {/* note + date */}
         <input value={note} onChange={e => setNote(e.target.value)} placeholder="What was it? (optional)" aria-label="Note"
-          className="mt-4 w-full rounded-xl border border-slate-900/10 bg-white/70 px-3.5 py-2.5 text-[15px] outline-none transition focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20" />
+          className="mt-4 w-full rounded-xl border border-slate-900/10 bg-white/70 px-3.5 py-2.5 text-base outline-none transition focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20" />
         {suggestions.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1.5">
             {suggestions.map(n => <button key={n} type="button" onClick={() => setNote(n)} className="rounded-full bg-slate-900/5 px-2.5 py-1 text-[12px] font-medium text-slate-600 hover:bg-slate-900/10 dark:bg-white/[.06] dark:text-slate-300 dark:hover:bg-white/[.1]">{n}</button>)}
@@ -98,7 +98,7 @@ export default function ExpenseModal({ open, onClose, onSave, lastCategory, rece
               className={cn('rounded-full px-3 py-1 text-[12px] font-semibold capitalize transition', when === w ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900' : 'text-slate-500 hover:bg-slate-900/5 dark:text-slate-400 dark:hover:bg-white/[.06]')}>{w === 'other' ? 'Pick date' : w}</button>
           ))}
           {when === 'other' && <input type="date" value={date} max={todayISO()} onChange={e => setDate(e.target.value)} aria-label="Date"
-            className="ml-auto rounded-lg border border-slate-900/10 bg-transparent px-2 py-1 text-[12px] dark:border-white/10" />}
+            className="ml-auto rounded-lg border border-slate-900/10 bg-transparent px-2 py-1 text-base dark:border-white/10" />}
         </div>
 
         <p className={cn('mt-4 text-center text-[13px]', leftAfter < 0 && category !== 'savings' ? 'text-rose-500' : 'text-slate-500 dark:text-slate-400')}>

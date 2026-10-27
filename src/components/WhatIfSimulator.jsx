@@ -78,7 +78,7 @@ export default function WhatIfSimulator({ state, s, update, dark }) {
           <CardHeader icon={Target} title="Your goal" subtitle="What you're saving toward" />
           <div className="grid grid-cols-2 gap-2">
             <input value={g.name} onChange={e => update(st => ({ ...st, goal: { ...st.goal, name: e.target.value } }))} aria-label="Goal name"
-              className="col-span-2 rounded-xl border border-slate-900/10 bg-white/70 px-3 py-2 text-sm font-semibold outline-none focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20" />
+              className="col-span-2 rounded-xl border border-slate-900/10 bg-white/70 px-3 py-2 text-base font-semibold outline-none focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20" />
             <div><p className="mb-1 text-[12px] text-slate-500 dark:text-slate-400">Target</p><MoneyInput value={g.target} onChange={v => update(st => ({ ...st, goal: { ...st.goal, target: v } }))} aria-label="Goal target" /></div>
             <div><p className="mb-1 text-[12px] text-slate-500 dark:text-slate-400">Saved so far</p><MoneyInput value={g.saved} onChange={v => update(st => ({ ...st, goal: { ...st.goal, saved: v } }))} aria-label="Saved so far" /></div>
           </div>

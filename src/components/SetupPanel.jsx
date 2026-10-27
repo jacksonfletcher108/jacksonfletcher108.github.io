@@ -90,7 +90,7 @@ export default function SetupPanel({ state, s, update }) {
         <form className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-slate-900/[.03] p-3 sm:grid-cols-[1fr_110px_auto] dark:bg-white/[.03]"
           onSubmit={e => { e.preventDefault(); addFixed() }}>
           <input value={draft.name} onChange={e => setDraft(d => ({ ...d, name: e.target.value }))} placeholder="e.g. Car payment" aria-label="Expense name"
-            className="col-span-2 rounded-xl border border-slate-900/10 bg-white/70 px-3 py-2 text-sm outline-none transition focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 sm:col-span-1 dark:border-white/10 dark:bg-black/20" />
+            className="col-span-2 rounded-xl border border-slate-900/10 bg-white/70 px-3 py-2 text-base outline-none transition focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 sm:col-span-1 dark:border-white/10 dark:bg-black/20" />
           <MoneyInput value={draft.amount} onChange={v => setDraft(d => ({ ...d, amount: v }))} aria-label="Amount" />
           <Button type="submit" disabled={!draft.name.trim() || draft.amount <= 0} className="sm:row-span-1"><Plus className="size-4" />Add</Button>
           <div className="col-span-2 flex flex-wrap items-center gap-1.5 sm:col-span-3">
@@ -105,7 +105,7 @@ export default function SetupPanel({ state, s, update }) {
             <label className="ml-auto flex items-center gap-1.5 text-[12px] text-slate-500 dark:text-slate-400">
               Due day
               <input type="number" min="1" max="31" value={draft.day} onChange={e => setDraft(d => ({ ...d, day: Math.min(31, Math.max(1, parseInt(e.target.value) || 1)) }))}
-                className="tabular w-12 rounded-lg border border-slate-900/10 bg-white/70 px-2 py-1 text-center text-[13px] font-semibold outline-none dark:border-white/10 dark:bg-black/20" />
+                className="tabular w-14 rounded-lg border border-slate-900/10 bg-white/70 px-2 py-1 text-center text-base font-semibold outline-none dark:border-white/10 dark:bg-black/20" />
             </label>
           </div>
         </form>

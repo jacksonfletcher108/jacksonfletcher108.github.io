@@ -1,4 +1,4 @@
-# Ledgerly
+# Tally
 
 A budgeting app built with React, Vite, Tailwind CSS v4, Recharts and Lucide icons.
 
