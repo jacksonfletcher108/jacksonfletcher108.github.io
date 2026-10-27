@@ -46,7 +46,7 @@ export const APPS = [
     shot: shot('tally'),
     summary: 'Answer three quick questions and it builds a monthly budget for you. After that it tells you what you can spend today, and logging a purchase takes one tap.',
     why: 'I wanted to know what I can spend today, not just what I spent last month.',
-    details: ['Guided setup, including how often you get paid', 'What\'s left in each category at a glance', 'Try a change on your savings goal, then apply it'],
+    details: ['Plans your month from a few questions and what you actually spend', 'What\'s left in each category at a glance', 'Edit or clear spending in a couple of taps'],
   },
   {
     id: 'next',
