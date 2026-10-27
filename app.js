@@ -30,14 +30,18 @@
     heart:    '<path d="M12 19.5s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 6.9a4.2 4.2 0 0 1 7.5 2.4c0 5.6-7.5 10.2-7.5 10.2z"/>',
     heartFill:'<path d="M12 19.5s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 6.9a4.2 4.2 0 0 1 7.5 2.4c0 5.6-7.5 10.2-7.5 10.2z" fill="currentColor"/>',
     nav:      '<path d="M20 4 4 10.5l6.8 2.7L13.5 20z"/>',
-    info:     '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/>'
+    info:     '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/>',
+    list:     '<path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01" stroke-width="2.6"/>',
+    plus:     '<path d="M12 5v14M5 12h14"/>',
+    search:   '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>'
   };
   const icon = (name, cls = "i") =>
     `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
 
   const MONTH = new Date().getMonth() + 1;
-  const IDEAS = (Array.isArray(window.DATE_IDEAS) ? window.DATE_IDEAS : [])
+  const BUILT_IN = (Array.isArray(window.DATE_IDEAS) ? window.DATE_IDEAS : [])
     .filter(i => i && i.id && i.title && TIERS[i.tier]);
+  let IDEAS = BUILT_IN;
 
   /* ---------- Storage (on this phone only) ---------- */
   const store = {
@@ -56,10 +60,17 @@
     filters: store.get("filters", {}),
     saved: store.get("saved", []),
     history: store.get("history", []),
+    custom: store.get("custom", []),   // ideas you added in the app
+    browseTier: null,
     current: null,
     recent: [],
     spinning: false
   };
+
+  function rebuildIdeas() {
+    IDEAS = BUILT_IN.concat(state.custom.filter(i => i && i.id && i.title && TIERS[i.tier]));
+  }
+  rebuildIdeas();
 
   /* ---------- Helpers ---------- */
   const $ = sel => document.querySelector(sel);
@@ -186,6 +197,7 @@
   function cardHTML(idea, showMisses) {
     const missed = showMisses ? misses(idea) : [];
     const badges = [];
+    if (idea.custom) badges.push(`<span class="badge yours">Your idea</span>`);
     if (idea.months) badges.push(`<span class="badge season">In season</span>`);
     if (idea.age21) badges.push(`<span class="badge adult">21+</span>`);
     badges.push(`<span class="badge">${BUDGET[idea.budget] || ""}</span>`);
@@ -211,6 +223,7 @@
         ${idea.tip ? `<p class="tip"><b>Tip</b>${esc(idea.tip)}</p>` : ""}
         ${idea.verify ? `<p class="note">${icon("info", "i-sm")}<span>This is a real business. Places close and change hours, so check before you go.</span></p>` : ""}
         ${idea.place ? `<button class="btn btn-secondary" id="dir-btn">${icon("nav")}Directions</button>` : ""}
+        ${idea.custom ? `<button class="text-btn danger-text" id="del-custom">Delete this idea</button>` : ""}
       </div>`;
   }
 
@@ -288,6 +301,7 @@
 
   $("#card").addEventListener("click", e => {
     if (e.target.closest("#dir-btn")) openDirections(state.current);
+    if (e.target.closest("#del-custom")) confirmDeleteCustom(state.current);
     if (e.target.closest("#empty-clear")) {
       state.filters = {};
       store.set("filters", state.filters);
@@ -390,6 +404,152 @@
     if (e.target.closest("[data-close]")) closeSheet();
     if (e.target.closest("a.btn")) setTimeout(closeSheet, 300);
   });
+
+  /* ---------- Browse screen ---------- */
+  const TIME_LABEL = { short: "Under 2 hrs", half: "Half day", full: "Full day" };
+
+  function renderBrowseTier() {
+    const opts = [[null, "All"], ["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"], ["custom", "Ours"]];
+    $("#browse-tier").innerHTML = opts.map(([v, label]) =>
+      `<button class="${state.browseTier === v ? "on" : ""}" aria-pressed="${state.browseTier === v}" data-val='${JSON.stringify(v)}'>${label}</button>`).join("");
+  }
+
+  function renderBrowse() {
+    renderBrowseTier();
+    const q = $("#browse-q").value.trim().toLowerCase();
+    const t = state.browseTier;
+    const list = seasonal()
+      .filter(i => !t || (t === "custom" ? i.custom : i.tier === t))
+      .filter(i => !q || [i.title, i.desc, i.area, i.place].join(" ").toLowerCase().includes(q))
+      .sort((a, b) => a.title.localeCompare(b.title));
+    $("#browse-count").textContent = `${seasonal().length} ideas right now`;
+    $("#browse-list").innerHTML = list.length ? `
+      <p class="list-meta">${list.length} ${list.length === 1 ? "idea" : "ideas"}</p>
+      <div class="group list">
+        ${list.map(i => `
+          <button class="row row-btn" data-tier="${i.tier}" data-open="${esc(i.id)}">
+            <span class="dot"></span>
+            <span class="row-main">
+              <span class="row-title">${esc(i.title)}</span>
+              <span class="row-sub">${esc(i.area || "Anywhere")} · ${esc(BUDGET[i.budget] || "")} · ${TIME_LABEL[i.time] || ""}</span>
+            </span>
+          </button>`).join("")}
+      </div>` : `
+      <div class="empty">
+        ${icon(t === "custom" ? "plus" : "search")}
+        <h3>${t === "custom" && !q ? "No ideas of your own yet" : "Nothing found"}</h3>
+        <p>${t === "custom" && !q ? "Tap “Add idea” to add a place or plan the app doesn't know about." : "Try a different word, like a neighborhood or “beach”."}</p>
+      </div>`;
+  }
+
+  $("#browse-q").addEventListener("input", renderBrowse);
+  $("#browse-tier").addEventListener("click", e => {
+    const b = e.target.closest("button[data-val]");
+    if (!b) return;
+    state.browseTier = JSON.parse(b.dataset.val);
+    renderBrowse();
+  });
+  $("#browse-list").addEventListener("click", e => {
+    const row = e.target.closest("[data-open]");
+    const idea = row && byId(row.dataset.open);
+    if (idea) { $("#result").hidden = false; showIdea(idea); }
+  });
+
+  /* ---------- Add your own idea ---------- */
+  const FORM_SEGS = [
+    { key: "tier",   label: "Setting", options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]], def: "ease" },
+    { key: "budget", label: "Budget",  options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"]], def: 1 },
+    { key: "energy", label: "Energy",  options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]], def: "chill" },
+    { key: "time",   label: "Time",    options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]], def: "short" },
+    { key: "when",   label: "Best",    options: [["any", "Anytime"], ["day", "Day"], ["night", "Night"]], def: "any" }
+  ];
+
+  function openAddSheet() {
+    const form = {};
+    FORM_SEGS.forEach(f => { form[f.key] = f.def; });
+    const segsHTML = () => FORM_SEGS.map(f => `
+      <div class="form-row">
+        <span class="field-label">${f.label}</span>
+        <div class="seg" data-form="${f.key}">
+          ${f.options.map(([v, label]) => `<button type="button" class="${form[f.key] === v ? "on" : ""}" data-val='${JSON.stringify(v)}'>${label}</button>`).join("")}
+        </div>
+      </div>`).join("");
+
+    openSheet(`
+      <h2>Add an idea</h2>
+      <p class="sub">It saves on this phone and shows up in your picks.</p>
+      <label class="field-label" for="f-title">Name</label>
+      <input class="field" id="f-title" maxlength="60" placeholder="Taco Tuesday at our spot" autocomplete="off">
+      <label class="field-label" for="f-desc">What's the plan? (optional)</label>
+      <textarea class="field" id="f-desc" maxlength="200" placeholder="Get the al pastor, then walk to the pier"></textarea>
+      <div id="f-segs">${segsHTML()}</div>
+      <label class="field-label" for="f-place">Place for directions (optional)</label>
+      <input class="field" id="f-place" maxlength="100" placeholder="Name and town, e.g. Shem Creek, Mount Pleasant" autocomplete="off">
+      <div class="sheet-actions">
+        <button class="btn btn-primary" id="f-save" disabled>Add idea</button>
+        <button class="btn btn-secondary" data-close>Cancel</button>
+      </div>
+    `);
+
+    $("#f-title").addEventListener("input", e => { $("#f-save").disabled = !e.target.value.trim(); });
+    $("#f-segs").addEventListener("click", e => {
+      const b = e.target.closest("button[data-val]");
+      if (!b) return;
+      form[b.parentElement.dataset.form] = JSON.parse(b.dataset.val);
+      $("#f-segs").innerHTML = segsHTML();
+    });
+    $("#f-save").addEventListener("click", () => {
+      const title = $("#f-title").value.trim();
+      if (!title) return;
+      const place = $("#f-place").value.trim();
+      const idea = {
+        id: "custom-" + Date.now(),
+        custom: true,
+        title,
+        desc: $("#f-desc").value.trim(),
+        tier: form.tier, budget: form.budget, energy: form.energy, time: form.time, when: form.when,
+        area: place ? place.split(",")[0] : "Anywhere",
+        cost: BUDGET[form.budget],
+        duration: TIME_LABEL[form.time],
+        place: place || undefined
+      };
+      state.custom.push(idea);
+      store.set("custom", state.custom);
+      rebuildIdeas();
+      closeSheet();
+      state.browseTier = "custom";
+      $("#browse-q").value = "";
+      renderBrowse();
+      renderCount();
+      toast("Idea added");
+    });
+  }
+  $("#add-idea").addEventListener("click", openAddSheet);
+
+  function confirmDeleteCustom(idea) {
+    if (!idea || !idea.custom) return;
+    openSheet(`
+      <h2>Delete this idea?</h2>
+      <p class="sub">${esc(idea.title)} will be removed from this phone. Your history stays.</p>
+      <div class="sheet-actions">
+        <button class="btn btn-danger" id="confirm-del-custom">Delete</button>
+        <button class="btn btn-secondary" data-close>Keep it</button>
+      </div>
+    `);
+    $("#confirm-del-custom").addEventListener("click", () => {
+      state.custom = state.custom.filter(i => i.id !== idea.id);
+      state.saved = state.saved.filter(id => id !== idea.id);
+      store.set("custom", state.custom);
+      store.set("saved", state.saved);
+      rebuildIdeas();
+      closeSheet();
+      $("#result").hidden = true;
+      renderBrowse();
+      renderSaved();
+      renderCount();
+      toast("Idea deleted");
+    });
+  }
 
   /* ---------- Saved screen ---------- */
   function renderSaved() {
@@ -519,7 +679,7 @@
   /* ---------- Tabs ---------- */
   function switchTab(name) {
     document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-    ["pick", "saved", "history"].forEach(s => { $("#screen-" + s).hidden = s !== name; });
+    ["pick", "browse", "saved", "history"].forEach(s => { $("#screen-" + s).hidden = s !== name; });
   }
   document.querySelector(".tabbar").addEventListener("click", e => {
     const tab = e.target.closest(".tab");
@@ -529,6 +689,7 @@
   /* ---------- Start ---------- */
   renderHeader();
   renderFilters();
+  renderBrowse();
   renderSaved();
   renderHistory();
 

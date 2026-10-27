@@ -42,6 +42,22 @@
       </div>
     </main>
 
+    <!-- ============ BROWSE ============ -->
+    <main class="screen" id="screen-browse" hidden>
+      <header class="large-title title-row">
+        <div>
+          <p class="kicker" id="browse-count"></p>
+          <h1>Browse</h1>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="add-idea" data-icon="plus">Add idea</button>
+      </header>
+      <div class="browse-tools">
+        <input class="search" id="browse-q" type="search" placeholder="Search ideas, places, neighborhoods" autocomplete="off" aria-label="Search ideas">
+        <div class="seg" id="browse-tier" role="group" aria-label="Setting"></div>
+      </div>
+      <div id="browse-list"></div>
+    </main>
+
     <!-- ============ SAVED ============ -->
     <main class="screen" id="screen-saved" hidden>
       <header class="large-title">
@@ -65,6 +81,7 @@
     <!-- ============ TAB BAR ============ -->
     <nav class="tabbar" aria-label="Main">
       <button class="tab active" data-tab="pick" data-icon="shuffle">Pick</button>
+      <button class="tab" data-tab="browse" data-icon="list">Browse</button>
       <button class="tab" data-tab="saved" data-icon="bookmark">Saved</button>
       <button class="tab" data-tab="history" data-icon="clock">History</button>
     </nav>
