@@ -1,0 +1,16 @@
+import { useEffect, useState } from 'react'
+
+/** useState that survives refreshes. Falls back quietly if storage is blocked. */
+export function useLocalStorage(key, initial) {
+  const [value, setValue] = useState(() => {
+    try {
+      const raw = localStorage.getItem(key)
+      if (raw) return JSON.parse(raw)
+    } catch { /* private mode or bad JSON */ }
+    return typeof initial === 'function' ? initial() : initial
+  })
+  useEffect(() => {
+    try { localStorage.setItem(key, JSON.stringify(value)) } catch { /* ignore */ }
+  }, [key, value])
+  return [value, setValue]
+}
