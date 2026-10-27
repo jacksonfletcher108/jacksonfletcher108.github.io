@@ -4,6 +4,7 @@ A budgeting app built with React, Vite, Tailwind CSS v4, Recharts and Lucide ico
 
 ```bash
 npm install
+npm test                                      # ~20,000 checks on the money math and the automatic plan
 npm run dev                                   # http://localhost:5173
 npx vite build --base /budget/ --outDir ../jacksonfletcher108.github.io/budget --emptyOutDir
 ```

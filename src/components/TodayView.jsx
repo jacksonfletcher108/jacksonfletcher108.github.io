@@ -38,8 +38,9 @@ export default function TodayView({ state, s, dark, onAdd, onEdit, onCategory, o
             <span className={cn('rounded-full px-2.5 py-1 text-[12.5px] font-semibold', STATUS_STYLE[status.id])}>{status.label}</span>
             <span className="text-[13px] text-slate-500 dark:text-slate-400">{s.mi.daysLeft} day{s.mi.daysLeft > 1 ? 's' : ''} left in {s.mi.label.split(' ')[0]}</span>
           </div>
-          <p className="mt-5 text-[15px] text-slate-600 dark:text-slate-300">You can spend</p>
+          <p className="mt-5 text-[15px] text-slate-600 dark:text-slate-300">{s.spentToday > 0 ? 'You can still spend' : 'You can spend'}</p>
           <p className="tabular text-[52px] font-extrabold leading-none tracking-tight sm:text-[60px]">{money(s.safeToday)}<span className="ml-2 text-[20px] font-semibold text-slate-500 dark:text-slate-400">today</span></p>
+          {s.spentToday > 0 && <p className="mt-2 text-[14px] text-slate-500 dark:text-slate-400">You've spent {money(s.spentToday, true)} of today's {money(s.todayBudget)}.</p>}
           <p className="mt-3 text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">
             {s.flexLeft >= 0
               ? <>You have <b className="text-slate-900 dark:text-white">{money(s.flexLeft)}</b> of spending money left for the rest of the month.</>

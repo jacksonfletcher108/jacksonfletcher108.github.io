@@ -96,7 +96,11 @@ export function summarize(state, now = new Date()) {
   const flexBudget = flexIds.reduce((s, id) => s + byCat[id].budget, 0)
   const flexSpent = flexIds.reduce((s, id) => s + byCat[id].logged, 0)
   const flexLeft = flexBudget - flexSpent
-  const safeToday = Math.max(0, flexLeft / mi.daysLeft)
+  // today's allowance is set by what was left this morning; spending today comes out of it in full
+  const todayKey = `${mi.y}-${String(mi.m + 1).padStart(2, '0')}-${String(mi.day).padStart(2, '0')}`
+  const spentToday = monthExpenses.filter(e => e.date === todayKey && e.category !== 'savings').reduce((s, e) => s + e.amount, 0)
+  const todayBudget = Math.max(0, (flexLeft + spentToday) / mi.daysLeft)
+  const safeToday = Math.max(0, todayBudget - spentToday)
   const plannedDaily = flexBudget / activeDays
   const paceDaily = elapsed > 0 ? flexSpent / elapsed : 0
 
@@ -108,7 +112,7 @@ export function summarize(state, now = new Date()) {
     mi, monthExpenses, byCat, fixedTotal, allocated, unallocated: state.income - allocated,
     loggedTotal, spentSoFar, flexBudget, flexSpent, flexLeft, safeToday, plannedDaily, paceDaily,
     plannedSavings, projectedLeftover, balance: state.income - spentSoFar,
-    startDay, elapsed, partial: startDay > 1,
+    startDay, elapsed, partial: startDay > 1, spentToday, todayBudget,
   }
 }
 

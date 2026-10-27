@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { cn } from '../lib/utils'
 
 export function Card({ className, children, ...props }) {
@@ -74,22 +75,59 @@ export function Button({ variant = 'primary', className, children, ...props }) {
   )
 }
 
-/** Dollar input that keeps the $ inside the field. */
-export function MoneyInput({ value, onChange, className, inputClassName, size = 'md', ...props }) {
+const parseMoney = t => { const n = parseFloat(t); return Number.isFinite(n) ? Math.max(0, Math.round(n * 100) / 100) : 0 }
+const cleanMoney = t => {
+  let v = String(t).replace(/[^0-9.]/g, '')
+  const dot = v.indexOf('.')
+  if (dot >= 0) v = v.slice(0, dot + 1) + v.slice(dot + 1).replace(/\./g, '').slice(0, 2)   // one dot, two decimals
+  return v
+}
+
+/**
+ * Dollar input that keeps the $ inside the field. It holds what you're typing as text,
+ * so "0.", "12." or an empty box stay put while you type instead of snapping to a number.
+ */
+export function MoneyInput({ value, onChange, className, inputClassName, size = 'md', onBlur, ...props }) {
+  const [text, setText] = useState(value ? String(value) : '')
+  useEffect(() => {
+    // follow outside changes (sliders, undo), but don't fight the person typing
+    setText(t => (parseMoney(t) === (value || 0) ? t : value ? String(value) : ''))
+  }, [value])
   return (
     <label className={cn(
       'group flex items-center rounded-xl border border-slate-900/10 bg-white/70 transition focus-within:border-emerald-400/70 focus-within:ring-4 focus-within:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20',
       size === 'lg' ? 'px-4 py-3' : 'px-3 py-2', className)}>
       <span className={cn('text-slate-400', size === 'lg' ? 'text-2xl font-semibold' : 'text-base')}>$</span>
       <input
-        type="number" inputMode="decimal" min="0" step="any"
-        value={value === 0 || value === '' ? '' : value}
+        type="text" inputMode="decimal" autoComplete="off"
+        value={text}
         placeholder="0"
-        onChange={e => onChange(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
+        onChange={e => { const t = cleanMoney(e.target.value); setText(t); onChange(parseMoney(t)) }}
+        onBlur={e => { setText(value ? String(value) : ''); onBlur?.(e) }}
         className={cn('tabular w-full min-w-0 bg-transparent pl-1 outline-none placeholder:text-slate-400/60', size === 'lg' ? 'text-3xl font-bold tracking-tight' : 'text-base font-semibold', inputClassName)}
         {...props}
       />
     </label>
+  )
+}
+
+/** Day of the month (1–31). Can be cleared while typing; saves when you leave the box or press Enter. */
+export function DayInput({ value, onChange, className, ...props }) {
+  const [text, setText] = useState(String(value))
+  useEffect(() => { setText(t => (Number(t) === value ? t : String(value))) }, [value])
+  return (
+    <input
+      type="text" inputMode="numeric" autoComplete="off" value={text}
+      onChange={e => setText(e.target.value.replace(/\D/g, '').slice(0, 2))}
+      onBlur={() => {
+        // save once you're done typing; an empty or impossible day puts the old one back
+        const n = Number(text)
+        if (text && n >= 1 && n <= 31) { if (n !== value) onChange(n) } else setText(String(value))
+      }}
+      onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.blur() }}
+      className={cn('tabular rounded-xl border border-slate-900/10 bg-white/70 px-2 py-2 text-center text-base outline-none focus:border-emerald-400/70 dark:border-white/10 dark:bg-black/20', className)}
+      {...props}
+    />
   )
 }
 

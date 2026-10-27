@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Wand2, Plus, Trash2, ChevronDown } from 'lucide-react'
 import { CATEGORY_META, COMMON_BILLS, SPEND_IDS } from '../lib/budget'
 import { money, pct, uid, cn } from '../lib/utils'
-import { Card, MoneyInput } from './ui'
+import { Card, MoneyInput, DayInput } from './ui'
 
 const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th')
 
@@ -94,8 +94,7 @@ export default function BudgetView({ state, s, update, say, onAutoPlan }) {
                     <div className="mb-2 grid grid-cols-[1fr_auto_auto] items-end gap-2 animate-fade">
                       <label className="text-[12.5px] text-slate-500">Amount<MoneyInput value={f.amount} onChange={v => setBill(f.id, { amount: v })} className="mt-1" /></label>
                       <label className="text-[12.5px] text-slate-500">Due day
-                        <input type="number" inputMode="numeric" min="1" max="31" value={f.day} onChange={e => setBill(f.id, { day: Math.min(31, Math.max(1, parseInt(e.target.value) || 1)) })}
-                          className="tabular mt-1 block w-16 rounded-xl border border-slate-900/10 bg-white/70 px-2 py-2 text-center text-base outline-none dark:border-white/10 dark:bg-black/20" />
+                        <DayInput value={f.day} onChange={d => setBill(f.id, { day: d })} className="mt-1 block w-16" aria-label={`${f.name} due day`} />
                       </label>
                       <button type="button" onClick={() => removeBill(f)} aria-label={`Remove ${f.name}`} className="grid size-11 place-items-center rounded-xl text-rose-500 hover:bg-rose-500/10"><Trash2 className="size-4" /></button>
                     </div>
