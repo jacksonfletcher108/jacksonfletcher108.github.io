@@ -1,74 +1,90 @@
-import { ArrowUpRight, Nfc } from 'lucide-react'
+import { ArrowUpRight, Play, Nfc, Clock3 } from 'lucide-react'
 import { cn } from '../lib/cn'
 
-/** One app, hung on the fridge with a magnet or a piece of tape. */
-export default function AppCard({ app, up, onOpen, onNfc, index }) {
+export default function AppCard({ app, status, onLaunch, onNfc, index }) {
   const Icon = app.icon
   const live = app.status === 'live'
+  const s = status?.[app.id]
+  const onMove = e => {
+    const r = e.currentTarget.getBoundingClientRect()
+    e.currentTarget.style.setProperty('--x', `${e.clientX - r.left}px`)
+    e.currentTarget.style.setProperty('--y', `${e.clientY - r.top}px`)
+  }
   return (
     <article
-      style={{ '--tilt': `${app.tilt}deg`, '--pin': app.color, '--card-paper': app.paper, animationDelay: `${index * 110}ms` }}
-      className={cn('paper group relative flex flex-col rounded-[6px] p-6 pt-8 animate-hang transition-[transform,box-shadow] duration-300 ease-out sm:p-7 sm:pt-9',
-        'rotate-[var(--tilt)] hover:z-10 hover:-translate-y-1.5 hover:rotate-0 hover:shadow-[0_2px_2px_rgb(31_43_38/.08),0_26px_40px_-18px_rgb(31_43_38/.45)]',
-        !live && 'border-2 border-dashed border-ink/15')}
+      onPointerMove={onMove}
+      style={{ '--glow': app.glow, animationDelay: `${120 + index * 90}ms` }}
+      className={cn(
+        'spot group relative flex flex-col rounded-[28px] p-6 transition-all duration-500 ease-[cubic-bezier(.16,1,.3,1)] animate-rise hover:-translate-y-1.5 sm:p-7',
+        live ? 'glass hover:border-white/20 hover:shadow-[0_40px_80px_-40px_rgb(var(--glow)/.55)]' : 'border border-dashed border-white/15 bg-white/[.015] backdrop-blur-xl hover:border-violet-300/40',
+      )}
     >
-      <span className={app.pin === 'tape' ? 'tape' : 'magnet'} aria-hidden="true" />
-
-      <div className="flex items-start gap-4">
-        <span className="grid size-14 shrink-0 place-items-center rounded-2xl text-white shadow-[inset_0_-3px_0_rgb(0_0_0/.15)] transition-transform duration-300 group-hover:-rotate-6"
-          style={{ background: app.color }}>
-          <Icon className="size-7" strokeWidth={2} />
+      {/* top row */}
+      <div className="flex items-start justify-between gap-3">
+        <span className="relative grid size-14 place-items-center rounded-2xl text-white shadow-lg transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105"
+          style={{ background: `linear-gradient(135deg, ${app.accent}, ${app.accent2})`, boxShadow: `0 14px 30px -12px ${app.accent}` }}>
+          <Icon className="size-7" strokeWidth={1.8} />
         </span>
-        <div className="min-w-0 flex-1">
-          <p className="hand text-[22px] leading-none" style={{ color: app.color }}>{app.kicker}</p>
-          <h3 className="mt-1 flex flex-wrap items-center gap-x-2.5 font-display text-[28px] font-extrabold leading-tight tracking-tight">
-            {app.name}
-            {live
-              ? <span className="inline-flex items-center gap-1.5 font-sans text-[12px] font-semibold tracking-normal text-pencil" title={up === false ? "Can't reach it right now" : 'Up and running'}>
-                  <span className={cn('size-2 rounded-full', up === false ? 'bg-rose-400' : 'bg-[#2f8f6f]')} />{up === false ? 'offline' : 'live'}
-                </span>
-              : <span className="rounded-full bg-[#7c5cd6]/12 px-2 py-0.5 font-sans text-[12px] font-semibold tracking-normal text-[#5b3fb5]">in progress</span>}
-          </h3>
-        </div>
+        {live ? (
+          <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[12px] font-semibold text-slate-300">
+            <span className={cn('size-1.5 rounded-full', s ? (s.up ? 'bg-emerald-400' : 'bg-rose-400') : 'animate-pulse bg-slate-500')} />
+            {s ? (s.up ? 'Live' : 'Offline') : 'Live'}
+          </span>
+        ) : (
+          <span className="flex items-center gap-1.5 rounded-full border border-violet-300/25 bg-violet-400/10 px-2.5 py-1 text-[12px] font-semibold text-violet-200">
+            <Clock3 className="size-3" />In progress
+          </span>
+        )}
       </div>
 
-      <p className="mt-4 text-[16px] leading-relaxed text-ink/85">{app.tagline}</p>
+      <p className="mt-6 text-[13.5px] font-semibold" style={{ color: app.accent }}>{app.alias}</p>
+      <h3 className="mt-1 font-display text-[26px] font-semibold leading-tight tracking-tight text-white">{app.name}</h3>
+      <p className="mt-2.5 text-[15px] leading-relaxed text-slate-400">{app.tagline}</p>
 
-      <ul className="mt-4 space-y-2">
+      <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Tags">
+        {app.tags.map(t => (
+          <li key={t} className="rounded-full border px-2.5 py-1 text-[11.5px] font-semibold"
+            style={{ borderColor: `${app.accent}40`, background: `${app.accent}14`, color: app.accent }}>{t}</li>
+        ))}
+      </ul>
+
+      <ul className="mt-6 space-y-3 border-t border-white/[.07] pt-5">
         {app.features.map(f => (
-          <li key={f.text} className="flex items-center gap-2.5 text-[14.5px] text-pencil">
-            <f.icon className="size-4 shrink-0" style={{ color: app.color }} />{f.text}
+          <li key={f.text} className="flex gap-3 text-[14px] leading-snug text-slate-300">
+            <f.icon className="mt-0.5 size-4 shrink-0 text-slate-500 transition-colors group-hover:text-slate-300" />{f.text}
           </li>
         ))}
       </ul>
 
-      {app.stats.length > 0 && (
-        <p className="tabular mt-4 text-[13.5px] text-pencil">
-          {app.stats.map(([n, l], i) => <span key={l}>{i > 0 && <span className="mx-1.5 text-pencil/40">·</span>}<b className="font-bold text-ink">{n}</b> {l}</span>)}
-        </p>
-      )}
+      {app.stats.length > 0 && <dl className="mt-6 grid grid-cols-3 gap-2">
+        {app.stats.map(st => (
+          <div key={st.label} className="rounded-xl bg-white/[.03] px-3 py-2.5">
+            <dd className="tabular font-display text-[17px] font-semibold text-white">{st.value}</dd>
+            <dt className="text-[11.5px] text-slate-500">{st.label}</dt>
+          </div>
+        ))}
+      </dl>}
 
-      {/* handwritten note in the margin */}
-      <p className="hand mt-5 border-t border-dashed border-ink/15 pt-4 text-[22px] leading-snug text-ink/80">
-        {app.note} <span className="text-pencil">– J</span>
+      <p className="mt-6 border-l-2 pl-3.5 text-[14.5px] leading-relaxed text-slate-300" style={{ borderColor: `${app.accent}80` }}>
+        <span className="text-slate-500">{app.whyLabel || 'Why I built it'}: </span>{app.why}
       </p>
 
-      <div className="mt-auto flex items-center gap-2 pt-5">
-        <button type="button" onClick={() => onOpen(app.id)}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-5 py-3 text-[15px] font-bold text-white shadow-[inset_0_-3px_0_rgb(0_0_0/.18)] transition active:translate-y-px"
-          style={{ background: live ? app.color : '#1f2b26' }}>
-          {live ? `Open ${app.short}` : 'Vote on what\'s next'}
+      <div className="mt-auto flex items-center gap-2 pt-6">
+        <button type="button" onClick={() => onLaunch(app.id)}
+          className="group/btn inline-flex flex-1 items-center justify-center gap-2 rounded-2xl px-4 py-3 text-[14.5px] font-semibold text-slate-950 transition-all active:scale-[.98]"
+          style={{ background: live ? `linear-gradient(135deg, ${app.accent}, ${app.accent2})` : 'rgb(255 255 255 / .9)' }}>
+          <Play className="size-4 fill-current" />{live ? `Open ${app.short}` : 'See the shortlist'}
         </button>
         {app.id === 'kitchen' && (
-          <button type="button" onClick={onNfc} aria-label="Set up the fridge tag" title="Fridge tag setup"
-            className="grid size-12 place-items-center rounded-full border-2 border-ink/10 text-ink transition hover:-rotate-12 hover:border-ink/25">
+          <button type="button" onClick={onNfc} aria-label="NFC tag setup guide" title="NFC tag setup"
+            className="grid size-12 place-items-center rounded-2xl border border-white/10 bg-white/[.04] text-amber-300 transition hover:border-amber-300/40 hover:bg-amber-300/10">
             <Nfc className="size-5" />
           </button>
         )}
         {live && (
-          <a href={app.url} target="_blank" rel="noreferrer" aria-label={`Open ${app.name} in its own tab`} title="Open in its own tab"
-            className="grid size-12 place-items-center rounded-full border-2 border-ink/10 text-ink transition hover:rotate-12 hover:border-ink/25">
-            <ArrowUpRight className="size-5" />
+          <a href={app.url} target="_blank" rel="noreferrer" aria-label={`Open ${app.name} in a new tab`} title="Open in a new tab"
+            className="grid size-12 place-items-center rounded-2xl border border-white/10 bg-white/[.04] text-slate-300 transition hover:border-white/25 hover:text-white">
+            <ArrowUpRight className="size-5 transition group-hover:translate-x-px group-hover:-translate-y-px" />
           </a>
         )}
       </div>

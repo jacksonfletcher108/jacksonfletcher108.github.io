@@ -1,13 +1,13 @@
 {
-  "name": "Jackson's Apps",
-  "short_name": "Jackson's Apps",
-  "description": "Little apps I made: Date Night, Mise, Ledgerly, and whatever's next.",
+  "name": "Jackson Fletcher · App Hub",
+  "short_name": "App Hub",
+  "description": "Date Night, Mise, Ledgerly, and whatever's next.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#d6e8de",
-  "theme_color": "#d6e8de",
+  "background_color": "#07080d",
+  "theme_color": "#07080d",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
