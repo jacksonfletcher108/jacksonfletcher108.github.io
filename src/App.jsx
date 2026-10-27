@@ -6,15 +6,16 @@ import BudgetView from './components/BudgetView'
 import WhatIfSimulator from './components/WhatIfSimulator'
 import SetupWizard from './components/SetupWizard'
 import CategorySheet from './components/CategorySheet'
+import AutoPlanSheet from './components/AutoPlanSheet'
+import SpendingSheet from './components/SpendingSheet'
 import ExpenseModal from './components/ExpenseModal'
 import Toast from './components/Toast'
 import { useLocalStorage } from './hooks/useLocalStorage'
-import { sampleState, blankState, summarize, newExpense, applyScenario, isSetUp, CATEGORY_META } from './lib/budget'
+import { sampleState, blankState, summarize, newExpense, applyScenario, isSetUp, nudgeGoal, CATEGORY_META } from './lib/budget'
 import { money, uid, todayISO } from './lib/utils'
 
 const OLD_TABS = { overview: 'today', plan: 'budget', whatif: 'goal' }
 const TITLES = { today: 'Today', budget: 'Budget', goal: 'Goal' }
-const nudgeGoal = (st, delta) => ({ ...st, goal: { ...st.goal, saved: Math.max(0, Math.round((st.goal.saved + delta) * 100) / 100) } })
 
 export default function App() {
   // brand-new visitors start blank and go straight into setup
@@ -23,6 +24,8 @@ export default function App() {
   const tab = OLD_TABS[rawTab] || rawTab
   const [sheet, setSheet] = useState(null)          // null | { mode: 'add', category? } | { mode: 'edit', expense }
   const [cat, setCat] = useState(null)
+  const [planning, setPlanning] = useState(false)
+  const [allSpending, setAllSpending] = useState(false)
   const [setup, setSetup] = useState(() => !isSetUp(state) && !state.sample)
   const [toast, setToast] = useState(null)
   const [lastCategory, setLastCategory] = useLocalStorage('ledgerly.lastCategory', 'food')
@@ -47,7 +50,7 @@ export default function App() {
   const update = useCallback(fn => setState(st => ({ ...fn(st), sample: false })), [setState])
   const say = useCallback((text, action) => setToast({ id: uid(), text, action }), [])
   const closeSheet = useCallback(() => setSheet(null), [])
-  useEffect(() => { if (sheet || cat) setToast(null) }, [sheet, cat])
+  useEffect(() => { if (sheet || cat || allSpending || planning) setToast(null) }, [sheet, cat, allSpending, planning])
   const closeCat = useCallback(() => setCat(null), [])
   const goTab = t => { setTab(t); setToast(null); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
@@ -105,7 +108,7 @@ export default function App() {
     <div className="min-h-screen overflow-x-clip pb-28 md:pb-16">
       <div className="backdrop" />
       <Navbar tab={tab} onTab={goTab} theme={dark ? 'dark' : 'light'} monthLabel={s.mi.label}
-        onAdd={() => setSheet({ mode: 'add' })} onSetup={() => setSetup(true)}
+        onAdd={() => setSheet({ mode: 'add' })} onSetup={() => setSetup(true)} onSpending={() => setAllSpending(true)}
         onTheme={() => setState(st => ({ ...st, theme: dark ? 'light' : 'dark' }))}
         onSample={() => { const prev = state; setState({ ...sampleState(), theme: state.theme }); say('Showing example numbers', { label: 'Undo', run: () => setState(prev) }) }}
         onReset={() => { const prev = state; setState(blankState(state.theme)); setSetup(true); say('Erased', { label: 'Undo', run: () => { setState(prev); setSetup(false) } }) }} />
@@ -122,10 +125,10 @@ export default function App() {
         <h1 key={tab} className="mb-4 text-[24px] font-extrabold tracking-tight animate-rise sm:text-[28px]">{TITLES[tab]}</h1>
 
         {tab === 'today' && (
-          <TodayView state={state} s={s} dark={dark} onTab={goTab} onCategory={setCat}
+          <TodayView state={state} s={s} dark={dark} onTab={goTab} onCategory={setCat} onAll={() => setAllSpending(true)}
             onAdd={() => setSheet({ mode: 'add' })} onEdit={e => setSheet({ mode: 'edit', expense: e })} />
         )}
-        {tab === 'budget' && <BudgetView state={state} s={s} update={update} say={say} />}
+        {tab === 'budget' && <BudgetView state={state} s={s} update={update} say={say} onAutoPlan={() => setPlanning(true)} />}
         {tab === 'goal' && <WhatIfSimulator state={state} s={s} update={update} dark={dark} onApply={applyChange} />}
       </main>
 
@@ -136,7 +139,14 @@ export default function App() {
       <ExpenseModal open={!!sheet} onClose={closeSheet} onSave={saveExpense} onDelete={deleteExpense}
         editing={sheet?.mode === 'edit' ? sheet.expense : null} presetCategory={sheet?.category}
         lastCategory={lastCategory} recentNotes={recentNotes} s={s} />
-      <Toast toast={toast} onDone={() => setToast(null)} />
+      {allSpending && <SpendingSheet state={state} update={update} say={say} onClose={() => setAllSpending(false)} />}
+      {planning && <AutoPlanSheet state={state} onClose={() => setPlanning(false)} onApply={(targets, prefs) => {
+        const prev = state
+        update(st => ({ ...st, targets, prefs }))
+        setPlanning(false)
+        say('New plan saved', { label: 'Undo', run: () => setState(prev) })
+      }} />}
+      <Toast toast={toast} onDone={() => setToast(null)} raised={allSpending} />
     </div>
   )
 }

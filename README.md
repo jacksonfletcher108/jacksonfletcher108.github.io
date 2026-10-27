@@ -11,7 +11,8 @@ npx vite build --base /budget/ --outDir ../jacksonfletcher108.github.io/budget -
 ## How it's organized
 
 - `src/App.jsx`: app shell, tabs (Today, Budget, Goal), add/edit/delete with undo, setup on first open
-- `src/lib/budget.js`: categories, example month, and all the math (spending money, what you can spend today, first-month proration, suggested split, pace status, what-if apply)
+- `src/lib/budget.js`: categories, example month, and the month math (spending money, what you can spend today, first-month proration, pace status, what-if apply)
+- `src/lib/autoplan.js`: "Plan it for me". Builds a plan from pay, bills, a few answers (household, eating out, priorities, car, pet, cushion, goal date) and logged spending, with a reason for every number
 - `src/hooks/useLocalStorage.js`: saved state (key `ledgerly.v1`, kept from the old name so nobody loses data)
 - `src/components/`
   - `SetupWizard`: pay (with pay frequency), bills, savings, then the plan it builds
@@ -20,4 +21,6 @@ npx vite build --base /budget/ --outDir ../jacksonfletcher108.github.io/budget -
   - `WhatIfSimulator`: the Goal tab; goal settings, what-if sliders, and Apply
   - `ExpenseModal`: add or edit spending (press **N** on a keyboard)
   - `CategorySheet`: one category's spending this month
+  - `SpendingSheet`: every entry by month; edit in place, select several, clear a month or everything (with undo)
+  - `AutoPlan` / `AutoPlanSheet`: the planner's questions and its explained result
   - `Navbar`, `Toast`, `Charts` (tooltip helpers), `ui` (Card, ProgressBar, Ring, MoneyInput, Slider, Button)

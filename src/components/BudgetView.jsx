@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Wand2, Plus, Trash2, ChevronDown } from 'lucide-react'
-import { CATEGORY_META, COMMON_BILLS, SPEND_IDS, suggestTargets } from '../lib/budget'
+import { CATEGORY_META, COMMON_BILLS, SPEND_IDS } from '../lib/budget'
 import { money, pct, uid, cn } from '../lib/utils'
 import { Card, MoneyInput } from './ui'
 
 const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th')
 
 /** One screen for the whole plan: pay → bills → spending money → savings, with what's left to plan on top. */
-export default function BudgetView({ state, s, update, say }) {
+export default function BudgetView({ state, s, update, say, onAutoPlan }) {
   const [openBill, setOpenBill] = useState(null)
   const [draft, setDraft] = useState({ name: '', amount: 0, category: 'personal', day: 1 })
   const bills = state.fixed.filter(f => f.category !== 'savings').reduce((a, f) => a + f.amount, 0)
@@ -26,11 +26,6 @@ export default function BudgetView({ state, s, update, say }) {
     // a new bill grows its category's budget so the spending money there stays the same
     update(st => ({ ...st, fixed: [...st.fixed, { ...b, id: uid() }], targets: { ...st.targets, [b.category]: (st.targets[b.category] || 0) + b.amount } }))
     setDraft({ name: '', amount: 0, category: 'personal', day: 1 })
-  }
-  const split = () => {
-    const prev = state.targets
-    update(st => ({ ...st, targets: suggestTargets(st.income, st.fixed, st.targets.savings) }))
-    say('Spending money split for you', { label: 'Undo', run: () => update(st => ({ ...st, targets: prev })) })
   }
   const unusedCommon = COMMON_BILLS.filter(c => !state.fixed.some(f => f.name.toLowerCase() === c.name.toLowerCase())).slice(0, 5)
 
@@ -54,18 +49,26 @@ export default function BudgetView({ state, s, update, say }) {
             <Legend color="bg-orange-400" label="Spending" value={spending} />
             <Legend color="bg-slate-400/40" label="Left to plan" value={Math.max(0, leftToPlan)} />
           </dl>
-          <div className={cn('mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-3.5', leftToPlan < 0 ? 'bg-rose-500/10' : leftToPlan > 0 ? 'bg-amber-500/10' : 'bg-emerald-500/10')}>
-            <p className="text-[14.5px]">
-              {leftToPlan < 0 ? <>You've planned <b className="text-rose-500">{money(-leftToPlan)}</b> more than you make.</>
-                : leftToPlan > 0 ? <><b>{money(leftToPlan)}</b> isn't planned yet.</>
-                : <>Every dollar is planned.</>}
-            </p>
-            {leftToPlan !== 0 && state.income > 0 && (
-              <button type="button" onClick={split} className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2 text-[13.5px] font-semibold text-white dark:bg-white dark:text-slate-900">
-                <Wand2 className="size-4" />Split it for me
-              </button>
-            )}
-          </div>
+          {(() => {
+            const cushion = leftToPlan > 0 && state.prefs?.cushion && leftToPlan <= state.income * 0.08
+            return (
+              <p className={cn('mt-4 rounded-2xl p-3.5 text-[14.5px]', leftToPlan < 0 ? 'bg-rose-500/10' : leftToPlan > 0 && !cushion ? 'bg-amber-500/10' : 'bg-emerald-500/10')}>
+                {leftToPlan < 0 ? <>You've planned <b className="text-rose-500">{money(-leftToPlan)}</b> more than you make.</>
+                  : cushion ? <><b>{money(leftToPlan)}</b> is left as a cushion for surprises.</>
+                  : leftToPlan > 0 ? <><b>{money(leftToPlan)}</b> isn't planned yet.</>
+                  : <>Every dollar is planned.</>}
+              </p>
+            )
+          })()}
+          {state.income > 0 && (
+            <button type="button" onClick={onAutoPlan} className="mt-3 flex w-full items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/[.07] p-3.5 text-left transition hover:bg-emerald-500/[.12]">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-500 text-white"><Wand2 className="size-5" /></span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[15px] font-bold">Plan it for me</span>
+                <span className="block text-[13px] text-slate-500 dark:text-slate-400">Answer a few questions and Tally splits up your money{state.expenses.length > 5 ? ', using what you actually spend' : ''}.</span>
+              </span>
+            </button>
+          )}
         </Card>
 
         {/* bills */}

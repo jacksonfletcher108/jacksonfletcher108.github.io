@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { LayoutDashboard, SlidersHorizontal, Target, Moon, Sun, MoreHorizontal, RotateCcw, Eraser, Plus, Wand2 } from 'lucide-react'
+import { LayoutDashboard, SlidersHorizontal, Target, Moon, Sun, MoreHorizontal, RotateCcw, Eraser, Plus, Wand2, ListChecks } from 'lucide-react'
 import { cn } from '../lib/utils'
 
 export const TABS = [
@@ -8,7 +8,7 @@ export const TABS = [
   { id: 'goal', label: 'Goal', icon: Target },
 ]
 
-export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset, onSample, onAdd, onSetup }) {
+export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset, onSample, onAdd, onSetup, onSpending }) {
   const [menu, setMenu] = useState(false)
   const ref = useRef(null)
   useEffect(() => {
@@ -52,6 +52,9 @@ export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset
               </button>
               {menu && (
                 <div className="glass absolute right-0 top-12 z-40 w-56 rounded-2xl p-1.5 animate-pop bg-white/95 dark:bg-[#151826]/95">
+                  <button type="button" onClick={() => { setMenu(false); onSpending() }} className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium hover:bg-slate-900/5 dark:hover:bg-white/[.06]">
+                    <ListChecks className="size-4 text-slate-400" />Edit or clear spending
+                  </button>
                   <button type="button" onClick={() => { setMenu(false); onSetup() }} className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium hover:bg-slate-900/5 dark:hover:bg-white/[.06]">
                     <Wand2 className="size-4 text-slate-400" />Walk me through setup
                   </button>

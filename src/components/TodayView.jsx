@@ -18,7 +18,7 @@ const STATUS_STYLE = {
   none: 'bg-slate-500/15 text-slate-600 dark:text-slate-300',
 }
 
-export default function TodayView({ state, s, dark, onAdd, onEdit, onCategory, onTab }) {
+export default function TodayView({ state, s, dark, onAdd, onEdit, onCategory, onTab, onAll }) {
   const rows = spendingRows(s)
   const status = paceStatus(s)
   const bills = billsTimeline(state, s)
@@ -143,7 +143,8 @@ export default function TodayView({ state, s, dark, onAdd, onEdit, onCategory, o
 
         {/* recent */}
         <Card>
-          <div className="mb-3 flex items-center gap-2"><Receipt className="size-4 text-slate-400" /><h2 className="text-[16px] font-bold">Recent spending</h2></div>
+          <div className="mb-3 flex items-center gap-2"><Receipt className="size-4 text-slate-400" /><h2 className="flex-1 text-[16px] font-bold">Recent spending</h2>
+            {state.expenses.length > 0 && <button type="button" onClick={onAll} className="text-[13px] font-semibold text-emerald-600 hover:underline dark:text-emerald-400">See all</button>}</div>
           {groups.length === 0 ? (
             <button type="button" onClick={onAdd} className="w-full rounded-2xl border border-dashed border-slate-900/15 p-5 text-center text-[15px] text-slate-500 transition hover:border-emerald-400 hover:text-emerald-600 dark:border-white/15">
               Nothing yet. Tap <b>Add</b> when you buy something.
@@ -172,7 +173,7 @@ export default function TodayView({ state, s, dark, onAdd, onEdit, onCategory, o
                   </ul>
                 </div>
               ))}
-              <p className="text-center text-[12.5px] text-slate-400">Tap anything to change or delete it.</p>
+              <button type="button" onClick={onAll} className="w-full rounded-xl bg-slate-900/[.04] py-2.5 text-[14px] font-semibold text-slate-600 transition hover:bg-slate-900/[.07] dark:bg-white/[.04] dark:text-slate-300 dark:hover:bg-white/[.08]">Edit or clear spending</button>
             </div>
           )}
         </Card>

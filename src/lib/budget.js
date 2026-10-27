@@ -182,26 +182,6 @@ export const COMMON_BILLS = [
   { name: 'Gym', category: 'personal', day: 1 },
 ]
 
-const billsIn = (fixed, id) => fixed.filter(f => f.category === id).reduce((a, f) => a + f.amount, 0)
-const floor10 = n => Math.max(0, Math.floor(n / 10) * 10)
-
-/** How the leftover money gets split when someone taps "Split it for me". */
-const SPLIT = { food: 0.45, personal: 0.35, entertainment: 0.2 }
-
-/** Budget amounts per category: bills first, savings next, the rest split across everyday spending. */
-export function suggestTargets(income, fixed, monthlySave) {
-  const bills = fixed.filter(f => f.category !== 'savings').reduce((a, f) => a + f.amount, 0)
-  const save = Math.max(monthlySave || 0, billsIn(fixed, 'savings'))
-  const left = Math.max(0, income - bills - save)
-  const t = Object.fromEntries(CATEGORY_IDS.map(id => [id, billsIn(fixed, id)]))
-  t.savings = save
-  // round to tens, and give whatever rounding leaves over to food so the plan adds up exactly
-  let given = 0
-  Object.entries(SPLIT).forEach(([id, share]) => { const v = id === 'food' ? 0 : floor10(left * share); given += v; t[id] = billsIn(fixed, id) + v })
-  t.food = billsIn(fixed, 'food') + Math.max(0, Math.round(left - given))
-  return t
-}
-
 /** Everyday categories with how much spending money is left in each (bills don't count here). */
 export function spendingRows(s) {
   return SPEND_IDS.map(id => {
@@ -242,3 +222,7 @@ export function applyScenario(state, sc, routeToGoal, freedNow) {
 }
 
 export const isSetUp = state => !state.sample && state.income > 0
+
+/** Logging (or deleting) savings moves the goal by the same amount. */
+export const nudgeGoal = (st, delta) => (delta ? { ...st, goal: { ...st.goal, saved: Math.max(0, Math.round((st.goal.saved + delta) * 100) / 100) } } : st)
+export const savingsIn = list => list.filter(e => e.category === 'savings').reduce((a, e) => a + e.amount, 0)

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 
-export default function Toast({ toast, onDone }) {
+export default function Toast({ toast, onDone, raised }) {
   useEffect(() => {
     if (!toast) return
     const t = setTimeout(onDone, toast.action ? 5000 : 2600)
@@ -9,7 +9,7 @@ export default function Toast({ toast, onDone }) {
   }, [toast, onDone])
   if (!toast) return null
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(84px+var(--sab))] z-[60] flex justify-center px-4 md:bottom-8" role="status" aria-live="polite">
+    <div className={`pointer-events-none fixed inset-x-0 z-[60] flex justify-center px-4 ${raised ? 'bottom-[calc(150px+var(--sab))]' : 'bottom-[calc(84px+var(--sab))] md:bottom-8'}`} role="status" aria-live="polite">
       <div key={toast.id} className="pointer-events-auto flex items-center gap-3 rounded-2xl bg-slate-900 py-2.5 pl-4 pr-2.5 text-sm font-medium text-white shadow-2xl animate-pop dark:bg-white dark:text-slate-900">
         <CheckCircle2 className="size-4 text-emerald-400 dark:text-emerald-600" />
         {toast.text}

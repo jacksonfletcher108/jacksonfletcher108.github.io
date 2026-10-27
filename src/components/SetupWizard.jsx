@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, Plus, X } from 'lucide-react'
-import { CATEGORY_META, COMMON_BILLS, PAY_FREQ, SPEND_IDS, suggestTargets } from '../lib/budget'
+import { CATEGORY_META, COMMON_BILLS, PAY_FREQ, SPEND_IDS } from '../lib/budget'
+import { autoPlan, DEFAULT_PREFS } from '../lib/autoplan'
+import { PlanQuestions, PlanResult, withNudges } from './AutoPlan'
 import { money, uid, cn } from '../lib/utils'
 import { MoneyInput } from './ui'
 
-const STEPS = ['Pay', 'Bills', 'Savings', 'Your plan']
-const SAVE_PCTS = [0, 5, 10, 15, 20]
+const STEPS = ['Pay', 'Bills', 'About you', 'Your plan']
 
 /** First-run setup, also reachable later from the menu. Three questions, then the plan it builds. */
 export default function SetupWizard({ initial, onFinish, onCancel, onSample, canCancel }) {
@@ -13,17 +14,14 @@ export default function SetupWizard({ initial, onFinish, onCancel, onSample, can
   const [freq, setFreq] = useState('monthly')
   const [paycheck, setPaycheck] = useState(initial?.income || 0)
   const [bills, setBills] = useState(() => (initial?.fixed || []).map(f => ({ ...f })))
-  const [savePct, setSavePct] = useState(null)
-  const [saveAmt, setSaveAmt] = useState(() => initial?.targets?.savings || 0)
+  const [prefs, setPrefs] = useState(() => ({ ...DEFAULT_PREFS, ...(initial?.prefs || {}) }))
+  const [nudges, setNudges] = useState({})
   const [goal, setGoal] = useState(() => initial?.goal || { name: 'Emergency fund', target: 5000, saved: 0 })
   const [draft, setDraft] = useState({ name: '', amount: 0, category: 'personal' })
 
   const income = Math.round(paycheck * PAY_FREQ.find(f => f.id === freq).mult)
-  const save = savePct != null ? Math.round((income * savePct) / 100 / 10) * 10 : saveAmt
   const billTotal = bills.filter(b => b.category !== 'savings').reduce((a, b) => a + (b.amount || 0), 0)
-  const plan = useMemo(() => suggestTargets(income, bills.filter(b => b.amount > 0), save), [income, bills, save])
-  const spending = SPEND_IDS.reduce((a, id) => a + plan[id], 0) - billTotal
-  const daily = spending / 30
+  const result = useMemo(() => autoPlan({ income, fixed: bills.filter(b => b.amount > 0), goal, expenses: initial?.expenses || [] }, prefs), [income, bills, goal, prefs, initial])
 
   const hasBill = name => bills.some(b => b.name === name)
   const toggleCommon = c => setBills(list => (hasBill(c.name) ? list.filter(b => b.name !== c.name) : [...list, { id: uid(), ...c, amount: 0 }]))
@@ -34,12 +32,13 @@ export default function SetupWizard({ initial, onFinish, onCancel, onSample, can
     setDraft({ name: '', amount: 0, category: 'personal' })
   }
 
-  const canNext = step === 0 ? income > 0 : step === 2 ? save <= income - billTotal : true
+  const canNext = step === 0 ? income > 0 : true
   const finish = () => onFinish({
     income,
     fixed: bills.filter(b => b.amount > 0).map(({ id, name, amount, category, day }) => ({ id, name, amount, category, day: day || 1 })),
-    targets: plan,
+    targets: withNudges(result.targets, nudges),
     goal: { name: goal.name.trim() || 'Savings goal', target: goal.target || 0, saved: goal.saved || 0 },
+    prefs,
   })
 
   return (
@@ -125,21 +124,10 @@ export default function SetupWizard({ initial, onFinish, onCancel, onSample, can
 
           {step === 2 && <>
             <p className="text-[13px] font-semibold text-emerald-600 dark:text-emerald-400">Step 3 of 3</p>
-            <h1 id="setup-title" className="mt-1 text-[28px] font-extrabold leading-tight tracking-tight">How much do you want to save each month?</h1>
-            <p className="mt-2 text-[15px] text-slate-500 dark:text-slate-400">Pick a share of your pay, or type an amount. Even a little adds up.</p>
-            <div className="mt-5 grid grid-cols-5 gap-2">
-              {SAVE_PCTS.map(p => (
-                <button key={p} type="button" onClick={() => setSavePct(p)} aria-pressed={savePct === p}
-                  className={cn('rounded-xl border py-2.5 text-[14px] font-semibold transition', savePct === p ? 'border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'border-slate-900/10 text-slate-600 dark:border-white/10 dark:text-slate-300')}>
-                  {p === 0 ? 'None' : `${p}%`}
-                </button>
-              ))}
-            </div>
-            <MoneyInput size="lg" value={save} onChange={v => { setSavePct(null); setSaveAmt(v) }} className="mt-3" aria-label="Monthly savings amount" />
-            {save > income - billTotal && <p className="mt-2 text-[14px] text-rose-500">That's more than what's left after bills ({money(income - billTotal)}).</p>}
-
-            <div className="mt-8 rounded-2xl border border-slate-900/[.07] bg-white/70 p-4 dark:border-white/[.07] dark:bg-white/[.03]">
-              <p className="text-[15px] font-semibold">Saving for something? <span className="font-normal text-slate-500 dark:text-slate-400">(optional)</span></p>
+            <h1 id="setup-title" className="mt-1 text-[28px] font-extrabold leading-tight tracking-tight">A bit about you</h1>
+            <p className="mt-2 text-[15px] text-slate-500 dark:text-slate-400">This is how Tally splits up what's left after bills. Your answers stay on your phone.</p>
+            <div className="mt-6 rounded-2xl border border-slate-900/[.07] bg-white/70 p-4 dark:border-white/[.07] dark:bg-white/[.03]">
+              <p className="text-[15px] font-semibold">Saving for something?</p>
               <input value={goal.name} onChange={e => setGoal(g => ({ ...g, name: e.target.value }))} aria-label="Goal name"
                 className="mt-3 w-full rounded-xl border border-slate-900/10 bg-white/70 px-3 py-2 text-base outline-none focus:border-emerald-400/70 dark:border-white/10 dark:bg-black/20" />
               <div className="mt-2 grid grid-cols-2 gap-2">
@@ -147,25 +135,13 @@ export default function SetupWizard({ initial, onFinish, onCancel, onSample, can
                 <label className="text-[13px] text-slate-500 dark:text-slate-400">Saved so far<MoneyInput value={goal.saved} onChange={v => setGoal(g => ({ ...g, saved: v }))} className="mt-1" /></label>
               </div>
             </div>
+            <div className="mt-7"><PlanQuestions prefs={prefs} setPrefs={p => { setPrefs(p); setNudges({}) }} goal={goal} /></div>
           </>}
 
           {step === 3 && <>
             <h1 id="setup-title" className="text-[28px] font-extrabold leading-tight tracking-tight">Here's your plan</h1>
-            <p className="mt-2 text-[15px] text-slate-500 dark:text-slate-400">You can change any of these later on the Budget tab.</p>
-            <div className="mt-6 rounded-3xl bg-emerald-500/10 p-5">
-              <p className="text-[14px] text-slate-600 dark:text-slate-300">You can spend about</p>
-              <p className="tabular text-[40px] font-extrabold leading-tight tracking-tight text-emerald-600 dark:text-emerald-400">{money(daily)}<span className="text-[18px] font-semibold text-slate-500"> a day</span></p>
-              <p className="mt-1 text-[14px] text-slate-600 dark:text-slate-300">on everyday things, after bills and savings.</p>
-            </div>
-            <ul className="mt-5 divide-y divide-slate-900/[.07] dark:divide-white/[.07]">
-              <PlanLine label="Take-home pay" value={income} strong />
-              <PlanLine label="Bills" value={-billTotal} />
-              <PlanLine label="Savings" value={-plan.savings} />
-              {['food', 'personal', 'entertainment'].map(id => (
-                <PlanLine key={id} label={CATEGORY_META[id].name} sub="spending money" value={-(plan[id] - bills.filter(b => b.category === id && b.amount > 0).reduce((a, b) => a + b.amount, 0))} color={CATEGORY_META[id].color} />
-              ))}
-              {income - SPEND_IDS.reduce((a, id) => a + plan[id], 0) - plan.savings !== 0 && <PlanLine label="Left over" value={income - SPEND_IDS.reduce((a, id) => a + plan[id], 0) - plan.savings} strong />}
-            </ul>
+            <p className="mt-2 mb-6 text-[15px] text-slate-500 dark:text-slate-400">Built from your answers. Nudge anything that looks off; you can change it all later too.</p>
+            <PlanResult result={result} nudges={nudges} setNudges={setNudges} bills={billTotal} income={income} />
           </>}
         </div>
 
@@ -182,15 +158,5 @@ export default function SetupWizard({ initial, onFinish, onCancel, onSample, can
         </div>
       </div>
     </div>
-  )
-}
-
-function PlanLine({ label, sub, value, strong, color }) {
-  return (
-    <li className="flex items-center gap-3 py-3">
-      {color && <span className="size-2.5 rounded-full" style={{ background: color }} />}
-      <span className={cn('flex-1 text-[15px]', strong && 'font-semibold')}>{label}{sub && <span className="text-slate-500 dark:text-slate-400"> · {sub}</span>}</span>
-      <span className={cn('tabular text-[15px]', strong ? 'font-bold' : 'text-slate-600 dark:text-slate-300')}>{value < 0 ? '−' : ''}{money(Math.abs(value))}</span>
-    </li>
   )
 }
