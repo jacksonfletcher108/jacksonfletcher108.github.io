@@ -26,7 +26,6 @@
    OPTIONAL
    place     What to search in Maps, e.g. "Shem Creek Park, Mount Pleasant, SC"
    verify    true = a real business/venue (the app reminds you to check hours)
-   age21     true = 21+
    rainy     true = works on a rainy day (stay-in ideas count automatically)
    start/end Dated events: "YYYY-MM-DD". Shows up 30 days before start, disappears after end.
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
@@ -112,11 +111,11 @@ window.DATE_IDEAS = [
   {
     id: "splurge-dinner-home",
     title: "Splurge dinner at home",
-    desc: "Buy the ingredients you'd normally skip: good steak or scallops and a real bottle of wine.",
-    plan: ["Go to a butcher or seafood market", "Pick a bottle you'd never normally buy", "Cook it simply and eat slowly"],
+    desc: "Buy the ingredients you'd normally skip, like good steak or scallops and a fancy dessert.",
+    plan: ["Go to a butcher or seafood market", "Pick up a fancy sparkling drink and dessert", "Cook it simply and eat slowly"],
     tip: "A restaurant-quality meal at home still costs about half of going out for one.",
     tier: "in", budget: 3, energy: "chill", time: "half", when: "night",
-    area: "Home", cost: "~$90", duration: "~3 hrs", age21: true
+    area: "Home", cost: "~$90", duration: "~3 hrs"
   },
   {
     id: "private-chef",
@@ -127,15 +126,6 @@ window.DATE_IDEAS = [
     tier: "in", budget: 3, energy: "lazy", time: "short", when: "night",
     area: "Home", cost: "$150+", duration: "~2.5 hrs",
     place: "private chef, Mount Pleasant, SC", verify: true
-  },
-  {
-    id: "champagne-board",
-    title: "Champagne + a really good board",
-    desc: "A proper cheese shop board and a real bottle of Champagne, at home in pajamas.",
-    plan: ["Ask a cheese shop for three cheeses that go together", "Add fruit, honey, and good crackers", "Pop the bottle and pick a movie"],
-    tip: "Ask for a firm, a soft, and a blue. You can't go wrong with that.",
-    tier: "in", budget: 3, energy: "lazy", time: "short", when: "night",
-    area: "Home", cost: "~$90", duration: "~2 hrs", age21: true
   },
   {
     id: "sushi-night",
@@ -172,24 +162,6 @@ window.DATE_IDEAS = [
     tip: "A spoonful of sugar and a splash of vanilla upgrades boxed pancake mix.",
     tier: "in", budget: 1, energy: "lazy", time: "short", when: "night",
     area: "Home", cost: "~$15", duration: "~1.5 hrs"
-  },
-  {
-    id: "blind-wine-board",
-    title: "Blind wine tasting",
-    desc: "You each secretly buy a bottle, then taste blind and guess which is whose.",
-    plan: ["Each buy a bottle under $15 without telling the other", "Cover the labels with paper bags", "Taste, score, and reveal"],
-    tip: "Pick wines from two different countries to make guessing more fun.",
-    tier: "in", budget: 2, energy: "lazy", time: "short", when: "night",
-    area: "Home", cost: "~$35", duration: "~2 hrs", age21: true
-  },
-  {
-    id: "home-cocktail-class",
-    title: "Home cocktail class",
-    desc: "Learn two classic cocktails, then invent and name a house drink.",
-    plan: ["Pick two classics, like a margarita and an old fashioned", "Follow a video and make both", "Invent a drink and name it after yourselves"],
-    tip: "Fresh-squeezed citrus makes the biggest difference.",
-    tier: "in", budget: 2, energy: "chill", time: "short", when: "night",
-    area: "Home", cost: "~$40", duration: "~2 hrs", age21: true
   },
   {
     id: "game-tournament",
@@ -415,8 +387,8 @@ window.DATE_IDEAS = [
   {
     id: "terrace-theater",
     title: "Indie movie at The Terrace",
-    desc: "James Island's cozy little theater, and they serve beer and wine.",
-    plan: ["Pick whatever's playing that you haven't heard of", "Get a drink at the bar", "Talk about it over late dessert"],
+    desc: "James Island's cozy little indie movie theater.",
+    plan: ["Pick whatever's playing that you haven't heard of", "Share a big popcorn", "Talk about it over late dessert"],
     tip: "Buy tickets online for new releases on weekends.",
     tier: "ease", budget: 2, energy: "lazy", time: "short", when: "night",
     area: "James Island", cost: "~$30", duration: "~2.5 hrs",
@@ -518,48 +490,6 @@ window.DATE_IDEAS = [
     place: "Charleston City Market, Charleston, SC", verify: true, months: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   },
   {
-    id: "westbrook",
-    title: "Westbrook Brewing taproom",
-    desc: "A big Mount Pleasant brewery with plenty of space to hang out.",
-    plan: ["Order a flight to share", "Bring a deck of cards", "Grab food from whatever truck is there"],
-    tip: "Check their food-truck schedule before you go hungry.",
-    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "any",
-    area: "Mount Pleasant", cost: "~$25", duration: "~2 hrs",
-    place: "Westbrook Brewing Co, Mount Pleasant, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "two-blokes",
-    title: "Pints at Two Blokes",
-    desc: "A low-key Mount Pleasant brewery, about five minutes from the couch.",
-    plan: ["Get one pint each", "Play a game or just talk", "Head home before it gets late"],
-    tip: "A good first step if 'going out' feels like a lot tonight.",
-    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "night",
-    area: "Mount Pleasant", cost: "~$25", duration: "~1.5 hrs",
-    place: "Two Blokes Brewing, Mount Pleasant, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "revelry-rooftop",
-    title: "Revelry rooftop at sunset",
-    desc: "A downtown brewery with a rooftop that's perfect at sunset.",
-    plan: ["Get there an hour before sunset", "Grab a rooftop spot", "Walk to dinner nearby after"],
-    tip: "The rooftop fills up on nice evenings, so go early.",
-    tier: "ease", budget: 1, energy: "chill", time: "short", when: "night",
-    area: "Downtown", cost: "~$25", duration: "~2 hrs",
-    place: "Revelry Brewing Co, Charleston, SC", verify: true, age21: true
-  },
-  {
-    id: "low-tide-angel-oak",
-    title: "Angel Oak + Low Tide Brewing",
-    desc: "See the giant Angel Oak, then get a pint at Low Tide on Johns Island.",
-    plan: ["Visit the Angel Oak", "Drive a few minutes to Low Tide Brewing", "Get food from their truck or bring snacks"],
-    tip: "The Angel Oak keeps limited hours, so go there first.",
-    tier: "ease", budget: 1, energy: "chill", time: "half", when: "day",
-    area: "Johns Island", cost: "~$25", duration: "~3–4 hrs",
-    place: "Low Tide Brewing, Johns Island, SC", verify: true, age21: true
-  },
-  {
     id: "park-circle",
     title: "Park Circle dinner stroll",
     desc: "Pick an East Montague Ave restaurant you've never tried, then walk around.",
@@ -619,27 +549,6 @@ window.DATE_IDEAS = [
     area: "Mount Pleasant", cost: "~$40", duration: "~3 hrs",
     place: "thrift store, Mount Pleasant, SC",
     rainy: true
-  },
-  {
-    id: "brewery-trivia",
-    title: "Brewery trivia night",
-    desc: "Lots of local spots run weekly trivia. A ridiculous team name is required.",
-    plan: ["Find a trivia night near you", "Pick a team name", "Play as a team of two"],
-    tip: "Arrive 20 minutes early to get a table.",
-    tier: "ease", budget: 1, energy: "chill", time: "short", when: "night",
-    area: "Mount Pleasant", cost: "~$25", duration: "~2 hrs",
-    place: "trivia night, Mount Pleasant, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "vendue-rooftop",
-    title: "Rooftop drinks at The Vendue",
-    desc: "A downtown rooftop bar with harbor views. Dress up a little.",
-    plan: ["Get dressed up a little", "One drink each at the rooftop", "Walk Waterfront Park after"],
-    tip: "Go at sunset for the harbor view.",
-    tier: "ease", budget: 2, energy: "lazy", time: "short", when: "night",
-    area: "Downtown", cost: "~$45", duration: "~1.5 hrs",
-    place: "The Rooftop at The Vendue, Charleston, SC", verify: true, age21: true
   },
   {
     id: "morris-lighthouse",
@@ -934,7 +843,7 @@ window.DATE_IDEAS = [
     id: "ghost-tour",
     title: "Downtown ghost tour",
     desc: "Charleston is extremely haunted, allegedly. Hold hands for safety.",
-    plan: ["Book an evening ghost tour", "Walk the old streets after dark", "Get a drink after to calm down"],
+    plan: ["Book an evening ghost tour", "Walk the old streets after dark", "Get dessert after to calm down"],
     tip: "The graveyard tours are the spookiest.",
     tier: "send", budget: 2, energy: "chill", time: "short", when: "night",
     area: "Downtown", cost: "~$30 each", duration: "~1.5 hrs",
@@ -969,16 +878,6 @@ window.DATE_IDEAS = [
     tier: "send", budget: 2, energy: "active", time: "half", when: "day",
     area: "Mount Pleasant", cost: "~$40", duration: "~3 hrs",
     place: "Boone Hall Pumpkin Patch, Mount Pleasant, SC", verify: true, months: [9, 10]
-  },
-  {
-    id: "oyster-festival",
-    title: "Lowcountry Oyster Festival",
-    desc: "A giant oyster party at Boone Hall. Wear clothes you don't care about.",
-    plan: ["Buy tickets ahead", "Bring an oyster knife and gloves", "Pace yourselves"],
-    tip: "Tickets go faster than you'd think.",
-    tier: "send", budget: 2, energy: "chill", time: "half", when: "day",
-    area: "Mount Pleasant", cost: "~$60+", duration: "~4 hrs",
-    place: "Boone Hall Plantation, Mount Pleasant, SC", verify: true, start: "2027-02-28", end: "2027-02-28"
   },
   {
     id: "stingrays-hockey",
@@ -1096,17 +995,6 @@ window.DATE_IDEAS = [
     place: "dinner cruise, Charleston, SC", verify: true
   },
   {
-    id: "big-night-out",
-    title: "Big night out downtown",
-    desc: "Dinner, a show, and a rooftop nightcap. The full evening.",
-    plan: ["Book dinner and show tickets", "Dinner first", "Show, then a rooftop nightcap"],
-    tip: "Pick dinner within walking distance of the venue.",
-    tier: "send", budget: 3, energy: "chill", time: "half", when: "night",
-    area: "Downtown", cost: "$150+", duration: "~5 hrs",
-    place: "King Street, Charleston, SC", age21: true,
-    rainy: true
-  },
-  {
     id: "pour-house",
     title: "Live music at the Pour House",
     desc: "A James Island music venue with bigger shows inside and smaller sets on the deck.",
@@ -1115,39 +1003,6 @@ window.DATE_IDEAS = [
     tier: "send", budget: 1, energy: "chill", time: "short", when: "night",
     area: "James Island", cost: "Free–$25", duration: "~2.5 hrs",
     place: "The Charleston Pour House, Charleston, SC", verify: true,
-    rainy: true
-  },
-  {
-    id: "royal-american",
-    title: "Live band at The Royal American",
-    desc: "A divey, fun live-music bar on Morrison Drive. See a band you've never heard of.",
-    plan: ["Check who's playing", "Get there for the opener", "Dance at least once"],
-    tip: "Cover is usually cheap. Bring cash just in case.",
-    tier: "send", budget: 1, energy: "chill", time: "short", when: "night",
-    area: "Downtown (NoMo)", cost: "~$25", duration: "~2.5 hrs",
-    place: "The Royal American, Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "gin-joint",
-    title: "Cocktails at The Gin Joint",
-    desc: "A dim, cozy cocktail bar. Order a bartender's choice and trust the process.",
-    plan: ["Dress up a little", "Order a bartender's choice each", "Swap halfway through"],
-    tip: "Go early in the evening for a better shot at a seat.",
-    tier: "send", budget: 3, energy: "lazy", time: "short", when: "night",
-    area: "Downtown", cost: "~$60–90", duration: "~1.5 hrs",
-    place: "The Gin Joint, Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "firefly-distillery",
-    title: "Firefly Distillery tasting",
-    desc: "The home of sweet tea vodka, in North Charleston.",
-    plan: ["Do a tasting", "Pick a favorite to take home", "Lunch nearby in Park Circle"],
-    tip: "Have a designated driver or a ride home.",
-    tier: "send", budget: 1, energy: "chill", time: "short", when: "day",
-    area: "North Charleston", cost: "~$15 each", duration: "~1.5 hrs",
-    place: "Firefly Distillery, North Charleston, SC", verify: true, age21: true,
     rainy: true
   },
   {
@@ -1190,17 +1045,6 @@ window.DATE_IDEAS = [
     tier: "send", budget: 2, energy: "active", time: "short", when: "night",
     area: "Charleston area", cost: "~$20–40 each", duration: "~1.5 hrs",
     place: "dance lessons, Charleston, SC", verify: true,
-    rainy: true
-  },
-  {
-    id: "karaoke-bar",
-    title: "Karaoke bar night",
-    desc: "Real karaoke in front of strangers. One song each, minimum.",
-    plan: ["Find a karaoke night", "Each sign up for one song", "Finish with a duet"],
-    tip: "Weeknights have shorter song lists, so you'll sing sooner.",
-    tier: "send", budget: 1, energy: "active", time: "short", when: "night",
-    area: "Charleston area", cost: "~$25", duration: "~2.5 hrs",
-    place: "karaoke bar, Charleston, SC", verify: true, age21: true,
     rainy: true
   },
   {
@@ -1247,7 +1091,7 @@ window.DATE_IDEAS = [
   {
     id: "open-mic",
     title: "Open mic night",
-    desc: "Watch an open mic. If you're brave, one of you signs up.",
+    desc: "Watch an open mic at a coffee shop or café. If you're brave, one of you signs up.",
     plan: ["Find an open mic", "Watch the first half", "Dare each other to sign up"],
     tip: "Get there early if you want a slot.",
     tier: "send", budget: 0, energy: "active", time: "short", when: "night",
@@ -1361,18 +1205,9 @@ window.DATE_IDEAS = [
     title: "Make pasta from scratch",
     desc: "Flour, eggs, and a rolling pin. It's easier than it looks and way better than the box.",
     plan: ["Mix the dough and let it rest 30 minutes", "Roll it out and cut wide noodles", "Toss with butter, parmesan, and black pepper"],
-    tip: "No pasta machine? A wine bottle works as a rolling pin.",
+    tip: "No pasta machine? A clean glass bottle works as a rolling pin.",
     tier: "in", budget: 1, energy: "chill", time: "half", when: "night",
     area: "Home", cost: "~$15", duration: "~2.5 hrs"
-  },
-  {
-    id: "taco-margarita-night",
-    title: "Taco + margarita night",
-    desc: "Build-your-own tacos and fresh margaritas. Way cheaper than going out for them.",
-    plan: ["Pick up tortillas, a protein, and toppings", "Make margaritas with fresh limes", "Taco bar on the counter, eat on the couch"],
-    tip: "Warm the tortillas in a dry pan for 20 seconds a side.",
-    tier: "in", budget: 1, energy: "lazy", time: "short", when: "night",
-    area: "Home", cost: "~$30", duration: "~1.5 hrs", age21: true
   },
   {
     id: "ramen-upgrade",
@@ -1779,7 +1614,7 @@ window.DATE_IDEAS = [
     title: "Food truck dinner",
     desc: "Find where the food trucks are tonight and order from two of them.",
     plan: ["Check where trucks are parked tonight", "Each order from a different truck", "Swap halfway through"],
-    tip: "Breweries are the most reliable spots for food trucks.",
+    tip: "Most trucks post where they'll be each day on social media.",
     tier: "ease", budget: 1, energy: "lazy", time: "short", when: "night",
     area: "Charleston area", cost: "~$30", duration: "~1.5 hrs",
     place: "food trucks, Charleston, SC"
@@ -1789,7 +1624,7 @@ window.DATE_IDEAS = [
     title: "Outdoor movie night",
     desc: "Bring a blanket to a free movie on a lawn somewhere.",
     plan: ["Find an outdoor movie screening", "Pack a blanket and snacks", "Get there early for a good spot"],
-    tip: "Parks and breweries run these in warmer months. Bring bug spray.",
+    tip: "Parks run these in warmer months. Bring bug spray.",
     tier: "ease", budget: 0, energy: "lazy", time: "short", when: "night",
     area: "Charleston area", cost: "Free", duration: "~2.5 hrs",
     place: "outdoor movie, Charleston, SC", verify: true, months: [4, 5, 6, 7, 8, 9, 10]
@@ -1806,80 +1641,15 @@ window.DATE_IDEAS = [
     rainy: true
   },
   {
-    id: "holy-city-brewing",
-    title: "Holy City Brewing",
-    desc: "A laid-back North Charleston brewery with a big menu and outdoor seating.",
-    plan: ["Split a flight", "Get dinner there", "Play a board game from their shelf"],
-    tip: "They have a full kitchen, so you can make it dinner.",
-    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "night",
-    area: "North Charleston", cost: "~$35", duration: "~2 hrs",
-    place: "Holy City Brewing, North Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "edmunds-oast",
-    title: "Edmund's Oast Brewing",
-    desc: "A bigger brewery near the top of King Street with a nice patio.",
-    plan: ["Get a table outside", "Try a flight", "Walk the area after"],
-    tip: "It's in a neighborhood with a lot of new spots to wander.",
-    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "any",
-    area: "Downtown (upper King)", cost: "~$30", duration: "~2 hrs",
-    place: "Edmund's Oast Brewing Co, Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "commonhouse",
-    title: "Commonhouse Aleworks",
-    desc: "A friendly Park Circle brewery, good for a slow afternoon.",
-    plan: ["Get a pint each", "Play a game on the patio", "Walk to dinner on East Montague"],
-    tip: "Park once and walk to dinner. It's all close.",
-    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "any",
-    area: "Park Circle (N. Charleston)", cost: "~$25", duration: "~1.5 hrs",
-    place: "Commonhouse Aleworks, North Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "wine-bar",
-    title: "Wine bar night",
-    desc: "Split a few glasses and a cheese plate somewhere cozy.",
-    plan: ["Pick a wine bar", "Ask for something you'd never order", "Split a small plate"],
-    tip: "Ask for a taste before committing to a glass. Most places will do it.",
-    tier: "ease", budget: 2, energy: "lazy", time: "short", when: "night",
-    area: "Downtown", cost: "~$50", duration: "~1.5 hrs",
-    place: "wine bar, Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
-    id: "dive-bar-pool",
-    title: "Dive bar + pool table",
-    desc: "Cheap drinks, a jukebox, and a game of pool. Loser picks the next song.",
-    plan: ["Find a dive bar with a pool table", "Play best of three", "Loser picks the jukebox songs"],
-    tip: "Bring quarters and a little cash.",
-    tier: "ease", budget: 1, energy: "chill", time: "short", when: "night",
-    area: "Charleston area", cost: "~$25", duration: "~2 hrs",
-    place: "bar with pool table, Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
     id: "live-jazz",
     title: "Live jazz night",
-    desc: "Find a bar or restaurant with live jazz and stay for a set.",
+    desc: "Find a restaurant or café with live jazz and stay for a set over dinner.",
     plan: ["Find a live jazz listing for tonight", "Get there for the first set", "Order dessert and stay for a second"],
     tip: "Many spots have jazz on weeknights with no cover.",
     tier: "ease", budget: 2, energy: "lazy", time: "short", when: "night",
     area: "Downtown", cost: "~$40", duration: "~2 hrs",
     place: "live jazz, Charleston, SC", verify: true,
     rainy: true
-  },
-  {
-    id: "vineyard-wadmalaw",
-    title: "Wine tasting on Wadmalaw",
-    desc: "A small local vineyard out past Johns Island. Very different from a bar.",
-    plan: ["Drive out to Wadmalaw", "Do a tasting", "Picnic on the grounds if they allow it"],
-    tip: "Pair it with the Tea Garden down the road.",
-    tier: "ease", budget: 2, energy: "lazy", time: "half", when: "day",
-    area: "Wadmalaw Island", cost: "~$40", duration: "~3 hrs",
-    place: "vineyard, Wadmalaw Island, SC", verify: true, age21: true
   },
   {
     id: "mcclellanville",
@@ -1985,17 +1755,6 @@ window.DATE_IDEAS = [
     place: "go karts, Charleston, SC", verify: true
   },
   {
-    id: "paint-and-sip",
-    title: "Paint-and-sip class",
-    desc: "An instructor walks you through a painting while you have a glass of wine.",
-    plan: ["Book a class", "Follow along (or go rogue)", "Hang them side by side at home"],
-    tip: "Many studios let you bring your own wine.",
-    tier: "send", budget: 2, energy: "lazy", time: "short", when: "night",
-    area: "Charleston area", cost: "~$40 each", duration: "~2 hrs",
-    place: "paint and sip, Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
-  {
     id: "cooking-class",
     title: "Couples cooking class",
     desc: "A chef teaches you a full meal, then you eat it.",
@@ -2050,16 +1809,6 @@ window.DATE_IDEAS = [
     place: "Spoleto Festival USA, Charleston, SC", verify: true, months: [5, 6]
   },
   {
-    id: "wine-food-festival",
-    title: "Charleston Wine + Food",
-    desc: "The city's big food festival in March. Pick one event and go all in.",
-    plan: ["Look through the events list early", "Pick one event", "Eat lightly that day"],
-    tip: "Tickets for popular events sell out weeks ahead.",
-    tier: "send", budget: 3, energy: "chill", time: "half", when: "any",
-    area: "Downtown", cost: "$100+ each", duration: "~4 hrs",
-    place: "Charleston Wine + Food, Charleston, SC", verify: true, months: [2, 3], age21: true
-  },
-  {
     id: "bridge-run",
     title: "Train for the Bridge Run",
     desc: "Sign up for the Cooper River Bridge Run and train for it together.",
@@ -2100,33 +1849,12 @@ window.DATE_IDEAS = [
     place: "trampoline park, Charleston, SC", verify: true,
     rainy: true
   },
-  {
-    id: "rooftop-hop",
-    title: "Rooftop hop",
-    desc: "Three rooftop bars downtown, one drink at each.",
-    plan: ["Pick three rooftops close together", "One drink at each", "Sunset at the last one"],
-    tip: "Start an hour and a half before sunset.",
-    tier: "send", budget: 3, energy: "chill", time: "half", when: "night",
-    area: "Downtown", cost: "~$90", duration: "~3 hrs",
-    place: "rooftop bar, Charleston, SC", verify: true, age21: true
-  },
-  {
-    id: "speakeasy",
-    title: "Find a speakeasy",
-    desc: "A hidden bar behind an unmarked door. Half the fun is finding it.",
-    plan: ["Look up a speakeasy downtown", "Find the entrance", "Order something you can't pronounce"],
-    tip: "Some need reservations. Check before you go.",
-    tier: "send", budget: 2, energy: "lazy", time: "short", when: "night",
-    area: "Downtown", cost: "~$50", duration: "~1.5 hrs",
-    place: "speakeasy, Charleston, SC", verify: true, age21: true,
-    rainy: true
-  },
   /* ================= NORTH CHARLESTON & SUMMERVILLE ================= */
   {
     id: "park-circle-film",
     title: "Indie movie at Park Circle Film Society",
     desc: "A small nonprofit theater in Park Circle that shows indie and cult movies.",
-    plan: ["Check what's showing this week", "Dinner on East Montague first", "Talk about the movie over a drink after"],
+    plan: ["Check what's showing this week", "Dinner on East Montague first", "Talk about the movie over dessert after"],
     tip: "They do themed screenings and old favorites, not just new releases.",
     tier: "ease", budget: 1, energy: "lazy", time: "short", when: "night",
     area: "Park Circle (N. Charleston)", cost: "~$25", duration: "~2.5 hrs",
@@ -2338,7 +2066,7 @@ window.DATE_IDEAS = [
   {
     id: "first-friday-art-walk",
     title: "Art walk night",
-    desc: "Galleries downtown open their doors in the evening, often with free snacks and drinks.",
+    desc: "Galleries downtown open their doors in the evening, often with free snacks.",
     plan: ["Look up the next gallery walk", "Wander gallery to gallery", "Each pick a piece you'd buy if money didn't matter"],
     tip: "Many galleries in the French Quarter do these a few times a year.",
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "night",
@@ -2366,16 +2094,6 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 1, energy: "lazy", time: "short", when: "any",
     area: "Charleston area", cost: "~$25", duration: "~2 hrs",
     place: "board game cafe, Charleston, SC", verify: true, rainy: true
-  },
-  {
-    id: "arcade-bar",
-    title: "Arcade bar",
-    desc: "Old arcade games, pinball, and a drink. Loser buys the next round.",
-    plan: ["Get a few tokens or a card", "Play every two-player game", "Loser buys the next round"],
-    tip: "Pinball high scores make great bragging rights.",
-    tier: "ease", budget: 2, energy: "chill", time: "short", when: "night",
-    area: "Charleston area", cost: "~$40", duration: "~2 hrs",
-    place: "arcade bar, Charleston, SC", verify: true, rainy: true, age21: true
   },
   {
     id: "paint-your-own-pottery",
@@ -2423,7 +2141,7 @@ window.DATE_IDEAS = [
     id: "downtown-staycation",
     title: "Downtown staycation",
     desc: "Book one night at a hotel downtown and act like tourists in your own city.",
-    plan: ["Book a hotel for one night", "Dinner and drinks within walking distance", "Slow breakfast and a walk before checkout"],
+    plan: ["Book a hotel for one night", "Dinner and dessert within walking distance", "Slow breakfast and a walk before checkout"],
     tip: "Sunday nights are usually the cheapest.",
     tier: "send", budget: 3, energy: "lazy", time: "full", when: "any",
     area: "Downtown", cost: "$200+", duration: "Overnight",
@@ -2443,7 +2161,7 @@ window.DATE_IDEAS = [
     id: "asheville-fall",
     title: "Asheville fall weekend",
     desc: "Mountains, leaves changing color, and a small, artsy downtown.",
-    plan: ["Book a cheap cabin or room", "Drive the Blue Ridge Parkway", "Breweries and food downtown"],
+    plan: ["Book a cheap cabin or room", "Drive the Blue Ridge Parkway", "Food and shops downtown"],
     tip: "Peak leaves are usually mid to late October. Check the foliage forecast.",
     tier: "send", budget: 3, energy: "chill", time: "full", when: "any",
     area: "Asheville", cost: "$300+", duration: "Weekend",
@@ -2519,6 +2237,163 @@ window.DATE_IDEAS = [
     tier: "send", budget: 2, energy: "lazy", time: "short", when: "any",
     area: "Downtown", cost: "~$25–50 each", duration: "~2 hrs",
     place: "Dock Street Theatre, Charleston, SC", verify: true, rainy: true, start: "2026-11-06", end: "2026-11-15"
+  },
+  /* ================= ALCOHOL-FREE SWAPS ================= */
+  {
+    id: "sparkling-cider-board",
+    title: "Sparkling cider + a really good board",
+    desc: "A cheese shop board and a bottle of fancy sparkling cider, at home in pajamas.",
+    plan: ["Ask a cheese shop for three cheeses that go together", "Add fruit, honey, and good crackers", "Pop the cider and pick a movie"],
+    tip: "Ask for a firm, a soft, and a blue. You can't go wrong with that.",
+    tier: "in", budget: 3, energy: "lazy", time: "short", when: "night",
+    area: "Home", cost: "~$80", duration: "~2 hrs"
+  },
+  {
+    id: "blind-soda-tasting",
+    title: "Blind craft soda tasting",
+    desc: "Each of you secretly buys three fancy sodas. Taste them blind and rank them.",
+    plan: ["Each buy three craft sodas the other hasn't tried", "Pour them into cups with no labels", "Score them and reveal"],
+    tip: "Check the international aisle for the weirdest flavors.",
+    tier: "in", budget: 1, energy: "lazy", time: "short", when: "night",
+    area: "Home", cost: "~$20", duration: "~1 hr"
+  },
+  {
+    id: "mocktail-night",
+    title: "Home mocktail night",
+    desc: "Learn two fancy mocktails, then invent and name a house drink of your own.",
+    plan: ["Pick two mocktail recipes", "Buy fresh fruit, herbs, and fancy soda", "Invent a drink and name it after yourselves"],
+    tip: "Fresh lime and a little muddled mint make anything taste fancy.",
+    tier: "in", budget: 1, energy: "chill", time: "short", when: "night",
+    area: "Home", cost: "~$25", duration: "~1.5 hrs"
+  },
+  {
+    id: "taco-night",
+    title: "Taco + agua fresca night",
+    desc: "Build-your-own tacos and homemade agua fresca. Way cheaper than going out.",
+    plan: ["Pick up tortillas, a protein, and toppings", "Blend fruit, water, lime, and sugar for agua fresca", "Taco bar on the counter, eat on the couch"],
+    tip: "Watermelon agua fresca takes two minutes and tastes like summer.",
+    tier: "in", budget: 1, energy: "lazy", time: "short", when: "night",
+    area: "Home", cost: "~$25", duration: "~1.5 hrs"
+  },
+  {
+    id: "boba-crawl",
+    title: "Boba crawl",
+    desc: "Two or three boba shops, one drink each, and a winner by the end.",
+    plan: ["Pick two or three boba shops", "Each order something you've never tried", "Crown a winner"],
+    tip: "Order half sugar. You'll make it to the last stop.",
+    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "any",
+    area: "North Charleston", cost: "~$20", duration: "~1.5 hrs",
+    place: "boba tea, North Charleston, SC", rainy: true
+  },
+  {
+    id: "afternoon-tea",
+    title: "Afternoon tea",
+    desc: "Little sandwiches, scones, and a pot of tea. Very fancy, very calm.",
+    plan: ["Book an afternoon tea downtown", "Dress up a little", "Walk around downtown after"],
+    tip: "Book ahead. Tea services fill up on weekends.",
+    tier: "ease", budget: 2, energy: "lazy", time: "short", when: "day",
+    area: "Downtown", cost: "~$40 each", duration: "~1.5 hrs",
+    place: "afternoon tea, Charleston, SC", verify: true, rainy: true
+  },
+  {
+    id: "dessert-crawl",
+    title: "Downtown dessert crawl",
+    desc: "Three dessert stops in one night. Split everything.",
+    plan: ["Pick three dessert spots within walking distance", "Split one thing at each", "Vote on the best bite"],
+    tip: "Start with something light. End with cake.",
+    tier: "ease", budget: 1, energy: "chill", time: "short", when: "night",
+    area: "Downtown", cost: "~$30", duration: "~2 hrs",
+    place: "dessert, Charleston, SC", rainy: true
+  },
+  {
+    id: "coffee-shop-games",
+    title: "Coffee shop + card games",
+    desc: "A cozy café, two warm drinks, and a deck of cards.",
+    plan: ["Bring a deck of cards or a small game", "Get drinks and a pastry to share", "Best of five"],
+    tip: "Weeknight evenings are quiet at most cafés.",
+    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "any",
+    area: "Mount Pleasant", cost: "~$15", duration: "~1.5 hrs",
+    place: "coffee shop, Mount Pleasant, SC", rainy: true
+  },
+  {
+    id: "hot-chocolate-walk",
+    title: "Hot chocolate walk",
+    desc: "Get hot chocolate and walk downtown looking at the holiday decorations.",
+    plan: ["Get hot chocolate to go", "Walk King Street and the side streets", "End at Waterfront Park"],
+    tip: "Cold nights are the best for this. Bring gloves.",
+    tier: "ease", budget: 1, energy: "chill", time: "short", when: "night",
+    area: "Downtown", cost: "~$12", duration: "~1.5 hrs",
+    place: "King Street, Charleston, SC", months: [11, 12, 1, 2]
+  },
+  {
+    id: "angel-oak-farm-stands",
+    title: "Angel Oak + farm stands",
+    desc: "See the giant Angel Oak, then stop at farm stands on the way back.",
+    plan: ["Visit the Angel Oak", "Stop at farm stands on Maybank Highway", "Cook something with what you bought"],
+    tip: "The Angel Oak keeps limited hours, so go there first.",
+    tier: "ease", budget: 1, energy: "chill", time: "half", when: "day",
+    area: "Johns Island", cost: "~$25", duration: "~3–4 hrs",
+    place: "Angel Oak Tree, Johns Island, SC", verify: true
+  },
+  {
+    id: "dinner-show-dessert",
+    title: "Dinner, a show, and dessert",
+    desc: "The full evening downtown: dinner, a show, and something sweet after.",
+    plan: ["Book dinner and show tickets", "Dinner first", "Show, then a late dessert"],
+    tip: "Pick dinner within walking distance of the venue.",
+    tier: "send", budget: 3, energy: "chill", time: "half", when: "night",
+    area: "Downtown", cost: "$150+", duration: "~5 hrs",
+    place: "King Street, Charleston, SC", rainy: true
+  },
+  {
+    id: "private-karaoke",
+    title: "Private karaoke room",
+    desc: "Rent a karaoke room for just the two of you. No crowd, no judging.",
+    plan: ["Book an hour in a private room", "Each pick three songs for the other", "Finish with a duet"],
+    tip: "Private rooms are much less nerve-wracking than a stage.",
+    tier: "send", budget: 2, energy: "active", time: "short", when: "night",
+    area: "Charleston area", cost: "~$30–50", duration: "~1.5 hrs",
+    place: "private karaoke room, Charleston, SC", verify: true, rainy: true
+  },
+  {
+    id: "arcade-laser-tag",
+    title: "Arcade + laser tag",
+    desc: "Arcade games, a round of laser tag, and prizes you don't need.",
+    plan: ["Load up a game card", "Play every two-player game", "One round of laser tag, loser buys ice cream"],
+    tip: "Weeknights are less crowded with kids.",
+    tier: "send", budget: 2, energy: "active", time: "short", when: "any",
+    area: "North Charleston", cost: "~$40", duration: "~2 hrs",
+    place: "arcade laser tag, North Charleston, SC", verify: true, rainy: true
+  },
+  {
+    id: "painting-class",
+    title: "Painting class",
+    desc: "An instructor walks you through a painting step by step. Hang them side by side.",
+    plan: ["Book a beginner class", "Follow along (or go rogue)", "Hang them side by side at home"],
+    tip: "Look for a class with a fun theme. Sunsets and dogs are easy wins.",
+    tier: "send", budget: 2, energy: "lazy", time: "short", when: "night",
+    area: "Charleston area", cost: "~$40 each", duration: "~2 hrs",
+    place: "painting class, Charleston, SC", verify: true, rainy: true
+  },
+  {
+    id: "brunch-spot-new",
+    title: "New brunch spot in Park Circle",
+    desc: "Pick a café neither of you has tried for a slow weekend brunch.",
+    plan: ["Pick a place on or near East Montague", "Order one sweet, one savory", "Walk the park after"],
+    tip: "Get there before 10 on weekends to skip the wait.",
+    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "day",
+    area: "Park Circle (N. Charleston)", cost: "~$30", duration: "~1.5 hrs",
+    place: "brunch, North Charleston, SC", rainy: true
+  },
+  {
+    id: "sunset-milkshakes-pier",
+    title: "Milkshakes on the pier",
+    desc: "Grab milkshakes and watch the sunset from the Mount Pleasant Pier swings.",
+    plan: ["Get milkshakes on the way", "Find a swing on the pier", "Stay until the bridge lights come on"],
+    tip: "The pier has free parking at Memorial Waterfront Park.",
+    tier: "ease", budget: 1, energy: "lazy", time: "short", when: "night",
+    area: "Mount Pleasant", cost: "~$15", duration: "~1 hr",
+    place: "Mount Pleasant Pier, Mount Pleasant, SC"
   }
 
   // Add your own ideas above this line (remember the comma after the previous } ).
