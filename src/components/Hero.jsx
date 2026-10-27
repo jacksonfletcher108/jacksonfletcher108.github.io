@@ -1,6 +1,6 @@
 import { APPS } from '../data/apps'
 
-/** Opening: who I am, what this is, and the three apps fanned out like phones on a table. */
+/** Opening: who I am, what this is, and the live apps fanned out like phones on a table. */
 export default function Hero() {
   const live = APPS.filter(a => a.status === 'live')
   return (
@@ -26,13 +26,13 @@ export default function Hero() {
         </ul>
       </div>
 
-      {/* three real screenshots, overlapping */}
+      {/* real screenshots, overlapping */}
       <div className="relative mx-auto h-[400px] w-full max-w-[420px] sm:h-[470px]" aria-hidden="true">
         {live.map((a, i) => (
-          <div key={a.id} className="phone absolute top-0 w-[44%] animate-in"
+          <div key={a.id} className="phone absolute top-0 w-[38%] animate-in"
             style={{
-              left: `${[2, 28, 54][i]}%`, top: `${[34, 0, 42][i]}px`, zIndex: [1, 3, 2][i],
-              rotate: `${[-7, 0, 6][i]}deg`, animationDelay: `${120 + i * 90}ms`,
+              left: `${[0, 20, 42, 62][i]}%`, top: `${[46, 8, 0, 40][i]}px`, zIndex: [1, 3, 4, 2][i],
+              rotate: `${[-9, -3, 3, 9][i]}deg`, animationDelay: `${120 + i * 90}ms`,
             }}>
             <img src={a.shot} alt="" width="390" height="844" loading="eager" />
           </div>

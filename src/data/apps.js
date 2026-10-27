@@ -1,4 +1,4 @@
-import { Heart, ChefHat, WalletCards, Hammer } from 'lucide-react'
+import { Heart, ChefHat, WalletCards, PiggyBank, Hammer } from 'lucide-react'
 
 export const SITE = 'https://jacksonfletcher108.github.io'
 const shot = name => `${import.meta.env.BASE_URL}shots/${name}.jpg`
@@ -49,6 +49,19 @@ export const APPS = [
     details: ['Plans your month from a few questions and what you actually spend', 'What\'s left in each category at a glance', 'Edit or clear spending in a couple of taps'],
   },
   {
+    id: 'habits',
+    name: 'Habit Saver',
+    kind: 'Quit tracker',
+    status: 'live',
+    url: `${SITE}/habits/`,
+    icon: PiggyBank,
+    color: '#2dd4bf',
+    shot: shot('habits'),
+    summary: 'Pick a habit you\'re quitting and what it cost you, and it counts the money and time you\'re getting back, live, then puts it toward things you actually want.',
+    why: 'Quitting is easier when you can see what you\'re getting instead of what you\'re giving up.',
+    details: ['Works for smoking, gambling, drinking, weed or anything else', 'A wishlist that unlocks as the savings add up', 'A "Hold the line" button for cravings, with breathing, a timer and helplines'],
+  },
+  {
     id: 'next',
     name: 'Next up',
     kind: 'In progress',
@@ -63,9 +76,9 @@ export const APPS = [
 ]
 
 export const TOOLS = [
-  { name: 'React', what: 'Tally and this page are React apps.' },
+  { name: 'React', what: 'Tally, Habit Saver and this page are React apps.' },
   { name: 'Vite', what: 'Builds each one into a small, fast site.' },
-  { name: 'Tailwind CSS', what: 'Styling for Supper, Tally and this page.' },
+  { name: 'Tailwind CSS', what: 'Styling for Supper, Tally, Habit Saver and this page.' },
   { name: 'JavaScript', what: 'Date Night and Supper are plain JavaScript, no framework.' },
   { name: 'Open-Meteo', what: 'Weather data for Date Night.' },
   { name: 'GitHub Pages', what: 'Free hosting. Everything works offline and can go on your home screen.' },
