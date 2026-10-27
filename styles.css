@@ -623,6 +623,55 @@ h1 {
 .form-row .seg button.on { background: var(--elev-3); }
 #f-segs { margin-bottom: 6px; }
 
+
+/* ============ Quick picks, weather, sync ============ */
+.weather { margin: 6px 0 0; font-size: 14px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.rain-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: -8px;
+  padding: 12px 14px;
+  border-radius: var(--r-lg);
+  background: rgba(242, 169, 189, .08);
+  color: var(--pink);
+  font-size: 15px;
+  font-weight: 500;
+}
+.rain-banner .text-btn { margin-left: auto; padding: 0; }
+.presets {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 0 16px 2px;
+  scrollbar-width: none;
+}
+.presets::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 20px;
+  background: var(--elev);
+  border: 1px solid var(--sep);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.chip.on { background: var(--red); border-color: var(--red); color: #fff; }
+.sub-row { padding-top: 0; }
+.sub-row .f-label { font-size: 13px; }
+.f-row + .f-row.sub-row { border-top: 0; }
+.list-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.list-meta .text-btn { min-height: 28px; font-size: 13px; }
+.sync-label { margin-top: 20px; }
+#sync-in { font-family: ui-monospace, Menlo, monospace; font-size: 13px; min-height: 64px; }
+.fact dd { line-height: 1.35; }
+
 @keyframes fade { from { opacity: 0; } }
 @keyframes slide { from { transform: translateY(100%); } }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } }

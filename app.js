@@ -16,7 +16,32 @@
     { key: "energy", label: "Energy",      options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]] },
     { key: "time",   label: "Time",        options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]] },
     { key: "tier",   label: "Setting",     options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]] },
-    { key: "when",   label: "Time of day", options: [["day", "Day"], ["night", "Night"]] }
+    { key: "when",   label: "Time of day", options: [["day", "Day"], ["night", "Night"]] },
+    { key: "drive",  label: "Max drive",   options: [[15, "15 min"], [30, "30 min"], [45, "45 min"]] },
+    { key: "rainy",  label: "Weather",     options: [[true, "Rain-proof only"]] }
+  ];
+
+  /* ---------- Where you two are ---------- */
+  const ORIGINS = {
+    mtp:    { label: "Mt P",        name: "Mount Pleasant",   at: [32.8323, -79.8284] },
+    nchas:  { label: "N. Chas",     name: "North Charleston", at: [32.8546, -79.9748] },
+    sville: { label: "Summerville", name: "Summerville",      at: [33.0185, -80.1756] },
+    mid:    { label: "Middle",      name: "both of you" }
+  };
+
+  // Rough centers for each area, checked in this order
+  const AREA_COORDS = [
+    ["daniel island", 32.865, -79.905], ["park circle", 32.873, -79.980], ["north charleston", 32.8546, -79.9748],
+    ["old village", 32.785, -79.862], ["patriots point", 32.790, -79.907], ["mount pleasant", 32.8323, -79.8284],
+    ["sullivan", 32.763, -79.836], ["isle of palms", 32.786, -79.785], ["folly", 32.655, -79.940],
+    ["james island", 32.737, -79.957], ["johns island", 32.717, -80.081], ["wadmalaw", 32.670, -80.210],
+    ["kiawah", 32.610, -80.080], ["seabrook", 32.580, -80.170], ["west ashley", 32.800, -80.020],
+    ["downtown", 32.7795, -79.9311], ["harbor", 32.7795, -79.9311], ["summerville", 33.0185, -80.1756],
+    ["ravenel", 32.790, -80.200], ["moncks corner", 33.196, -80.013], ["ridgeville", 33.030, -80.430],
+    ["awendaw", 32.990, -79.620], ["mcclellanville", 33.087, -79.460], ["francis marion", 33.100, -79.750],
+    ["edisto", 32.490, -80.300], ["beaufort", 32.430, -80.670], ["hunting island", 32.370, -80.440],
+    ["savannah", 32.080, -81.090], ["congaree", 33.830, -80.820], ["columbia", 34.000, -81.030],
+    ["myrtle beach", 33.690, -78.890], ["asheville", 35.595, -82.551]
   ];
 
   const ICONS = {
@@ -33,12 +58,47 @@
     info:     '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/>',
     list:     '<path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01" stroke-width="2.6"/>',
     plus:     '<path d="M12 5v14M5 12h14"/>',
-    search:   '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>'
+    search:   '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+    share:    '<path d="M12 3.5v11"/><path d="m7.5 8 4.5-4.5L16.5 8"/><path d="M7 11.5H5.5v9h13v-9H17"/>',
+    sync:     '<path d="M4 9a8 8 0 0 1 14-3l2 2"/><path d="M20 3.5V8h-4.5"/><path d="M20 15a8 8 0 0 1-14 3l-2-2"/><path d="M4 20.5V16h4.5"/>',
+    rain:     '<path d="M7 15a4 4 0 0 1-.5-8 5.5 5.5 0 0 1 10.6 1.5A3.3 3.3 0 0 1 17 15z"/><path d="M8 18l-1 2.5M12 18l-1 2.5M16 18l-1 2.5"/>'
   };
   const icon = (name, cls = "i") =>
     `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
 
   const MONTH = new Date().getMonth() + 1;
+
+  function coordsOf(idea) {
+    if (idea._at !== undefined) return idea._at;
+    const area = (idea.area || "").toLowerCase();
+    const hit = AREA_COORDS.find(([name]) => area.includes(name));
+    idea._at = hit ? [hit[1], hit[2]] : null;   // null = at home, or spots all over
+    return idea._at;
+  }
+
+  function miles(a, b) {
+    const rad = d => d * Math.PI / 180;
+    const dLat = rad(b[0] - a[0]), dLng = rad(b[1] - a[1]);
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a[0])) * Math.cos(rad(b[0])) * Math.sin(dLng / 2) ** 2;
+    return 3959 * 2 * Math.asin(Math.sqrt(h));
+  }
+
+  // Straight-line miles to rough drive minutes (bridges and water make local trips longer)
+  function minutesBetween(a, b) {
+    const m = miles(a, b);
+    return Math.round(m <= 30 ? 4 + m * 1.7 : 10 + m * 1.35);
+  }
+
+  // Drive minutes from a starting point; null when it doesn't apply
+  function driveFrom(idea, from) {
+    const at = coordsOf(idea);
+    if (!at) return null;
+    if (from === "mid") return Math.max(minutesBetween(ORIGINS.mtp.at, at), minutesBetween(ORIGINS.nchas.at, at));
+    return minutesBetween(ORIGINS[from].at, at);
+  }
+
+  const fmtMin = m => m >= 90 ? `~${Math.round(m / 30) / 2} hrs` : `~${Math.max(5, Math.round(m / 5) * 5)} min`;
+  const isRainy = idea => idea.tier === "in" || !!idea.rainy;
   const BUILT_IN = (Array.isArray(window.DATE_IDEAS) ? window.DATE_IDEAS : [])
     .filter(i => i && i.id && i.title && TIERS[i.tier]);
   let IDEAS = BUILT_IN;
@@ -62,6 +122,7 @@
     history: store.get("history", []),
     custom: store.get("custom", []),   // ideas you added in the app
     browseTier: null,
+    browseUseFilters: true,
     current: null,
     recent: [],
     spinning: false
@@ -96,6 +157,8 @@
   function fits(idea, key, val) {
     if (key === "budget") return idea.budget <= val;          // budget means "up to"
     if (key === "when") return idea.when === "any" || idea.when === val;
+    if (key === "drive") { const d = driveFrom(idea, state.filters.from || "mid"); return d == null || d <= val; }
+    if (key === "rainy") return isRainy(idea);
     return idea[key] === val;
   }
 
@@ -116,6 +179,7 @@
     if (idea.months) w *= 2.5;                                    // in-season specials show up more
     if (state.recent.includes(idea.id)) w *= 0.1;                 // avoid repeats
     if (state.history.some(h => h.ideaId === idea.id)) w *= 0.6;  // done before
+    if (state.filters.drive != null && idea.tier !== "in" && !coordsOf(idea)) w *= 0.2; // prefer real nearby places
     return w;
   }
 
@@ -138,20 +202,25 @@
   }
 
   function renderFilters() {
-    $("#filter-rows").innerHTML = FILTERS.map(f => {
-      const cur = state.filters[f.key];
-      const opts = [[null, "Any"], ...f.options];
-      return `
+    const segRow = (key, label, opts, cur) => `
         <div class="f-row">
-          <span class="f-label">${f.label}</span>
-          <div class="seg" role="group" aria-label="${f.label}">
-            ${opts.map(([v, label]) => `
+          <span class="f-label">${label}</span>
+          <div class="seg" role="group" aria-label="${label}">
+            ${opts.map(([v, text]) => `
               <button class="${(cur == null ? null : cur) === v ? "on" : ""}" aria-pressed="${(cur == null ? null : cur) === v}"
-                data-key="${f.key}" data-val='${JSON.stringify(v)}'>${label}</button>`).join("")}
+                data-key="${key}" data-val='${JSON.stringify(v)}'>${text}</button>`).join("")}
           </div>
         </div>`;
+    $("#filter-rows").innerHTML = FILTERS.map(f => {
+      let html = segRow(f.key, f.label, [[null, "Any"], ...f.options], state.filters[f.key]);
+      if (f.key === "drive" && state.filters.drive != null) {
+        html += segRow("from", "Starting from", Object.entries(ORIGINS).map(([k, o]) => [k, o.label]), state.filters.from || "mid")
+          .replace('class="f-row"', 'class="f-row sub-row"');
+      }
+      return html;
     }).join("");
-    $("#clear-filters").hidden = !Object.values(state.filters).some(v => v != null);
+    $("#clear-filters").hidden = !FILTERS.some(f => state.filters[f.key] != null);
+    renderPresets();
     renderCount();
   }
 
@@ -176,12 +245,43 @@
     state.filters[b.dataset.key] = JSON.parse(b.dataset.val);
     store.set("filters", state.filters);
     renderFilters();
+    renderBrowse();
+  });
+
+  /* ---------- Quick picks ---------- */
+  const PRESETS = [
+    { label: "Weeknight",  f: { time: "short", budget: 2, when: "night", drive: 30, from: "mid" } },
+    { label: "Rainy day",  f: { rainy: true } },
+    { label: "Under $30",  f: { budget: 1 } },
+    { label: "Near N. Chas", f: { drive: 15, from: "nchas", tier: "ease" } },
+    { label: "Near Mt P",  f: { drive: 15, from: "mtp", tier: "ease" } },
+    { label: "After work (Summerville)", f: { time: "short", when: "night", drive: 15, from: "sville" } },
+    { label: "Big weekend", f: { tier: "send", time: "full" } },
+    { label: "Free",       f: { budget: 0 } }
+  ];
+  const sameFilters = (a, b) => {
+    const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+    return [...keys].every(k => (a[k] == null ? null : a[k]) === (b[k] == null ? null : b[k]));
+  };
+  function renderPresets() {
+    $("#presets").innerHTML = PRESETS.map((p, i) =>
+      `<button class="chip ${sameFilters(state.filters, p.f) ? "on" : ""}" data-preset="${i}">${p.label}</button>`).join("");
+  }
+  $("#presets").addEventListener("click", e => {
+    const b = e.target.closest("[data-preset]");
+    if (!b) return;
+    const p = PRESETS[Number(b.dataset.preset)];
+    state.filters = sameFilters(state.filters, p.f) ? {} : { ...p.f };   // tap again to clear
+    store.set("filters", state.filters);
+    renderFilters();
+    renderBrowse();
   });
 
   $("#clear-filters").addEventListener("click", () => {
     state.filters = {};
     store.set("filters", state.filters);
     renderFilters();
+    renderBrowse();
   });
 
   $("#pick-btn").addEventListener("click", () => spin());
@@ -200,6 +300,7 @@
     if (idea.custom) badges.push(`<span class="badge yours">Your idea</span>`);
     if (idea.months) badges.push(`<span class="badge season">In season</span>`);
     if (idea.age21) badges.push(`<span class="badge adult">21+</span>`);
+    if (isRainy(idea) && idea.tier !== "in") badges.push(`<span class="badge">Rain-proof</span>`);
     badges.push(`<span class="badge">${BUDGET[idea.budget] || ""}</span>`);
     badges.push(`<span class="badge">${esc(idea.energy.charAt(0).toUpperCase() + idea.energy.slice(1))}</span>`);
 
@@ -218,6 +319,7 @@
           <div class="fact"><dt>Cost</dt><dd>${esc(idea.cost || BUDGET[idea.budget])}</dd></div>
           <div class="fact"><dt>Takes</dt><dd>${esc(idea.duration || "")}</dd></div>
           <div class="fact"><dt>Where</dt><dd>${esc(idea.area || "")}</dd></div>
+          <div class="fact"><dt>Drive</dt><dd>${driveText(idea)}</dd></div>
           <div class="fact"><dt>Best</dt><dd>${WHEN[idea.when] || WHEN.any}</dd></div>
         </dl>
         ${idea.tip ? `<p class="tip"><b>Tip</b>${esc(idea.tip)}</p>` : ""}
@@ -225,6 +327,12 @@
         ${idea.place ? `<button class="btn btn-secondary" id="dir-btn">${icon("nav")}Directions</button>` : ""}
         ${idea.custom ? `<button class="text-btn danger-text" id="del-custom">Delete this idea</button>` : ""}
       </div>`;
+  }
+
+  function driveText(idea) {
+    if (idea.tier === "in") return "None, you're home";
+    if (!coordsOf(idea)) return "Spots all over town";
+    return `${fmtMin(driveFrom(idea, "mtp"))} from Mt P<br>${fmtMin(driveFrom(idea, "nchas"))} from N. Chas`;
   }
 
   function showIdea(idea, fromPick) {
@@ -343,10 +451,13 @@
 
   function openDirections(idea) {
     if (!idea || !idea.place) return;
-    const q = encodeURIComponent(idea.place);
+    // Ideas without one fixed spot search near the starting point you picked
+    const from = state.filters.drive != null && ORIGINS[state.filters.from] && ORIGINS[state.filters.from].at ? ORIGINS[state.filters.from] : null;
+    const place = from && !coordsOf(idea) ? idea.place.replace(/,[^,]+, SC$/, `, ${from.name}, SC`) : idea.place;
+    const q = encodeURIComponent(place);
     openSheet(`
       <h2>Directions</h2>
-      <p class="sub">${esc(idea.place)}</p>
+      <p class="sub">${esc(place)}</p>
       <div class="sheet-actions">
         <a class="btn btn-primary" href="https://maps.apple.com/?q=${q}" target="_blank" rel="noopener">Open in Apple Maps</a>
         <a class="btn btn-secondary" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">Open in Google Maps</a>
@@ -414,24 +525,33 @@
       `<button class="${state.browseTier === v ? "on" : ""}" aria-pressed="${state.browseTier === v}" data-val='${JSON.stringify(v)}'>${label}</button>`).join("");
   }
 
+  function browseDrive(i) {
+    const d = driveFrom(i, state.filters.from || "mid");
+    return d == null ? "" : ` · ${fmtMin(d)}`;
+  }
+
   function renderBrowse() {
     renderBrowseTier();
     const q = $("#browse-q").value.trim().toLowerCase();
     const t = state.browseTier;
+    const anyFilters = FILTERS.some(f => state.filters[f.key] != null);
     const list = seasonal()
+      .filter(i => !(state.browseUseFilters && anyFilters) || !misses(i).length)
       .filter(i => !t || (t === "custom" ? i.custom : i.tier === t))
       .filter(i => !q || [i.title, i.desc, i.area, i.place].join(" ").toLowerCase().includes(q))
       .sort((a, b) => a.title.localeCompare(b.title));
     $("#browse-count").textContent = `${seasonal().length} ideas right now`;
+    const toggle = anyFilters
+      ? `<button class="text-btn" id="browse-filter-toggle">${state.browseUseFilters ? "Show all ideas" : "Use my filters"}</button>` : "";
     $("#browse-list").innerHTML = list.length ? `
-      <p class="list-meta">${list.length} ${list.length === 1 ? "idea" : "ideas"}</p>
+      <div class="list-meta"><span>${list.length} ${list.length === 1 ? "idea" : "ideas"}${anyFilters && state.browseUseFilters ? " match your filters" : ""}</span>${toggle}</div>
       <div class="group list">
         ${list.map(i => `
           <button class="row row-btn" data-tier="${i.tier}" data-open="${esc(i.id)}">
             <span class="dot"></span>
             <span class="row-main">
               <span class="row-title">${esc(i.title)}</span>
-              <span class="row-sub">${esc(i.area || "Anywhere")} · ${esc(BUDGET[i.budget] || "")} · ${TIME_LABEL[i.time] || ""}</span>
+              <span class="row-sub">${esc(i.area || "Anywhere")} · ${esc(BUDGET[i.budget] || "")} · ${TIME_LABEL[i.time] || ""}${browseDrive(i)}</span>
             </span>
           </button>`).join("")}
       </div>` : `
@@ -439,6 +559,7 @@
         ${icon(t === "custom" ? "plus" : "search")}
         <h3>${t === "custom" && !q ? "No ideas of your own yet" : "Nothing found"}</h3>
         <p>${t === "custom" && !q ? "Tap “Add idea” to add a place or plan the app doesn't know about." : "Try a different word, like a neighborhood or “beach”."}</p>
+        ${toggle}
       </div>`;
   }
 
@@ -450,6 +571,11 @@
     renderBrowse();
   });
   $("#browse-list").addEventListener("click", e => {
+    if (e.target.closest("#browse-filter-toggle")) {
+      state.browseUseFilters = !state.browseUseFilters;
+      renderBrowse();
+      return;
+    }
     const row = e.target.closest("[data-open]");
     const idea = row && byId(row.dataset.open);
     if (idea) { $("#result").hidden = false; showIdea(idea); }
@@ -550,6 +676,106 @@
       toast("Idea deleted");
     });
   }
+
+  /* ---------- Today's weather & sunset (free Open-Meteo forecast, no account) ---------- */
+  function loadWeather() {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=32.84&longitude=-79.90" +
+      "&daily=temperature_2m_max,precipitation_probability_max,sunset&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1";
+    fetch(url).then(r => r.ok ? r.json() : Promise.reject()).then(data => {
+      const d = data.daily;
+      const temp = Math.round(d.temperature_2m_max[0]);
+      const rain = d.precipitation_probability_max[0];
+      const sunset = new Date(d.sunset[0]).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+      const w = $("#weather");
+      w.textContent = `High of ${temp}° · ${rain}% chance of rain · Sunset ${sunset}`;
+      w.hidden = false;
+      if (rain >= 50) {
+        const b = $("#rain-banner");
+        b.innerHTML = `${icon("rain")}<span>Rain likely today.</span><button class="text-btn" id="rain-go">Show rain-proof ideas</button>`;
+        b.hidden = false;
+      }
+    }).catch(() => {});
+  }
+  $("#rain-banner").addEventListener("click", e => {
+    if (!e.target.closest("#rain-go")) return;
+    state.filters = { rainy: true };
+    store.set("filters", state.filters);
+    renderFilters();
+    renderBrowse();
+  });
+
+  /* ---------- Share an idea ---------- */
+  function shareText(idea) {
+    const lines = [`Date idea: ${idea.title}`];
+    if (idea.desc) lines.push(idea.desc);
+    if (idea.plan && idea.plan.length) lines.push("", ...idea.plan.map((p, i) => `${i + 1}. ${p}`));
+    lines.push("", `${idea.area || ""} · ${idea.cost || BUDGET[idea.budget]} · ${idea.duration || ""}`);
+    return lines.join("\n");
+  }
+  async function copyText(text, msg) {
+    try { await navigator.clipboard.writeText(text); toast(msg); }
+    catch (e) { toast("Couldn't copy. Try again."); }
+  }
+  $("#share-idea").addEventListener("click", async () => {
+    const idea = state.current;
+    if (!idea || state.spinning) return;
+    const text = shareText(idea);
+    if (navigator.share) {
+      try { await navigator.share({ title: idea.title, text, url: location.origin + location.pathname }); return; }
+      catch (e) { if (e && e.name === "AbortError") return; }
+    }
+    copyText(text, "Copied. Paste it in a text.");
+  });
+
+  /* ---------- Sync between two phones (a copy-paste code, no accounts) ---------- */
+  const encode = obj => "DN1." + btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+  const decode = code => JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^DN1\./, "")))));
+
+  function openSyncSheet() {
+    const code = encode({ s: state.saved, h: state.history, c: state.custom });
+    openSheet(`
+      <h2>Sync your phones</h2>
+      <p class="sub">Send your code to the other phone, then paste theirs here. Saved ideas, history, and your own ideas get combined. Nothing gets deleted.</p>
+      <div class="sheet-actions">
+        <button class="btn btn-primary" id="sync-send">${icon("share")}Send my code</button>
+      </div>
+      <label class="field-label sync-label" for="sync-in">Paste their code</label>
+      <textarea class="field" id="sync-in" placeholder="DN1.…" autocomplete="off" spellcheck="false"></textarea>
+      <div class="sheet-actions">
+        <button class="btn btn-green" id="sync-merge" disabled>Combine</button>
+        <button class="btn btn-secondary" data-close>Done</button>
+      </div>
+    `);
+    $("#sync-send").addEventListener("click", async () => {
+      const text = `Here's my Date Night code. Open the app, go to Saved, tap Sync, and paste it:\n\n${code}`;
+      if (navigator.share) {
+        try { await navigator.share({ text }); return; }
+        catch (e) { if (e && e.name === "AbortError") return; }
+      }
+      copyText(code, "Code copied. Text it over.");
+    });
+    $("#sync-in").addEventListener("input", e => { $("#sync-merge").disabled = !e.target.value.includes("DN1."); });
+    $("#sync-merge").addEventListener("click", () => {
+      const raw = $("#sync-in").value;
+      const match = raw.match(/DN1\.[A-Za-z0-9+/=]+/);
+      let data;
+      try { data = decode(match ? match[0] : raw); } catch (e) { toast("That code didn't work. Copy the whole thing."); return; }
+      const before = state.saved.length + state.history.length + state.custom.length;
+      (data.s || []).forEach(id => { if (!state.saved.includes(id)) state.saved.push(id); });
+      (data.h || []).forEach(h => { if (h && !state.history.some(x => String(x.id) === String(h.id))) state.history.push(h); });
+      state.history.sort((a, b) => new Date(b.at) - new Date(a.at));
+      (data.c || []).forEach(c => { if (c && c.id && !state.custom.some(x => x.id === c.id)) state.custom.push(c); });
+      store.set("saved", state.saved);
+      store.set("history", state.history);
+      store.set("custom", state.custom);
+      rebuildIdeas();
+      renderSaved(); renderHistory(); renderBrowse(); renderCount();
+      closeSheet();
+      const added = state.saved.length + state.history.length + state.custom.length - before;
+      toast(added ? `Combined. ${added} new item${added === 1 ? "" : "s"}.` : "Already in sync");
+    });
+  }
+  document.querySelectorAll(".sync-btn").forEach(b => b.addEventListener("click", openSyncSheet));
 
   /* ---------- Saved screen ---------- */
   function renderSaved() {
@@ -690,6 +916,7 @@
   renderHeader();
   renderFilters();
   renderBrowse();
+  loadWeather();
   renderSaved();
   renderHistory();
 

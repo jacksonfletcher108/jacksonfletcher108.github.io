@@ -26,7 +26,15 @@
       <header class="large-title">
         <p class="kicker" id="today"></p>
         <h1>Date Night</h1>
+        <p class="weather" id="weather" hidden></p>
       </header>
+
+      <div class="rain-banner" id="rain-banner" hidden></div>
+
+      <section>
+        <div class="section-head"><h2 class="section-label">Quick picks</h2></div>
+        <div class="presets" id="presets"></div>
+      </section>
 
       <section>
         <div class="section-head">
@@ -60,18 +68,24 @@
 
     <!-- ============ SAVED ============ -->
     <main class="screen" id="screen-saved" hidden>
-      <header class="large-title">
-        <p class="kicker">For another night</p>
-        <h1>Saved</h1>
+      <header class="large-title title-row">
+        <div>
+          <p class="kicker">For another night</p>
+          <h1>Saved</h1>
+        </div>
+        <button class="btn btn-secondary btn-sm sync-btn" data-icon="sync">Sync</button>
       </header>
       <div id="saved-list"></div>
     </main>
 
     <!-- ============ HISTORY ============ -->
     <main class="screen" id="screen-history" hidden>
-      <header class="large-title">
-        <p class="kicker" id="month-label"></p>
-        <h1>History</h1>
+      <header class="large-title title-row">
+        <div>
+          <p class="kicker" id="month-label"></p>
+          <h1>History</h1>
+        </div>
+        <button class="btn btn-secondary btn-sm sync-btn" data-icon="sync">Sync</button>
       </header>
       <div class="group stats" id="stats"></div>
       <p class="footnote" id="cheer"></p>
@@ -92,7 +106,7 @@
     <header class="nav">
       <button class="icon-btn" id="close-result" aria-label="Close" data-icon="x"></button>
       <span class="nav-title">Tonight's pick</span>
-      <span class="icon-btn-spacer"></span>
+      <button class="icon-btn" id="share-idea" aria-label="Share this idea" data-icon="share"></button>
     </header>
     <div class="result-body">
       <article class="card" id="card"></article>
