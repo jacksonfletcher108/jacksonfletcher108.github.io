@@ -2489,6 +2489,36 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "lazy", time: "short", when: "any",
     area: "Park Circle (N. Charleston)", cost: "Free", duration: "~3 hrs",
     place: "Park Circle, North Charleston, SC", verify: true, months: [12]
+  },
+  {
+    id: "holy-smokes-2026",
+    title: "Holy Smokes BBQ Festival",
+    desc: "All-you-can-eat barbecue from dozens of pitmasters at Riverfront Park, with live music.",
+    plan: ["Buy tickets ahead online", "Show up hungry around opening", "Walk the river path between rounds"],
+    tip: "Tickets cover all the food, and the money goes to kids' charities.",
+    tier: "send", budget: 3, energy: "chill", time: "half", when: "day",
+    area: "North Charleston", cost: "~$95 each", duration: "~4 hrs",
+    place: "Riverfront Park, North Charleston, SC", verify: true, start: "2026-11-14", end: "2026-11-14"
+  },
+  {
+    id: "harvest-festival-2026",
+    title: "Harvest Festival on Johns Island",
+    desc: "Bluegrass, hayrides, pumpkin decorating, and barbecue at Johns Island County Park.",
+    plan: ["Get there after 11 when it opens", "Decorate a pumpkin for each other", "Catch a bluegrass set with some kettle corn"],
+    tip: "Admission is about $10 a person. Check the county parks site for the latest.",
+    tier: "ease", budget: 1, energy: "chill", time: "half", when: "day",
+    area: "Johns Island", cost: "~$10 each", duration: "~3 hrs",
+    place: "Johns Island County Park, Johns Island, SC", verify: true, start: "2026-11-07", end: "2026-11-07"
+  },
+  {
+    id: "charleston-literary-festival-2026",
+    title: "Charleston Literary Festival talk",
+    desc: "Famous authors in conversation at the Dock Street Theatre. Pick one talk that sounds good to both of you.",
+    plan: ["Look through the lineup together", "Pick one talk and get tickets", "Dinner downtown after to talk it over"],
+    tip: "You don't need to have read the book. The talks are made for that.",
+    tier: "send", budget: 2, energy: "lazy", time: "short", when: "any",
+    area: "Downtown", cost: "~$25–50 each", duration: "~2 hrs",
+    place: "Dock Street Theatre, Charleston, SC", verify: true, rainy: true, start: "2026-11-06", end: "2026-11-15"
   }
 
   // Add your own ideas above this line (remember the comma after the previous } ).
