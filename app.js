@@ -4,20 +4,36 @@
 
   /* ---------- Setup ---------- */
   const TIERS = {
-    in:   { emoji: "🛋️", label: "Stay in, upgraded" },
-    ease: { emoji: "🌅", label: "Ease out" },
-    send: { emoji: "🚀", label: "Full send" }
+    in:   { label: "Stay in, upgraded" },
+    ease: { label: "Ease out" },
+    send: { label: "Full send" }
   };
-  const WHEN = { day: "☀️ Daytime", night: "🌙 Evening", any: "🕐 Anytime" };
+  const WHEN = { day: "Daytime", night: "Evening", any: "Anytime" };
   const BUDGET = ["Free", "$", "$$", "$$$"];
 
   const FILTERS = [
-    { key: "budget", label: "Budget", options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"]] },
-    { key: "energy", label: "Energy", options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]] },
-    { key: "time",   label: "Time",   options: [["short", "Under 2 hrs"], ["half", "Half day"], ["full", "Full day"]] },
-    { key: "tier",   label: "Setting", options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]] },
-    { key: "when",   label: "Time of day", options: [["day", "☀️ Day"], ["night", "🌙 Night"]] }
+    { key: "budget", label: "Budget",      options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"]] },
+    { key: "energy", label: "Energy",      options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]] },
+    { key: "time",   label: "Time",        options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]] },
+    { key: "tier",   label: "Setting",     options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]] },
+    { key: "when",   label: "Time of day", options: [["day", "Day"], ["night", "Night"]] }
   ];
+
+  const ICONS = {
+    shuffle:  '<path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="m4 4 5 5"/>',
+    bookmark: '<path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/>',
+    bookmarkFill: '<path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z" fill="currentColor"/>',
+    clock:    '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    x:        '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+    repeat:   '<path d="M20 11a8 8 0 0 0-14.2-4.8L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.2 4.8L20 16"/><path d="M20 20.5V16h-4.5"/>',
+    check:    '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+    heart:    '<path d="M12 19.5s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 6.9a4.2 4.2 0 0 1 7.5 2.4c0 5.6-7.5 10.2-7.5 10.2z"/>',
+    heartFill:'<path d="M12 19.5s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 6.9a4.2 4.2 0 0 1 7.5 2.4c0 5.6-7.5 10.2-7.5 10.2z" fill="currentColor"/>',
+    nav:      '<path d="M20 4 4 10.5l6.8 2.7L13.5 20z"/>',
+    info:     '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/>'
+  };
+  const icon = (name, cls = "i") =>
+    `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
 
   const MONTH = new Date().getMonth() + 1;
   const IDEAS = (Array.isArray(window.DATE_IDEAS) ? window.DATE_IDEAS : [])
@@ -57,8 +73,13 @@
     t.textContent = msg;
     t.classList.add("show");
     clearTimeout(toast.timer);
-    toast.timer = setTimeout(() => t.classList.remove("show"), 2000);
+    toast.timer = setTimeout(() => t.classList.remove("show"), 1800);
   }
+
+  // Buttons marked data-icon get their icon placed before their label
+  document.querySelectorAll("[data-icon]").forEach(el => {
+    el.insertAdjacentHTML("afterbegin", icon(el.dataset.icon));
+  });
 
   /* ---------- Filtering & picking ---------- */
   function matches(idea) {
@@ -75,9 +96,9 @@
 
   function weightOf(idea) {
     let w = 1;
-    if (idea.months) w *= 2.5;                          // in-season specials show up more
-    if (state.recent.includes(idea.id)) w *= 0.1;        // avoid repeats
-    if (state.history.some(h => h.ideaId === idea.id)) w *= 0.6; // done before
+    if (idea.months) w *= 2.5;                                    // in-season specials show up more
+    if (state.recent.includes(idea.id)) w *= 0.1;                 // avoid repeats
+    if (state.history.some(h => h.ideaId === idea.id)) w *= 0.6;  // done before
     return w;
   }
 
@@ -93,49 +114,49 @@
   }
 
   /* ---------- Pick screen ---------- */
-  function renderGreeting() {
+  function renderHeader() {
     const d = new Date();
-    const day = d.toLocaleDateString(undefined, { weekday: "long" });
-    const h = d.getHours();
-    const part = h < 12 ? "morning ☀️" : h < 17 ? "afternoon 🌤️" : "night 🌙";
-    $("#greeting").textContent = `${day} ${part}`;
+    $("#today").textContent = d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+    $("#month-label").textContent = d.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   }
 
   function renderFilters() {
-    $("#filter-rows").innerHTML = FILTERS.map(f => `
-      <div class="f-row">
-        <div class="f-label">${f.label}</div>
-        <div class="chips">
-          ${f.options.map(([v, label]) => `
-            <button class="chip ${state.filters[f.key] === v ? "on" : ""}"
-              data-key="${f.key}" data-val='${JSON.stringify(v)}'>${label}</button>`).join("")}
-        </div>
-      </div>`).join("");
-    const any = Object.values(state.filters).some(v => v != null);
-    $("#clear-filters").hidden = !any;
+    $("#filter-rows").innerHTML = FILTERS.map(f => {
+      const cur = state.filters[f.key];
+      const opts = [[null, "Any"], ...f.options];
+      return `
+        <div class="f-row">
+          <span class="f-label">${f.label}</span>
+          <div class="seg" role="group" aria-label="${f.label}">
+            ${opts.map(([v, label]) => `
+              <button class="${(cur == null ? null : cur) === v ? "on" : ""}" aria-pressed="${(cur == null ? null : cur) === v}"
+                data-key="${f.key}" data-val='${JSON.stringify(v)}'>${label}</button>`).join("")}
+          </div>
+        </div>`;
+    }).join("");
+    $("#clear-filters").hidden = !Object.values(state.filters).some(v => v != null);
     renderCount();
   }
 
   function renderCount() {
-    const n = pool().length;
-    const seasonal = pool().filter(i => i.months).length;
+    const list = pool();
+    const seasonal = list.filter(i => i.months).length;
     const el = $("#pick-count");
+    $("#pick-btn").disabled = !list.length;
     if (!IDEAS.length) {
-      el.textContent = "⚠️ Couldn't read ideas.js (maybe a missing comma?)";
-    } else if (n === 0) {
-      el.textContent = "No ideas match all of those. Try removing a filter.";
+      el.textContent = "Couldn't read ideas.js. Check it for a missing comma.";
+    } else if (!list.length) {
+      el.textContent = "Nothing matches these filters. Try loosening one.";
     } else {
-      el.textContent = `${n} idea${n === 1 ? "" : "s"} in the hat` +
-        (seasonal ? ` · 🍂 ${seasonal} in season right now` : "");
+      el.textContent = `${list.length} idea${list.length === 1 ? "" : "s"} match` +
+        (seasonal ? ` · ${seasonal} in season` : "");
     }
   }
 
   $("#filter-rows").addEventListener("click", e => {
-    const chip = e.target.closest(".chip");
-    if (!chip) return;
-    const key = chip.dataset.key;
-    const val = JSON.parse(chip.dataset.val);
-    state.filters[key] = state.filters[key] === val ? null : val;
+    const b = e.target.closest("button[data-key]");
+    if (!b) return;
+    state.filters[b.dataset.key] = JSON.parse(b.dataset.val);
     store.set("filters", state.filters);
     renderFilters();
   });
@@ -146,44 +167,43 @@
     renderFilters();
   });
 
-  $("#pick-btn").addEventListener("click", () => {
-    const btn = $("#pick-btn");
-    btn.classList.remove("rolling");
-    void btn.offsetWidth; // restart the dice animation
-    btn.classList.add("rolling");
-    spin();
-  });
+  $("#pick-btn").addEventListener("click", () => spin());
 
   /* ---------- The idea card ---------- */
-  function cardHTML(idea) {
-    const t = TIERS[idea.tier];
-    const tags = [];
-    if (idea.months) tags.push(`<span class="tag season">🍂 In season</span>`);
-    if (idea.age21) tags.push(`<span class="tag adult">🍺 21+</span>`);
-    tags.push(`<span class="tag">${BUDGET[idea.budget] || ""}</span>`);
-    tags.push(`<span class="tag">${esc(idea.energy)}</span>`);
-
+  function headHTML(idea, titleClass) {
     return `
-      <span class="tier-badge">${t.emoji} ${t.label}</span>
-      <h2 class="card-title">${esc(idea.title)}</h2>
-      <p class="card-desc">${esc(idea.desc)}</p>
-      <div class="meta">
-        <div><small>Cost</small>${esc(idea.cost || BUDGET[idea.budget])}</div>
-        <div><small>Takes</small>${esc(idea.duration || "")}</div>
-        <div><small>Where</small>📍 ${esc(idea.area || "")}</div>
-        <div><small>When</small>${WHEN[idea.when] || WHEN.any}</div>
-      </div>
-      <div class="tags">${tags.join("")}</div>
-      ${idea.verify ? `<div class="verify-note">📞 This is a real place. Check that it's open (and the hours) before you go. Things change!</div>` : ""}
-      ${idea.place ? `<button class="dir-btn" id="dir-btn">🧭 Get directions</button>` : ""}
-    `;
+      <div class="card-head">
+        <span class="setting"><span class="dot"></span>${TIERS[idea.tier].label}</span>
+        <div class="title-window"><h2 class="card-title ${titleClass || ""}">${esc(idea.title)}</h2></div>`;
   }
 
-  function showIdea(idea, animate) {
+  function cardHTML(idea) {
+    const badges = [];
+    if (idea.months) badges.push(`<span class="badge season">In season</span>`);
+    if (idea.age21) badges.push(`<span class="badge adult">21+</span>`);
+    badges.push(`<span class="badge">${BUDGET[idea.budget] || ""}</span>`);
+    badges.push(`<span class="badge">${esc(idea.energy.charAt(0).toUpperCase() + idea.energy.slice(1))}</span>`);
+
+    return headHTML(idea) + `
+        <p class="card-desc">${esc(idea.desc)}</p>
+        <div class="badges">${badges.join("")}</div>
+      </div>
+      <div class="details in">
+        <dl class="group facts">
+          <div class="fact"><dt>Cost</dt><dd>${esc(idea.cost || BUDGET[idea.budget])}</dd></div>
+          <div class="fact"><dt>Takes</dt><dd>${esc(idea.duration || "")}</dd></div>
+          <div class="fact"><dt>Where</dt><dd>${esc(idea.area || "")}</dd></div>
+          <div class="fact"><dt>Best</dt><dd>${WHEN[idea.when] || WHEN.any}</dd></div>
+        </dl>
+        ${idea.verify ? `<p class="note">${icon("info", "i-sm")}<span>This is a real business. Places close and change hours, so check before you go.</span></p>` : ""}
+        ${idea.place ? `<button class="btn btn-secondary" id="dir-btn">${icon("nav")}Directions</button>` : ""}
+      </div>`;
+  }
+
+  function showIdea(idea) {
     state.current = idea;
     state.recent = [idea.id, ...state.recent.filter(id => id !== idea.id)].slice(0, 8);
     const card = $("#card");
-    card.className = "card" + (animate ? " landed" : "");
     card.dataset.tier = idea.tier;
     card.innerHTML = cardHTML(idea);
     updateSaveBtn();
@@ -192,17 +212,16 @@
 
   function emptyCard() {
     const card = $("#card");
-    card.className = "card";
     card.dataset.tier = "ease";
     card.innerHTML = `
       <div class="empty">
-        <span class="big">🤷</span>
-        <p>Nothing matches all of those filters right now. Loosen one up and try again.</p>
-        <button class="btn" id="empty-clear">Clear filters</button>
+        ${icon("shuffle")}
+        <h3>No matches</h3>
+        <p>Nothing fits all of those filters right now.</p>
+        <button class="btn btn-secondary" id="empty-clear">Reset filters</button>
       </div>`;
     state.current = null;
     setActionsDisabled(true);
-    $("#act-reroll").disabled = true;
   }
 
   function setActionsDisabled(off) {
@@ -210,14 +229,17 @@
   }
 
   function updateSaveBtn() {
-    const saved = state.current && state.saved.includes(state.current.id);
-    $("#act-save").innerHTML = saved ? "<span>❤️</span>Saved" : "<span>🤍</span>Save";
+    const saved = !!state.current && state.saved.includes(state.current.id);
+    const b = $("#act-save");
+    b.innerHTML = icon(saved ? "bookmarkFill" : "bookmark");
+    b.classList.toggle("saved", saved);
+    b.setAttribute("aria-label", saved ? "Saved" : "Save for later");
   }
 
-  /* Slot-machine shuffle, then land on the pick */
+  /* Shuffle: titles roll past and slow down, then the pick settles in */
   function spin() {
     if (state.spinning) return;
-    openResult();
+    $("#result").hidden = false;
     const list = pool();
     if (!list.length) { emptyCard(); return; }
 
@@ -226,34 +248,24 @@
     state.spinning = true;
     setActionsDisabled(true);
 
-    let delay = 45;
+    let delay = 55;
+    let last = null;
     const step = () => {
-      const fake = list[Math.floor(Math.random() * list.length)];
-      card.className = "card spinning";
+      let fake = list[Math.floor(Math.random() * list.length)];
+      if (list.length > 1 && fake === last) fake = list[(list.indexOf(fake) + 1) % list.length];
+      last = fake;
       card.dataset.tier = fake.tier;
-      card.innerHTML = `
-        <span class="tier-badge">${TIERS[fake.tier].emoji} Shuffling…</span>
-        <h2 class="card-title">${esc(fake.title)}</h2>
-        <p class="spin-hint">🎲 🎲 🎲</p>`;
-      delay *= 1.13;
-      if (delay < 300) {
-        setTimeout(step, delay);
-      } else {
-        setTimeout(() => {
-          state.spinning = false;
-          showIdea(final, true);
-        }, 260);
-      }
+      card.innerHTML = headHTML(fake, "tick") +
+        `</div><div class="skeleton"><span></span><span></span><span></span></div>`;
+      delay *= 1.16;
+      if (delay < 280) setTimeout(step, delay);
+      else setTimeout(() => { state.spinning = false; showIdea(final); }, 220);
     };
     step();
   }
 
-  function openResult() {
-    $("#result").hidden = false;
-  }
   function closeResult() {
-    if (state.spinning) return;
-    $("#result").hidden = true;
+    if (!state.spinning) $("#result").hidden = true;
   }
 
   $("#close-result").addEventListener("click", closeResult);
@@ -274,10 +286,10 @@
     if (!idea) return;
     if (state.saved.includes(idea.id)) {
       state.saved = state.saved.filter(id => id !== idea.id);
-      toast("Removed from saved");
+      toast("Removed from Saved");
     } else {
       state.saved = [idea.id, ...state.saved];
-      toast("Saved for later ❤️");
+      toast("Saved");
     }
     store.set("saved", state.saved);
     updateSaveBtn();
@@ -304,32 +316,39 @@
     if (!idea || !idea.place) return;
     const q = encodeURIComponent(idea.place);
     openSheet(`
-      <h2>🧭 ${esc(idea.title)}</h2>
+      <h2>Directions</h2>
       <p class="sub">${esc(idea.place)}</p>
-      <a class="sheet-btn primary" href="https://maps.apple.com/?q=${q}" target="_blank" rel="noopener">Open in Apple Maps</a>
-      <a class="sheet-btn" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">Open in Google Maps</a>
-      <button class="sheet-btn" data-close>Cancel</button>
+      <div class="sheet-actions">
+        <a class="btn btn-primary" href="https://maps.apple.com/?q=${q}" target="_blank" rel="noopener">Open in Apple Maps</a>
+        <a class="btn btn-secondary" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">Open in Google Maps</a>
+        <button class="btn btn-secondary" data-close>Cancel</button>
+      </div>
     `);
   }
 
   function openLogSheet(idea) {
     let rating = 0;
     openSheet(`
-      <h2>🎉 You did it!</h2>
-      <p class="sub">${esc(idea.title)}. How was it?</p>
-      <div class="rating" id="rating">
-        ${[1, 2, 3, 4, 5].map(n => `<button data-r="${n}" aria-label="${n} of 5">❤️</button>`).join("")}
+      <h2>How was it?</h2>
+      <p class="sub">${esc(idea.title)}</p>
+      <div class="rating" id="rating" role="group" aria-label="Rating">
+        ${[1, 2, 3, 4, 5].map(n => `<button data-r="${n}" aria-label="${n} of 5">${icon("heart")}</button>`).join("")}
       </div>
-      <label for="note">A note for future you (optional)</label>
-      <textarea id="note" maxlength="280" placeholder="Best part? Funniest moment?"></textarea>
-      <button class="sheet-btn primary" id="log-save" disabled>Save to history</button>
-      <button class="sheet-btn" data-close>Cancel</button>
+      <label class="field-label" for="note">Note (optional)</label>
+      <textarea id="note" maxlength="280" placeholder="Best part, funniest moment…"></textarea>
+      <div class="sheet-actions">
+        <button class="btn btn-green" id="log-save" disabled>Save to history</button>
+        <button class="btn btn-secondary" data-close>Cancel</button>
+      </div>
     `);
     $("#rating").addEventListener("click", e => {
       const b = e.target.closest("button");
       if (!b) return;
       rating = Number(b.dataset.r);
-      [...$("#rating").children].forEach((el, i) => el.classList.toggle("on", i < rating));
+      [...$("#rating").children].forEach((el, i) => {
+        el.classList.toggle("on", i < rating);
+        el.innerHTML = icon(i < rating ? "heartFill" : "heart");
+      });
       $("#log-save").disabled = false;
     });
     $("#log-save").addEventListener("click", () => {
@@ -348,30 +367,36 @@
       $("#result").hidden = true;
       renderHistory();
       switchTab("history");
-      toast(idea.tier === "in" ? "Logged! Cozy night counts ❤️" : "Logged! That's an out-date 🔥");
+      toast(idea.tier === "in" ? "Added to history" : "Added. That's a night out.");
     });
   }
 
   $("#sheet").addEventListener("click", e => {
     if (e.target.closest("[data-close]")) closeSheet();
-    if (e.target.closest("a.sheet-btn")) setTimeout(closeSheet, 300);
+    if (e.target.closest("a.btn")) setTimeout(closeSheet, 300);
   });
 
   /* ---------- Saved screen ---------- */
   function renderSaved() {
     const ideas = state.saved.map(byId).filter(Boolean);
-    $("#saved-list").innerHTML = ideas.length ? ideas.map(i => `
-      <div class="row">
-        <button class="row-ic" data-open="${esc(i.id)}">${TIERS[i.tier].emoji}</button>
-        <button class="row-main" data-open="${esc(i.id)}" style="text-align:left">
-          <p class="row-title">${esc(i.title)}</p>
-          <p class="row-sub">📍 ${esc(i.area)} · ${esc(i.cost || BUDGET[i.budget])}</p>
-        </button>
-        <button class="row-x" data-unsave="${esc(i.id)}" aria-label="Remove">✕</button>
-      </div>`).join("") : `
+    $("#saved-list").innerHTML = ideas.length ? `
+      <div class="group list">
+        ${ideas.map(i => `
+          <div class="row" data-tier="${i.tier}">
+            <button class="row-open" data-open="${esc(i.id)}">
+              <span class="dot"></span>
+              <span class="row-main">
+                <p class="row-title">${esc(i.title)}</p>
+                <p class="row-sub">${esc(i.area)} · ${esc(i.cost || BUDGET[i.budget])}</p>
+              </span>
+            </button>
+            <button class="row-x" data-unsave="${esc(i.id)}" aria-label="Remove">${icon("x", "i-sm")}</button>
+          </div>`).join("")}
+      </div>` : `
       <div class="empty">
-        <span class="big">❤️</span>
-        <p>Nothing saved yet. When an idea looks good but tonight's not the night, tap <b>Save</b>.</p>
+        ${icon("bookmark")}
+        <h3>Nothing saved yet</h3>
+        <p>When an idea looks good but tonight isn't the night, tap the bookmark.</p>
       </div>`;
   }
 
@@ -384,7 +409,7 @@
       renderSaved();
     } else if (open) {
       const idea = byId(open.dataset.open);
-      if (idea) { openResult(); showIdea(idea, true); }
+      if (idea) { $("#result").hidden = false; showIdea(idea); }
     }
   });
 
@@ -396,7 +421,7 @@
     return d.getTime();
   }
 
-  // Weeks in a row (Mon–Sun) with at least one out-date
+  // Weeks in a row (Mon–Sun) with at least one night out
   function weekStreak(outDates) {
     const weeks = new Set(outDates.map(h => weekKey(h.at)));
     const monday = new Date(weekKey(new Date()));
@@ -409,6 +434,11 @@
     return streak;
   }
 
+  function hearts(n) {
+    return `<span class="hearts" aria-label="${n} of 5">${[1, 2, 3, 4, 5]
+      .map(i => `<span class="${i <= n ? "" : "off"}">${icon("heartFill", "i-sm")}</span>`).join("")}</span>`;
+  }
+
   function renderHistory() {
     const now = new Date();
     const thisMonth = state.history.filter(h => {
@@ -419,30 +449,34 @@
     const streak = weekStreak(state.history.filter(h => h.tier !== "in"));
 
     $("#stats").innerHTML = `
-      <div class="stat hero"><b>${outMonth}</b><span>Out this month</span></div>
-      <div class="stat"><b>${thisMonth.length}</b><span>Dates this month</span></div>
-      <div class="stat green"><b>${streak}</b><span>Week streak${streak ? " 🔥" : ""}</span></div>`;
+      <div class="stat out"><b>${outMonth}</b><span>Nights out</span></div>
+      <div class="stat"><b>${thisMonth.length}</b><span>All dates</span></div>
+      <div class="stat streak"><b>${streak}</b><span>Week streak</span></div>`;
 
     $("#cheer").textContent =
-      outMonth === 0 ? "No pressure. Even one sunset counts. 🌅" :
-      outMonth === 1 ? "One out-date this month. Look at you two. ❤️" :
-      outMonth <= 3  ? "Getting out more already! 🔥" :
-                       "Okay, social butterflies. 🦋";
+      outMonth === 0 ? "No pressure. One sunset counts." :
+      outMonth === 1 ? "One night out this month. Nice start." :
+      outMonth <= 3  ? "You're getting out more." :
+                       "Busy month. Well done, you two.";
 
-    $("#history-list").innerHTML = state.history.length ? state.history.map(h => `
-      <div class="row">
-        <div class="row-ic">${(TIERS[h.tier] || TIERS.ease).emoji}</div>
-        <div class="row-main">
-          <p class="row-title">${esc(h.title)}</p>
-          <p class="row-sub">${new Date(h.at).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}
-            · <span class="hearts">${"❤️".repeat(h.rating)}</span></p>
-          ${h.note ? `<p class="row-note">“${esc(h.note)}”</p>` : ""}
-        </div>
-        <button class="row-x" data-del="${h.id}" aria-label="Delete">✕</button>
-      </div>`).join("") : `
+    $("#history-list").innerHTML = state.history.length ? `
+      <div class="section-head"><h2 class="section-label">Past dates</h2></div>
+      <div class="group list">
+        ${state.history.map(h => `
+          <div class="row" data-tier="${esc(h.tier)}">
+            <span class="dot"></span>
+            <div class="row-main">
+              <p class="row-title">${esc(h.title)}</p>
+              <p class="row-sub">${new Date(h.at).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })} ${hearts(h.rating)}</p>
+              ${h.note ? `<p class="row-note">${esc(h.note)}</p>` : ""}
+            </div>
+            <button class="row-x" data-del="${h.id}" aria-label="Delete">${icon("x", "i-sm")}</button>
+          </div>`).join("")}
+      </div>` : `
       <div class="empty">
-        <span class="big">📖</span>
-        <p>No dates logged yet. Pick one, go do it, then tap <b>We did it</b>.</p>
+        ${icon("clock")}
+        <h3>No dates yet</h3>
+        <p>Pick one, go do it, then tap “We did it” to log it here.</p>
       </div>`;
   }
 
@@ -454,8 +488,10 @@
     openSheet(`
       <h2>Delete this date?</h2>
       <p class="sub">${esc(entry.title)} will be removed from your history.</p>
-      <button class="sheet-btn danger" id="confirm-del">Delete</button>
-      <button class="sheet-btn" data-close>Keep it</button>
+      <div class="sheet-actions">
+        <button class="btn btn-danger" id="confirm-del">Delete</button>
+        <button class="btn btn-secondary" data-close>Keep it</button>
+      </div>
     `);
     $("#confirm-del").addEventListener("click", () => {
       state.history = state.history.filter(h => h !== entry);
@@ -476,7 +512,7 @@
   });
 
   /* ---------- Start ---------- */
-  renderGreeting();
+  renderHeader();
   renderFilters();
   renderSaved();
   renderHistory();

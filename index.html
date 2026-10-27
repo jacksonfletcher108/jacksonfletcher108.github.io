@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Date Night</title>
   <meta name="description" content="Pick our next Charleston date.">
-  <meta name="theme-color" content="#0a0809">
+  <meta name="theme-color" content="#0a0909">
 
   <!-- iPhone home-screen app settings -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,82 +16,78 @@
   <link rel="icon" type="image/png" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..800;1,400..800&family=Shrikhand&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app">
 
-    <!-- ============ PICK SCREEN ============ -->
+    <!-- ============ PICK ============ -->
     <main class="screen" id="screen-pick">
-      <header class="top">
-        <p class="eyebrow" id="greeting">Hey you two</p>
-        <h1>What's the <em>move</em>?</h1>
+      <header class="large-title">
+        <p class="kicker" id="today"></p>
+        <h1>Date Night</h1>
       </header>
 
-      <section class="filters" aria-label="Filters">
-        <div class="filters-head">
-          <span>Filters <small>(all optional)</small></span>
-          <button class="link-btn" id="clear-filters" hidden>Clear</button>
+      <section>
+        <div class="section-head">
+          <h2 class="section-label">Filters</h2>
+          <button class="text-btn" id="clear-filters" hidden>Reset</button>
         </div>
-        <div id="filter-rows"></div>
+        <div class="group filters" id="filter-rows"></div>
       </section>
 
-      <div class="pick-wrap">
-        <button class="pick-btn" id="pick-btn">
-          <span class="pick-dice" aria-hidden="true">🎲</span>
-          <span>Pick our date</span>
-        </button>
+      <div class="pick-bar">
+        <button class="btn btn-primary btn-lg" id="pick-btn">Pick a date</button>
         <p class="pick-count" id="pick-count"></p>
       </div>
     </main>
 
-    <!-- ============ SAVED SCREEN ============ -->
+    <!-- ============ SAVED ============ -->
     <main class="screen" id="screen-saved" hidden>
-      <header class="top">
-        <p class="eyebrow">For later</p>
-        <h1>Saved <em>ideas</em></h1>
+      <header class="large-title">
+        <p class="kicker">For another night</p>
+        <h1>Saved</h1>
       </header>
-      <div id="saved-list" class="list"></div>
+      <div id="saved-list"></div>
     </main>
 
-    <!-- ============ HISTORY SCREEN ============ -->
+    <!-- ============ HISTORY ============ -->
     <main class="screen" id="screen-history" hidden>
-      <header class="top">
-        <p class="eyebrow">Our story so far</p>
-        <h1>Date <em>history</em></h1>
+      <header class="large-title">
+        <p class="kicker" id="month-label"></p>
+        <h1>History</h1>
       </header>
-      <div class="stats" id="stats"></div>
-      <p class="cheer" id="cheer"></p>
-      <div id="history-list" class="list"></div>
+      <div class="group stats" id="stats"></div>
+      <p class="footnote" id="cheer"></p>
+      <div id="history-list"></div>
     </main>
 
     <!-- ============ TAB BAR ============ -->
     <nav class="tabbar" aria-label="Main">
-      <button class="tab active" data-tab="pick"><span class="tab-ic">🎲</span><span>Pick</span></button>
-      <button class="tab" data-tab="saved"><span class="tab-ic">❤️</span><span>Saved</span></button>
-      <button class="tab" data-tab="history"><span class="tab-ic">📖</span><span>History</span></button>
+      <button class="tab active" data-tab="pick" data-icon="shuffle">Pick</button>
+      <button class="tab" data-tab="saved" data-icon="bookmark">Saved</button>
+      <button class="tab" data-tab="history" data-icon="clock">History</button>
     </nav>
   </div>
 
-  <!-- ============ RESULT OVERLAY (the idea card) ============ -->
+  <!-- ============ RESULT ============ -->
   <div class="overlay" id="result" hidden>
-    <div class="result-top">
-      <button class="icon-btn" id="close-result" aria-label="Close">✕</button>
-    </div>
+    <header class="nav">
+      <button class="icon-btn" id="close-result" aria-label="Close" data-icon="x"></button>
+      <span class="nav-title">Tonight's pick</span>
+      <span class="icon-btn-spacer"></span>
+    </header>
     <div class="result-body">
       <article class="card" id="card"></article>
     </div>
-    <div class="result-actions" id="result-actions">
-      <button class="act" id="act-reroll"><span>🔄</span>Reroll</button>
-      <button class="act" id="act-save"><span>🤍</span>Save</button>
-      <button class="act act-primary" id="act-done"><span>✅</span>We did it</button>
-    </div>
+    <footer class="result-actions">
+      <button class="btn btn-secondary" id="act-reroll" data-icon="repeat">Reroll</button>
+      <button class="btn btn-secondary btn-square" id="act-save" aria-label="Save for later" data-icon="bookmark"></button>
+      <button class="btn btn-green" id="act-done" data-icon="check">We did it</button>
+    </footer>
   </div>
 
-  <!-- ============ BOTTOM SHEET (directions + "we did it") ============ -->
+  <!-- ============ BOTTOM SHEET ============ -->
   <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
   <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"></div>
 
