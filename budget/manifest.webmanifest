@@ -1,6 +1,6 @@
 {
-  "name": "Ledgerly",
-  "short_name": "Ledgerly",
+  "name": "Tally",
+  "short_name": "Tally",
   "description": "Plan your month, log spending in a tap, and see what's safe to spend.",
   "start_url": "./",
   "scope": "./",
