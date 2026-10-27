@@ -968,6 +968,39 @@
     if (tab) switchTab(tab.dataset.tab);
   });
 
+  /* ---------- Screen check (tap the "Date Night" title 5 times) ---------- */
+  let titleTaps = 0, titleTimer;
+  $("#screen-pick h1").addEventListener("click", () => {
+    titleTaps++;
+    clearTimeout(titleTimer);
+    titleTimer = setTimeout(() => { titleTaps = 0; }, 1500);
+    if (titleTaps < 5) return;
+    titleTaps = 0;
+    const probe = document.createElement("div");
+    probe.style.cssText = "position:fixed;visibility:hidden;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)";
+    document.body.appendChild(probe);
+    const cs = getComputedStyle(probe);
+    const app = $(".app").getBoundingClientRect(), bar = $(".tabbar").getBoundingClientRect();
+    const rows = [
+      ["Version", "v8"],
+      ["Home screen app", String(!!navigator.standalone || matchMedia("(display-mode: standalone)").matches)],
+      ["Screen", `${screen.width} × ${screen.height}`],
+      ["Window", `${innerWidth} × ${innerHeight}`],
+      ["Visible area", window.visualViewport ? `${Math.round(visualViewport.width)} × ${Math.round(visualViewport.height)}` : "n/a"],
+      ["Page height", String(document.documentElement.clientHeight)],
+      ["App box", `top ${Math.round(app.top)} · bottom ${Math.round(app.bottom)}`],
+      ["Tab bar", `top ${Math.round(bar.top)} · bottom ${Math.round(bar.bottom)}`],
+      ["Safe areas", `top ${cs.paddingTop} · bottom ${cs.paddingBottom}`],
+      ["iOS", (navigator.userAgent.match(/OS (\d+[_\d]*)/) || [, "?"])[1].replace(/_/g, ".")]
+    ];
+    probe.remove();
+    openSheet(`
+      <h2>Screen check</h2>
+      <p class="sub">Screenshot this and send it over.</p>
+      <dl class="group facts">${rows.map(([k, v]) => `<div class="fact"><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+      <div class="sheet-actions" style="margin-top:16px"><button class="btn btn-secondary" data-close>Close</button></div>`);
+  });
+
   /* ---------- Start ---------- */
   renderHeader();
   renderFilters();

@@ -1,6 +1,6 @@
 /* Offline support. Tries the internet first (so your edits show up right away),
    and falls back to the saved copy when there's no signal. */
-const CACHE = "date-night-v7";
+const CACHE = "date-night-v8";
 const FILES = ["./", "index.html", "styles.css", "app.js", "ideas.js",
   "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 
@@ -17,7 +17,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET" || !e.request.url.startsWith(self.location.origin)) return;
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: "no-cache" })   // always ask the server for the newest version
       .then(res => {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, copy));

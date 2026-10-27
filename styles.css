@@ -73,7 +73,11 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
 /* Pinned to all four edges: on iPhone home-screen apps, 100% height stops short of the bottom */
 .app {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100lvh;   /* the full physical screen, even when the phone reports a shorter one */
   display: flex;
   flex-direction: column;
   max-width: 560px;
