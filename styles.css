@@ -27,7 +27,7 @@
   --r-lg: 16px;
   --r-md: 12px;
   --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-bottom: var(--fit-bottom, env(safe-area-inset-bottom, 0px));
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, sans-serif;
   color-scheme: dark;
@@ -66,6 +66,21 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
 }
 [hidden] { display: none !important; }
 
+/* Frosted band behind the clock and battery when content scrolls under them */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 30;
+  background: rgba(10, 9, 9, .82);
+  backdrop-filter: saturate(160%) blur(20px);
+  -webkit-backdrop-filter: saturate(160%) blur(20px);
+  pointer-events: none;
+}
+
 .i { width: 22px; height: 22px; flex: none; }
 .i-sm { width: 16px; height: 16px; flex: none; }
 
@@ -76,8 +91,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
   top: 0;
   left: 0;
   right: 0;
-  height: 100vh;
-  height: 100lvh;   /* the full physical screen, even when the phone reports a shorter one */
+  height: var(--app-h, 100%);   /* set from the real window height in app.js */
   display: flex;
   flex-direction: column;
   max-width: 560px;

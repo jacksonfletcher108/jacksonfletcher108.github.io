@@ -737,7 +737,12 @@
   function loadWeather() {
     const url = "https://api.open-meteo.com/v1/forecast?latitude=32.84&longitude=-79.90" +
       "&daily=temperature_2m_max,precipitation_probability_max,sunset&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1";
-    fetch(url).then(r => r.ok ? r.json() : Promise.reject()).then(data => {
+    const cached = store.get("weather", null);
+    const fresh = cached && Date.now() - cached.at < 3600e3 && new Date(cached.at).toDateString() === new Date().toDateString();
+    (fresh ? Promise.resolve(cached.data) : fetch(url).then(r => r.ok ? r.json() : Promise.reject()).then(data => {
+      store.set("weather", { at: Date.now(), data });   // reuse for an hour
+      return data;
+    })).then(data => {
       const d = data.daily;
       const temp = Math.round(d.temperature_2m_max[0]);
       const rain = d.precipitation_probability_max[0];
@@ -968,6 +973,30 @@
     if (tab) switchTab(tab.dataset.tab);
   });
 
+  /* ---------- Fit the app to the real window ----------
+     Some iPhones give home-screen apps a window shorter than the screen and leave
+     the bottom strip black. Size to the window, and skip the home-bar padding when
+     the window doesn't reach the bottom of the screen. */
+  const probe = document.createElement("div");
+  probe.style.cssText = "position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)";
+  document.body.appendChild(probe);
+  const fit = { short: false };
+  function fitToWindow() {
+    const root = document.documentElement.style;
+    const h = window.innerHeight;
+    const safeTop = parseFloat(getComputedStyle(probe).paddingTop) || 0;
+    const screenH = Math.max(screen.height, screen.width) === screen.height ? screen.height : screen.width;
+    // Content runs under the status bar, yet the window is shorter than the screen
+    fit.short = safeTop > 0 && h < screenH - 8;
+    root.setProperty("--app-h", h + "px");
+    if (fit.short) root.setProperty("--fit-bottom", "6px");
+    else root.removeProperty("--fit-bottom");
+  }
+  fitToWindow();
+  addEventListener("resize", fitToWindow);
+  addEventListener("orientationchange", () => setTimeout(fitToWindow, 300));
+  if (window.visualViewport) visualViewport.addEventListener("resize", fitToWindow);
+
   /* ---------- Screen check (tap the "Date Night" title 5 times) ---------- */
   let titleTaps = 0, titleTimer;
   $("#screen-pick h1").addEventListener("click", () => {
@@ -982,7 +1011,8 @@
     const cs = getComputedStyle(probe);
     const app = $(".app").getBoundingClientRect(), bar = $(".tabbar").getBoundingClientRect();
     const rows = [
-      ["Version", "v8"],
+      ["Version", "v9"],
+      ["Short window fix", fit.short ? "on" : "off"],
       ["Home screen app", String(!!navigator.standalone || matchMedia("(display-mode: standalone)").matches)],
       ["Screen", `${screen.width} × ${screen.height}`],
       ["Window", `${innerWidth} × ${innerHeight}`],
