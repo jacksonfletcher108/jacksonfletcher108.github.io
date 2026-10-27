@@ -44,9 +44,9 @@ export const APPS = [
     icon: WalletCards,
     color: '#3ecf8e',
     shot: shot('tally'),
-    summary: 'Set up a monthly budget in about a minute, log spending in one tap, and try out changes before you commit to them.',
+    summary: 'Answer three quick questions and it builds a monthly budget for you. After that it tells you what you can spend today, and logging a purchase takes one tap.',
     why: 'I wanted to know what I can spend today, not just what I spent last month.',
-    details: ['A daily safe-to-spend number', 'Planned vs. actual, and where the month is headed', 'What-if sliders tied to a savings goal'],
+    details: ['Guided setup, including how often you get paid', 'What\'s left in each category at a glance', 'Try a change on your savings goal, then apply it'],
   },
   {
     id: 'next',
