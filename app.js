@@ -138,7 +138,25 @@
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const byId = id => IDEAS.find(i => i.id === id);
-  const inSeason = i => !i.months || i.months.includes(MONTH);
+  // Dated events show up 30 days ahead and disappear after they end; others use months
+  const DAY = 864e5;
+  const parseDay = str => { const [y, m, d] = str.split("-").map(Number); return new Date(y, m - 1, d); };
+  const TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
+  const isDated = i => !!(i.start || i.end);
+  function inSeason(i) {
+    if (isDated(i)) {
+      const start = parseDay(i.start || i.end), end = parseDay(i.end || i.start);
+      return TODAY >= start - 30 * DAY && TODAY <= end;
+    }
+    return !i.months || i.months.includes(MONTH);
+  }
+  const daysUntil = i => Math.round((parseDay(i.start || i.end) - TODAY) / DAY);
+  function dateLabel(i) {
+    const f = d => parseDay(d).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+    if (!i.end || i.end === i.start) return f(i.start || i.end);
+    if (daysUntil(i) <= 0) return `Now through ${f(i.end)}`;
+    return `${f(i.start)} – ${f(i.end)}`;
+  }
 
   function toast(msg) {
     const t = $("#toast");
@@ -177,6 +195,7 @@
   function weightOf(idea) {
     let w = 1;
     if (idea.months) w *= 2.5;                                    // in-season specials show up more
+    if (isDated(idea) && daysUntil(idea) <= 14) w *= 3;           // events coming up soon
     if (state.recent.includes(idea.id)) w *= 0.1;                 // avoid repeats
     if (state.history.some(h => h.ideaId === idea.id)) w *= 0.6;  // done before
     if (state.filters.drive != null && idea.tier !== "in" && !coordsOf(idea)) w *= 0.2; // prefer real nearby places
@@ -226,7 +245,7 @@
 
   function renderCount() {
     const list = pool();
-    const inSeasonCount = list.filter(i => i.months).length;
+    const inSeasonCount = list.filter(i => i.months || isDated(i)).length;
     const el = $("#pick-count");
     $("#pick-btn").disabled = !IDEAS.length;
     if (!IDEAS.length) {
@@ -298,7 +317,8 @@
     const missed = showMisses ? misses(idea) : [];
     const badges = [];
     if (idea.custom) badges.push(`<span class="badge yours">Your idea</span>`);
-    if (idea.months) badges.push(`<span class="badge season">In season</span>`);
+    if (isDated(idea)) badges.push(`<span class="badge season">${esc(dateLabel(idea))}</span>`);
+    else if (idea.months) badges.push(`<span class="badge season">In season</span>`);
     if (idea.age21) badges.push(`<span class="badge adult">21+</span>`);
     if (isRainy(idea) && idea.tier !== "in") badges.push(`<span class="badge">Rain-proof</span>`);
     badges.push(`<span class="badge">${BUDGET[idea.budget] || ""}</span>`);
@@ -543,7 +563,10 @@
     $("#browse-count").textContent = `${seasonal().length} ideas right now`;
     const toggle = anyFilters
       ? `<button class="text-btn" id="browse-filter-toggle">${state.browseUseFilters ? "Show all ideas" : "Use my filters"}</button>` : "";
-    $("#browse-list").innerHTML = list.length ? `
+    const extras = !q && !t ? browseExtras() : "";
+    const updated = window.DATE_IDEAS_UPDATED
+      ? `<p class="list-meta updated">Ideas last updated ${parseDay(window.DATE_IDEAS_UPDATED).toLocaleDateString(undefined, { month: "long", day: "numeric" })}</p>` : "";
+    $("#browse-list").innerHTML = extras + (list.length ? `
       <div class="list-meta"><span>${list.length} ${list.length === 1 ? "idea" : "ideas"}${anyFilters && state.browseUseFilters ? " match your filters" : ""}</span>${toggle}</div>
       <div class="group list">
         ${list.map(i => `
@@ -560,7 +583,40 @@
         <h3>${t === "custom" && !q ? "No ideas of your own yet" : "Nothing found"}</h3>
         <p>${t === "custom" && !q ? "Tap “Add idea” to add a place or plan the app doesn't know about." : "Try a different word, like a neighborhood or “beach”."}</p>
         ${toggle}
-      </div>`;
+      </div>`) + updated;
+  }
+
+  const rowHTML = (i, sub) => `
+          <button class="row row-btn" data-tier="${i.tier}" data-open="${esc(i.id)}">
+            <span class="dot"></span>
+            <span class="row-main">
+              <span class="row-title">${esc(i.title)}</span>
+              <span class="row-sub">${sub}</span>
+            </span>
+          </button>`;
+
+  // Same three ideas all day, new ones tomorrow
+  function todaysThree() {
+    let seed = TODAY.getFullYear() * 400 + TODAY.getMonth() * 32 + TODAY.getDate();
+    const rand = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const picks = [];
+    ["in", "ease", "send"].forEach(tier => {
+      const options = seasonal().filter(i => i.tier === tier && !i.custom);
+      if (options.length) picks.push(options[Math.floor(rand() * options.length)]);
+    });
+    return picks;
+  }
+
+  function browseExtras() {
+    const soon = seasonal().filter(isDated).sort((a, b) => daysUntil(a) - daysUntil(b));
+    let html = "";
+    if (soon.length) {
+      html += `<section class="browse-section"><h2 class="section-label pad">Happening soon</h2><div class="group list">
+        ${soon.map(i => rowHTML(i, `${esc(dateLabel(i))} · ${esc(i.area || "")}`)).join("")}</div></section>`;
+    }
+    html += `<section class="browse-section"><h2 class="section-label pad">Today's three</h2><div class="group list">
+      ${todaysThree().map(i => rowHTML(i, `${TIERS[i.tier].label} · ${esc(i.area || "")}`)).join("")}</div></section>`;
+    return html;
   }
 
   $("#browse-q").addEventListener("input", renderBrowse);

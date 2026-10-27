@@ -672,6 +672,9 @@ h1 {
 #sync-in { font-family: ui-monospace, Menlo, monospace; font-size: 13px; min-height: 64px; }
 .fact dd { line-height: 1.35; }
 
+.browse-section { margin-bottom: 20px; }
+.list-meta.updated { justify-content: center; margin-top: 16px; }
+
 @keyframes fade { from { opacity: 0; } }
 @keyframes slide { from { transform: translateY(100%); } }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } }

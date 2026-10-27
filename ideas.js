@@ -28,8 +28,11 @@
    verify    true = a real business/venue (the app reminds you to check hours)
    age21     true = 21+
    rainy     true = works on a rainy day (stay-in ideas count automatically)
+   start/end Dated events: "YYYY-MM-DD". Shows up 30 days before start, disappears after end.
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
+
+window.DATE_IDEAS_UPDATED = "2026-10-27";
 
 window.DATE_IDEAS = [
 
@@ -492,7 +495,7 @@ window.DATE_IDEAS = [
     tip: "Weeknights have far shorter lines than weekends.",
     tier: "ease", budget: 1, energy: "lazy", time: "short", when: "night",
     area: "James Island", cost: "~$20–25 per car", duration: "~1.5 hrs",
-    place: "James Island County Park, Charleston, SC", verify: true, months: [11, 12, 1]
+    place: "James Island County Park, Charleston, SC", verify: true, start: "2026-11-13", end: "2026-12-31"
   },
   {
     id: "farmers-market",
@@ -970,12 +973,12 @@ window.DATE_IDEAS = [
   {
     id: "oyster-festival",
     title: "Lowcountry Oyster Festival",
-    desc: "A giant January oyster party. Wear clothes you don't care about.",
+    desc: "A giant oyster party at Boone Hall. Wear clothes you don't care about.",
     plan: ["Buy tickets ahead", "Bring an oyster knife and gloves", "Pace yourselves"],
     tip: "Tickets go faster than you'd think.",
     tier: "send", budget: 2, energy: "chill", time: "half", when: "day",
     area: "Mount Pleasant", cost: "~$60+", duration: "~4 hrs",
-    place: "Boone Hall Plantation, Mount Pleasant, SC", verify: true, months: [1]
+    place: "Boone Hall Plantation, Mount Pleasant, SC", verify: true, start: "2027-02-28", end: "2027-02-28"
   },
   {
     id: "stingrays-hockey",
@@ -2455,6 +2458,37 @@ window.DATE_IDEAS = [
     tier: "send", budget: 2, energy: "chill", time: "full", when: "any",
     area: "Myrtle Beach", cost: "~$80 + gas", duration: "All day",
     place: "Myrtle Beach Boardwalk, Myrtle Beach, SC", verify: true
+  },
+  /* ================= DATED EVENTS ================= */
+  {
+    id: "mtp-christmas-parade-2026",
+    title: "Mount Pleasant Christmas Light Parade",
+    desc: "Fireworks, then a lit-up parade down Coleman Boulevard with Santa on a fire truck.",
+    plan: ["Get there before the 5:30 fireworks", "Find a spot along Coleman Blvd", "Dinner on Shem Creek after"],
+    tip: "Coleman closes in sections starting around 4pm, so park early and walk.",
+    tier: "ease", budget: 0, energy: "lazy", time: "short", when: "night",
+    area: "Mount Pleasant", cost: "Free", duration: "~2.5 hrs",
+    place: "Coleman Boulevard, Mount Pleasant, SC", verify: true, start: "2026-12-13", end: "2026-12-13"
+  },
+  {
+    id: "summerville-christmas-parade-2026",
+    title: "Summerville Christmas Parade",
+    desc: "Summerville's big small-town parade. This year's theme is \"Christmas Stories.\"",
+    plan: ["Get downtown early for a spot", "Hot chocolate from a local shop", "Walk Hutchinson Square after"],
+    tip: "It's usually a Sunday afternoon. Check the start time the week of.",
+    tier: "ease", budget: 0, energy: "lazy", time: "short", when: "day",
+    area: "Summerville", cost: "Free", duration: "~2 hrs",
+    place: "Hutchinson Square, Summerville, SC", verify: true, start: "2026-12-13", end: "2026-12-13"
+  },
+  {
+    id: "north-charleston-christmas-festival",
+    title: "North Charleston Christmas Festival",
+    desc: "A parade and festival in Park Circle, usually on a Saturday in early December.",
+    plan: ["Check the date on the city's events page", "Get to Park Circle early", "Dinner on East Montague after"],
+    tip: "It got moved for rain last year, so check the forecast and the city's page.",
+    tier: "ease", budget: 0, energy: "lazy", time: "short", when: "any",
+    area: "Park Circle (N. Charleston)", cost: "Free", duration: "~3 hrs",
+    place: "Park Circle, North Charleston, SC", verify: true, months: [12]
   }
 
   // Add your own ideas above this line (remember the comma after the previous } ).
