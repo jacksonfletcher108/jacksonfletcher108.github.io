@@ -1,41 +1,43 @@
-import { ArrowDown, Nfc } from 'lucide-react'
+import { APPS } from '../data/apps'
 
-export default function Hero({ stats, onNfc }) {
+/** Opening: who I am, what this is, and the three apps fanned out like phones on a table. */
+export default function Hero() {
+  const live = APPS.filter(a => a.status === 'live')
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-10 pt-14 sm:px-6 sm:pt-20">
-      <div className="animate-rise flex items-center gap-3">
-        <span className="grid size-11 place-items-center rounded-full bg-white font-display text-[15px] font-bold text-slate-900">JF</span>
-        <div className="leading-tight">
-          <p className="text-[15px] font-semibold text-white">Hi, I'm Jackson.</p>
-          <p className="text-[13.5px] text-slate-400">Charleston, SC</p>
-        </div>
-      </div>
-      <h1 className="animate-rise mt-7 max-w-4xl font-display text-[40px] font-bold leading-[1.05] tracking-[-0.03em] text-white sm:text-[60px] lg:text-[68px]" style={{ animationDelay: '60ms' }}>
-        I build small apps for things that come up <span className="text-slate-400">every week.</span>
-      </h1>
-      <p className="animate-rise mt-6 max-w-[60ch] text-[17px] leading-relaxed text-slate-400 sm:text-[18px]" style={{ animationDelay: '120ms' }}>
-        Each one started as something I wanted for myself: a quicker way to plan a date, figure out dinner, or keep a budget.
-        I design and build them, then keep improving them as they get used. They all run in the browser, work well on a phone, and don't need an account.
-      </p>
-      <div className="animate-rise mt-8 flex flex-wrap gap-3" style={{ animationDelay: '180ms' }}>
-        <a href="#apps" className="group inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-[15px] font-semibold text-slate-900 transition hover:-translate-y-0.5">
-          See the apps<ArrowDown className="size-4 transition group-hover:translate-y-0.5" />
-        </a>
-        <button type="button" onClick={onNfc} className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[.04] px-5 py-3 text-[15px] font-semibold text-white transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[.08]">
-          <Nfc className="size-4 text-amber-300" />Fridge tag setup
-        </button>
+    <section id="top" className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-5 pb-16 pt-14 sm:px-8 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)] lg:gap-8 lg:pb-24">
+      <div className="animate-in">
+        <p className="text-[15px] text-muted">Hi, I'm Jackson.</p>
+        <h1 className="mt-3 max-w-[15ch] font-display text-[44px] font-bold leading-[1.02] tracking-[-0.035em] sm:text-[64px]">
+          I make small apps for everyday things.
+        </h1>
+        <p className="mt-6 max-w-[52ch] text-[17px] leading-[1.65] text-muted">
+          Each one started as something I wanted for myself. I design and build them, use them, and keep improving them.
+          They run in the browser, work well on a phone, and don't need an account.
+        </p>
+        <ul className="mt-8 flex flex-wrap gap-2" aria-label="Jump to an app">
+          {APPS.map(a => (
+            <li key={a.id}>
+              <a href={`#${a.id}`} className="inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-[14px] text-fg transition-colors hover:border-faint">
+                <span className="size-2 rounded-full" style={{ background: a.status === 'live' ? a.color : 'transparent', boxShadow: a.status === 'live' ? 'none' : `inset 0 0 0 1.5px ${a.color}` }} />
+                {a.name}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <dl className="animate-rise mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/[.08] bg-white/[.06] sm:grid-cols-4" style={{ animationDelay: '240ms' }}>
-        {stats.map(s => (
-          <div key={s.label} className="bg-[#0b0d14]/80 px-5 py-4 backdrop-blur">
-            <dt className="text-[13px] text-slate-400">{s.label}</dt>
-            <dd className="tabular mt-1 flex items-baseline gap-1.5 font-display text-[26px] font-semibold tracking-tight text-white">
-              {s.value}{s.unit && <span className="font-sans text-[13px] font-medium text-slate-400">{s.unit}</span>}
-            </dd>
+      {/* three real screenshots, overlapping */}
+      <div className="relative mx-auto h-[400px] w-full max-w-[420px] sm:h-[470px]" aria-hidden="true">
+        {live.map((a, i) => (
+          <div key={a.id} className="phone absolute top-0 w-[44%] animate-in"
+            style={{
+              left: `${[2, 28, 54][i]}%`, top: `${[34, 0, 42][i]}px`, zIndex: [1, 3, 2][i],
+              rotate: `${[-7, 0, 6][i]}deg`, animationDelay: `${120 + i * 90}ms`,
+            }}>
+            <img src={a.shot} alt="" width="390" height="844" loading="eager" />
           </div>
         ))}
-      </dl>
+      </div>
     </section>
   )
 }
