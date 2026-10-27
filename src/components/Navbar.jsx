@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { LayoutDashboard, SlidersHorizontal, FlaskConical, Moon, Sun, MoreHorizontal, RotateCcw, Eraser, Plus } from 'lucide-react'
+import { LayoutDashboard, SlidersHorizontal, Target, Moon, Sun, MoreHorizontal, RotateCcw, Eraser, Plus, Wand2 } from 'lucide-react'
 import { cn } from '../lib/utils'
 
 export const TABS = [
-  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'plan', label: 'Plan', icon: SlidersHorizontal },
-  { id: 'whatif', label: 'What-If', icon: FlaskConical },
+  { id: 'today', label: 'Today', icon: LayoutDashboard },
+  { id: 'budget', label: 'Budget', icon: SlidersHorizontal },
+  { id: 'goal', label: 'Goal', icon: Target },
 ]
 
-export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset, onSample, onAdd }) {
+export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset, onSample, onAdd, onSetup }) {
   const [menu, setMenu] = useState(false)
   const ref = useRef(null)
   useEffect(() => {
@@ -52,11 +52,14 @@ export default function Navbar({ tab, onTab, theme, onTheme, monthLabel, onReset
               </button>
               {menu && (
                 <div className="glass absolute right-0 top-12 z-40 w-56 rounded-2xl p-1.5 animate-pop bg-white/95 dark:bg-[#151826]/95">
+                  <button type="button" onClick={() => { setMenu(false); onSetup() }} className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium hover:bg-slate-900/5 dark:hover:bg-white/[.06]">
+                    <Wand2 className="size-4 text-slate-400" />Walk me through setup
+                  </button>
                   <button type="button" onClick={() => { setMenu(false); onSample() }} className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium hover:bg-slate-900/5 dark:hover:bg-white/[.06]">
-                    <RotateCcw className="size-4 text-slate-400" />Load sample month
+                    <RotateCcw className="size-4 text-slate-400" />Look around with example numbers
                   </button>
                   <button type="button" onClick={() => { setMenu(false); onReset() }} className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-rose-500 hover:bg-rose-500/10">
-                    <Eraser className="size-4" />Start fresh
+                    <Eraser className="size-4" />Erase everything
                   </button>
                 </div>
               )}

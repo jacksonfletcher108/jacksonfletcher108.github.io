@@ -15,7 +15,7 @@ export function CardHeader({ icon: Icon, title, subtitle, action, className }) {
         )}
         <div className="min-w-0">
           <h2 className="truncate text-[15px] font-bold tracking-tight">{title}</h2>
-          {subtitle && <p className="truncate text-[13px] text-slate-500 dark:text-slate-400">{subtitle}</p>}
+          {subtitle && <p className="text-[13px] leading-snug text-slate-500 dark:text-slate-400">{subtitle}</p>}
         </div>
       </div>
       {action}

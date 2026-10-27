@@ -73,12 +73,18 @@ export function summarize(state, now = new Date()) {
   const monthExpenses = state.expenses.filter(e => inMonth(e.date, mi))
   const fixedTotal = state.fixed.reduce((s, f) => s + f.amount, 0)
   const fixedPosted = state.fixed.filter(f => f.day <= mi.day)
+  // someone who sets up on the 27th only gets the rest of this month's spending money, not all of it
+  const startDay = state.since && inMonth(state.since, mi) ? Math.min(mi.day, Number(state.since.slice(8, 10))) : 1
+  const activeDays = mi.days - startDay + 1
+  const scale = activeDays / mi.days
+  const elapsed = mi.day - startDay + 1
 
   const byCat = Object.fromEntries(CATEGORY_IDS.map(id => {
     const fixed = state.fixed.filter(f => f.category === id).reduce((s, f) => s + f.amount, 0)
     const logged = monthExpenses.filter(e => e.category === id).reduce((s, e) => s + e.amount, 0)
     const target = state.targets[id] || 0
-    return [id, { id, ...CATEGORY_META[id], target, fixed, logged, actual: fixed + logged, planned: Math.max(target, fixed) }]
+    const budget = Math.round(Math.max(0, target - fixed) * scale)   // spending money (not bills) for this month
+    return [id, { id, ...CATEGORY_META[id], target, fixed, logged, budget, actual: fixed + logged, planned: Math.max(target, fixed) }]
   }))
 
   const allocated = CATEGORY_IDS.reduce((s, id) => s + Math.max(byCat[id].target, byCat[id].fixed), 0)
@@ -87,12 +93,12 @@ export function summarize(state, now = new Date()) {
 
   // flexible = everything that isn't savings and isn't already locked in as a fixed bill
   const flexIds = CATEGORY_IDS.filter(id => id !== 'savings')
-  const flexBudget = flexIds.reduce((s, id) => s + Math.max(0, byCat[id].target - byCat[id].fixed), 0)
+  const flexBudget = flexIds.reduce((s, id) => s + byCat[id].budget, 0)
   const flexSpent = flexIds.reduce((s, id) => s + byCat[id].logged, 0)
   const flexLeft = flexBudget - flexSpent
   const safeToday = Math.max(0, flexLeft / mi.daysLeft)
-  const plannedDaily = flexBudget / mi.days
-  const paceDaily = mi.day > 0 ? flexSpent / mi.day : 0
+  const plannedDaily = flexBudget / activeDays
+  const paceDaily = elapsed > 0 ? flexSpent / elapsed : 0
 
   const plannedSavings = Math.max(byCat.savings.target, byCat.savings.fixed)
   const projectedSpend = fixedTotal - byCat.savings.fixed + paceDaily * mi.days
@@ -102,6 +108,7 @@ export function summarize(state, now = new Date()) {
     mi, monthExpenses, byCat, fixedTotal, allocated, unallocated: state.income - allocated,
     loggedTotal, spentSoFar, flexBudget, flexSpent, flexLeft, safeToday, plannedDaily, paceDaily,
     plannedSavings, projectedLeftover, balance: state.income - spentSoFar,
+    startDay, elapsed, partial: startDay > 1,
   }
 }
 
@@ -151,3 +158,87 @@ export function goalDate(months) {
   const d = new Date(); d.setMonth(d.getMonth() + months)
   return d.toLocaleString('en-US', { month: 'short', year: 'numeric' })
 }
+
+/* ------------------------------------------------------------------ */
+/* Helpers for the simpler screens                                     */
+/* ------------------------------------------------------------------ */
+export const SPEND_IDS = CATEGORY_IDS.filter(id => id !== 'savings')
+
+export const PAY_FREQ = [
+  { id: 'monthly', label: 'Once a month', mult: 1 },
+  { id: 'twice', label: 'Twice a month', mult: 2 },
+  { id: 'biweekly', label: 'Every 2 weeks', mult: 26 / 12 },
+  { id: 'weekly', label: 'Every week', mult: 52 / 12 },
+]
+
+export const COMMON_BILLS = [
+  { name: 'Rent', category: 'housing', day: 1 },
+  { name: 'Phone', category: 'utilities', day: 20 },
+  { name: 'Internet', category: 'utilities', day: 15 },
+  { name: 'Electric', category: 'utilities', day: 12 },
+  { name: 'Car payment', category: 'personal', day: 5 },
+  { name: 'Car insurance', category: 'personal', day: 10 },
+  { name: 'Streaming', category: 'entertainment', day: 8 },
+  { name: 'Gym', category: 'personal', day: 1 },
+]
+
+const billsIn = (fixed, id) => fixed.filter(f => f.category === id).reduce((a, f) => a + f.amount, 0)
+const floor10 = n => Math.max(0, Math.floor(n / 10) * 10)
+
+/** How the leftover money gets split when someone taps "Split it for me". */
+const SPLIT = { food: 0.45, personal: 0.35, entertainment: 0.2 }
+
+/** Budget amounts per category: bills first, savings next, the rest split across everyday spending. */
+export function suggestTargets(income, fixed, monthlySave) {
+  const bills = fixed.filter(f => f.category !== 'savings').reduce((a, f) => a + f.amount, 0)
+  const save = Math.max(monthlySave || 0, billsIn(fixed, 'savings'))
+  const left = Math.max(0, income - bills - save)
+  const t = Object.fromEntries(CATEGORY_IDS.map(id => [id, billsIn(fixed, id)]))
+  t.savings = save
+  // round to tens, and give whatever rounding leaves over to food so the plan adds up exactly
+  let given = 0
+  Object.entries(SPLIT).forEach(([id, share]) => { const v = id === 'food' ? 0 : floor10(left * share); given += v; t[id] = billsIn(fixed, id) + v })
+  t.food = billsIn(fixed, 'food') + Math.max(0, Math.round(left - given))
+  return t
+}
+
+/** Everyday categories with how much spending money is left in each (bills don't count here). */
+export function spendingRows(s) {
+  return SPEND_IDS.map(id => {
+    const c = s.byCat[id]
+    return { ...c, spent: c.logged, left: c.budget - c.logged }
+  }).filter(r => r.budget > 0 || r.spent > 0)
+}
+
+/** "On track", "a bit fast", or "over", based on spending so far vs. where the plan says we'd be by today. */
+export function paceStatus(s) {
+  if (s.flexBudget <= 0) return { id: 'none', label: 'No spending budget yet' }
+  if (s.flexLeft < 0) return { id: 'over', label: 'Over budget' }
+  const expected = s.plannedDaily * s.elapsed
+  if (s.flexSpent > expected * 1.1 && s.flexSpent - expected > 15) return { id: 'fast', label: 'Spending a bit fast' }
+  return { id: 'ok', label: 'On track' }
+}
+
+/** This month's bills, split into paid (due date passed) and coming up. */
+export function billsTimeline(state, s) {
+  const list = [...state.fixed].sort((a, b) => a.day - b.day)
+  return { paid: list.filter(f => f.day <= s.mi.day), upcoming: list.filter(f => f.day > s.mi.day) }
+}
+
+/** Everyday spending per day this month, for the little bar chart. */
+export function dailySpend(state, s) {
+  const byDay = {}
+  s.monthExpenses.filter(e => e.category !== 'savings').forEach(e => { const d = Number(e.date.slice(8, 10)); byDay[d] = (byDay[d] || 0) + e.amount })
+  return Array.from({ length: s.mi.days }, (_, i) => ({ day: i + 1, spent: i + 1 <= s.mi.day ? Math.round((byDay[i + 1] || 0) * 100) / 100 : null }))
+}
+
+/** Turn a what-if scenario into real budget changes. */
+export function applyScenario(state, sc, routeToGoal, freedNow) {
+  const t = { ...state.targets }
+  t.food = Math.max(0, t.food - sc.dining)
+  t.entertainment = Math.max(0, t.entertainment - sc.fun)
+  t.savings = t.savings + sc.extra + (routeToGoal ? Math.max(0, freedNow) : 0)
+  return { ...state, income: Math.max(0, state.income + sc.income), targets: t }
+}
+
+export const isSetUp = state => !state.sample && state.income > 0

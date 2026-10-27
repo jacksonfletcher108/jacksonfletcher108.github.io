@@ -13,7 +13,7 @@ npm run build    # production build in dist/
 - `src/App.jsx`: app shell, tabs, quick-add wiring, undo toasts
 - `src/lib/budget.js`: categories, sample month, and all the math (safe-to-spend, cash-flow projection, goal timelines)
 - `src/hooks/useLocalStorage.js`: state that survives refreshes (key `ledgerly.v1`)
-- `src/components/`
+- `src/components/` (Today, Budget, Goal, setup wizard, add/edit sheet, category sheet)
   - `Navbar`: top bar with tabs, a bottom tab bar on phones, theme toggle and reset menu
   - `StatCards`: safe to spend today, left this month, daily pace, goal
   - `BudgetProgress`: spent vs. target per category, with inline target editing

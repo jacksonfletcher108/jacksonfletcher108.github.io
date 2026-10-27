@@ -10,11 +10,11 @@ const ZERO = { dining: 0, fun: 0, extra: 0, income: 0 }
 const PRESETS = [
   { label: 'Cut dining out by $150', set: { dining: 150 } },
   { label: 'Put an extra $200 toward savings', set: { extra: 200 } },
-  { label: 'Get a $300/mo raise', set: { income: 300 } },
+  { label: 'Get a $300 raise', set: { income: 300 } },
   { label: 'Go all in', set: { dining: 200, fun: 100, extra: 250 } },
 ]
 
-export default function WhatIfSimulator({ state, s, update, dark }) {
+export default function WhatIfSimulator({ state, s, update, dark, onApply }) {
   const [sc, setSc] = useState(ZERO)
   const [routeToGoal, setRouteToGoal] = useState(true)
   const g = state.goal
@@ -49,7 +49,16 @@ export default function WhatIfSimulator({ state, s, update, dark }) {
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
       <div className="space-y-4">
         <Card>
-          <CardHeader icon={FlaskConical} title="What if…" subtitle="Drag the sliders. Nothing changes your real budget."
+          <CardHeader icon={Target} title="Your goal" subtitle="What you're saving toward. Logging savings moves it forward." />
+          <div className="grid grid-cols-2 gap-2">
+            <input value={g.name} onChange={e => update(st => ({ ...st, goal: { ...st.goal, name: e.target.value } }))} aria-label="Goal name"
+              className="col-span-2 rounded-xl border border-slate-900/10 bg-white/70 px-3 py-2 text-base font-semibold outline-none focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20" />
+            <div><p className="mb-1 text-[12px] text-slate-500 dark:text-slate-400">Target</p><MoneyInput value={g.target} onChange={v => update(st => ({ ...st, goal: { ...st.goal, target: v } }))} aria-label="Goal target" /></div>
+            <div><p className="mb-1 text-[12px] text-slate-500 dark:text-slate-400">Saved so far</p><MoneyInput value={g.saved} onChange={v => update(st => ({ ...st, goal: { ...st.goal, saved: v } }))} aria-label="Saved so far" /></div>
+          </div>
+        </Card>
+        <Card>
+          <CardHeader icon={FlaskConical} title="What if…" subtitle="Try a change. Nothing is saved until you tap Apply."
             action={changed ? <button type="button" onClick={() => setSc(ZERO)} className="flex items-center gap-1 rounded-lg px-2 py-1 text-[12px] font-semibold text-slate-500 hover:bg-slate-900/5 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/[.06] dark:hover:text-white"><RotateCcw className="size-3.5" />Reset</button> : null} />
           <div className="mb-5 flex flex-wrap gap-1.5">
             {PRESETS.map(p => (
@@ -74,15 +83,6 @@ export default function WhatIfSimulator({ state, s, update, dark }) {
           </label>
         </Card>
 
-        <Card>
-          <CardHeader icon={Target} title="Your goal" subtitle="What you're saving toward" />
-          <div className="grid grid-cols-2 gap-2">
-            <input value={g.name} onChange={e => update(st => ({ ...st, goal: { ...st.goal, name: e.target.value } }))} aria-label="Goal name"
-              className="col-span-2 rounded-xl border border-slate-900/10 bg-white/70 px-3 py-2 text-base font-semibold outline-none focus:border-emerald-400/70 focus:ring-4 focus:ring-emerald-400/15 dark:border-white/10 dark:bg-black/20" />
-            <div><p className="mb-1 text-[12px] text-slate-500 dark:text-slate-400">Target</p><MoneyInput value={g.target} onChange={v => update(st => ({ ...st, goal: { ...st.goal, target: v } }))} aria-label="Goal target" /></div>
-            <div><p className="mb-1 text-[12px] text-slate-500 dark:text-slate-400">Saved so far</p><MoneyInput value={g.saved} onChange={v => update(st => ({ ...st, goal: { ...st.goal, saved: v } }))} aria-label="Saved so far" /></div>
-          </div>
-        </Card>
       </div>
 
       <div className="space-y-4">
@@ -104,6 +104,13 @@ export default function WhatIfSimulator({ state, s, update, dark }) {
             <Compare label="Daily spending budget" a={money(r.baseSafe)} b={money(r.scenSafe)} good={r.scenSafe >= r.baseSafe} changed={Math.round(r.scenSafe) !== Math.round(r.baseSafe)} />
           </div>
           {r.scenCushion < 0 && <p className="relative mt-3 rounded-xl bg-rose-500/10 px-3 py-2 text-[13px] font-medium text-rose-500">Heads up: this plan spends {money(-r.scenCushion)}/mo more than you bring in.</p>}
+          {changed ? (
+            <div className="relative mt-5 flex flex-wrap gap-2">
+              <button type="button" onClick={() => { onApply({ dining: Math.min(sc.dining, maxDining), fun: Math.min(sc.fun, maxFun), extra: sc.extra, income: sc.income }, routeToGoal, r.cuts + sc.income); setSc(ZERO) }}
+                className="rounded-xl bg-emerald-500 px-4 py-2.5 text-[14.5px] font-bold text-white shadow-lg shadow-emerald-500/20 transition active:scale-[.98]">Apply this change</button>
+              <button type="button" onClick={() => setSc(ZERO)} className="rounded-xl px-4 py-2.5 text-[14.5px] font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Never mind</button>
+            </div>
+          ) : <p className="relative mt-4 text-[13.5px] text-slate-500 dark:text-slate-400">Move a slider to see what changes.</p>}
         </div>
 
         <Card>
