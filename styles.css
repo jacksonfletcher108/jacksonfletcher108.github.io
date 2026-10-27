@@ -70,8 +70,10 @@ button:focus-visible, a:focus-visible, textarea:focus-visible {
 .i-sm { width: 16px; height: 16px; flex: none; }
 
 /* ============ Shell ============ */
+/* Pinned to all four edges: on iPhone home-screen apps, 100% height stops short of the bottom */
 .app {
-  height: 100%;
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
   max-width: 560px;
