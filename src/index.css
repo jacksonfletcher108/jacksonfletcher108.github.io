@@ -1,61 +1,76 @@
 @import "tailwindcss";
 
+/* The page is a fridge door. Apps hang on it like notes and photos:
+   pinned with magnets or tape, a little crooked, straightened when you pick one up. */
 @theme {
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --color-ink: #07080d;
-  --animate-rise: rise .7s cubic-bezier(.16, 1, .3, 1) both;
-  --animate-pop: pop .35s cubic-bezier(.16, 1, .3, 1) both;
-  --animate-fade: fade .25s ease-out both;
+  --font-display: "Bricolage Grotesque", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+
+  --color-fridge: #d6e8de;      /* retro mint enamel */
+  --color-fridge-deep: #bcd6c8;
+  --color-paper: #fffdf8;
+  --color-ink: #1f2b26;         /* green-black, never pure black */
+  --color-pencil: #55655d;
+  --color-chrome: #e9eeec;
+
+  --animate-hang: hang .7s cubic-bezier(.2, 1.4, .4, 1) backwards;
+  --animate-pop: pop .35s cubic-bezier(.2, 1.2, .4, 1) both;
+  --animate-fade: fade .2s ease-out both;
 }
 
-@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-@keyframes pop { from { opacity: 0; transform: translateY(20px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes hang { from { opacity: 0; translate: 0 -16px; } to { opacity: 1; translate: 0 0; } }
+@keyframes pop { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes drift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(3%, -4%, 0) scale(1.08); }
-}
 
-:root { color-scheme: dark; }
-html { background: var(--color-ink); }
-body { @apply font-sans text-slate-200 antialiased; }
+:root { color-scheme: light; }
+html {
+  background-color: var(--color-fridge);
+  /* soft vertical sheen like a painted metal door, plus a little grain */
+  background-image:
+    linear-gradient(90deg, rgb(255 255 255 / .0) 0%, rgb(255 255 255 / .28) 18%, rgb(255 255 255 / 0) 42%, rgb(0 0 0 / .03) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+body { @apply font-sans text-ink antialiased; }
 h1, h2, h3 { text-wrap: balance; }
+::selection { background: #e5484d33; }
 
-/* mesh gradient: three slow blobs + fine grain */
-.mesh { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.mesh i { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; animation: drift 24s ease-in-out infinite; }
-.mesh i:nth-child(1) { width: 55vw; height: 55vw; left: -12vw; top: -18vw; background: radial-gradient(circle, #6d28d9 0%, transparent 65%); }
-.mesh i:nth-child(2) { width: 50vw; height: 50vw; right: -14vw; top: -6vw; background: radial-gradient(circle, #0e7490 0%, transparent 65%); animation-delay: -8s; }
-.mesh i:nth-child(3) { width: 60vw; height: 60vw; left: 20vw; top: 55vh; background: radial-gradient(circle, #065f46 0%, transparent 65%); animation-delay: -16s; opacity: .4; }
-.mesh::after {
-  content: ""; position: absolute; inset: 0; opacity: .06; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.grid-lines {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background-image: linear-gradient(rgb(255 255 255 / .035) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / .035) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
-}
-
-@utility glass {
-  @apply border border-white/[.08] bg-white/[.035] backdrop-blur-2xl;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .06), 0 30px 60px -30px rgb(0 0 0 / .8);
-}
+@utility hand { font-family: var(--font-hand); letter-spacing: .01em; }
 @utility tabular { font-variant-numeric: tabular-nums; }
 
-/* card spotlight that follows the pointer */
-.spot { --x: 50%; --y: 50%; }
-.spot::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s;
-  background: radial-gradient(420px circle at var(--x) var(--y), rgb(var(--glow) / .14), transparent 45%);
+/* a sheet of paper on the door */
+@utility paper {
+  background: var(--card-paper, var(--color-paper));
+  box-shadow: 0 1px 1px rgb(31 43 38 / .08), 0 10px 24px -12px rgb(31 43 38 / .35), 0 30px 50px -40px rgb(31 43 38 / .45);
 }
-.spot:hover::before { opacity: 1; }
 
-:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; border-radius: 10px; }
+/* round fridge magnet */
+.magnet {
+  position: absolute; left: 50%; top: -14px; width: 30px; height: 30px; margin-left: -15px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .75), transparent 32%), var(--pin);
+  box-shadow: inset 0 -3px 4px rgb(0 0 0 / .25), 0 4px 6px rgb(31 43 38 / .35);
+}
+/* strip of masking tape */
+.tape {
+  position: absolute; left: 50%; top: -13px; width: 96px; height: 26px; margin-left: -48px; transform: rotate(-3deg);
+  background: linear-gradient(90deg, rgb(255 255 255 / .2), rgb(255 255 255 / .45) 50%, rgb(255 255 255 / .2)), rgb(236 226 196 / .82);
+  box-shadow: 0 1px 2px rgb(31 43 38 / .15);
+  clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 4% 96%, 0 50%);
+}
+
+/* the freezer/fridge seam and handle, decoration only */
+.door-handle {
+  position: fixed; top: 22vh; bottom: 22vh; left: max(10px, calc((100vw - 1180px) / 2 - 44px)); width: 14px; border-radius: 10px; z-index: 0;
+  background: linear-gradient(90deg, #b7c3bf, #f6f9f8 35%, #cfd8d5 60%, #9fadaa);
+  box-shadow: 2px 4px 10px rgb(31 43 38 / .25);
+}
+@media (max-width: 1279px) { .door-handle { display: none; } }
+
+.squiggle { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12'%3E%3Cpath d='M2 8 C 15 2, 25 2, 38 7 S 62 12, 76 6 S 102 1, 118 6' fill='none' stroke='%23e5484d' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E") 0 92% / 100% .26em no-repeat; padding-bottom: .06em; }
+
+:focus-visible { outline: 3px solid #e5484d; outline-offset: 3px; border-radius: 8px; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
