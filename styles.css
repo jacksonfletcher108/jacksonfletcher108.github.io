@@ -685,6 +685,7 @@ h1 {
 .chip.on { background: var(--red); border-color: var(--red); color: #fff; }
 .sub-row { padding-top: 0; }
 .sub-row .f-label { font-size: 13px; }
+.sub-row .seg button { font-size: 13px; }
 .f-row + .f-row.sub-row { border-top: 0; }
 .list-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .list-meta .text-btn { min-height: 28px; font-size: 13px; }
@@ -704,3 +705,18 @@ h1 {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ============ More filters (collapsed by default) ============ */
+.more-toggle {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 14px 0; border-top: 1px solid var(--sep);
+  font-size: 15px; font-weight: 600; color: var(--text-2);
+}
+.more-toggle .chev { transition: transform .2s ease; }
+.more-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.more-count {
+  margin-left: 6px; padding: 2px 8px; border-radius: 999px;
+  background: var(--elev-3); color: var(--text); font-size: 12px; font-weight: 700;
+}
+.more-rows { border-top: 1px solid var(--sep); }
+.more-rows[hidden] { display: none; }

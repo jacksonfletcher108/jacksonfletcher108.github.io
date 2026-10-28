@@ -11,15 +11,37 @@
   const WHEN = { day: "Daytime", night: "Evening", any: "Anytime" };
   const BUDGET = ["Free", "$", "$$", "$$$"];
 
+  // Everything an idea can be filtered by. `label` is also used in "ignores your ___ setting".
   const FILTERS = [
-    { key: "budget", label: "Max budget",      options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"]] },
-    { key: "energy", label: "Energy",      options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]] },
-    { key: "time",   label: "Time",        options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]] },
+    { key: "budget", label: "Budget" },
+    { key: "energy", label: "Energy" },
+    { key: "time",   label: "Time" },
+    { key: "tier",   label: "Setting" },
+    { key: "when",   label: "Time of day" },
+    { key: "drive",  label: "Max drive" },
+    { key: "rainy",  label: "Weather" }
+  ];
+  // The three broad choices everyone sees. "out" and "long" each cover two of the detailed options.
+  const MAIN_ROWS = [
+    { key: "budget", label: "Budget", options: [[0, "Free"], [1, "Under $30"], [2, "Under $80"]] },
+    { key: "tier",   label: "Plans",  options: [["in", "Stay in"], ["out", "Go out"]] },
+    { key: "time",   label: "Time",   options: [["short", "Quick"], ["long", "Longer"]] }
+  ];
+  // The finer controls, tucked under "More filters"
+  const MORE_ROWS = [
     { key: "tier",   label: "Setting",     options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]] },
+    { key: "time",   label: "How long",    options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]] },
+    { key: "energy", label: "Energy",      options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]] },
     { key: "when",   label: "Time of day", options: [["day", "Day"], ["night", "Night"]] },
     { key: "drive",  label: "Max drive",   options: [[15, "15 min"], [30, "30 min"], [45, "45 min"]] },
     { key: "rainy",  label: "Weather",     options: [[true, "Rain-proof only"]] }
   ];
+  const GROUPS = { out: ["ease", "send"], long: ["half", "full"] };
+  // Is button value `opt` lit up when the filter is set to `cur`? ("Go out" lights both Ease out and Full send, and vice versa.)
+  const covers = (cur, opt) => cur === opt || (GROUPS[cur] || []).includes(opt) || (GROUPS[opt] || []).includes(cur);
+  // Filters that only show up under "More filters" (a detailed Setting/Time counts too)
+  const moreCount = f => ["energy", "when", "drive", "rainy"].filter(k => f[k] != null).length
+    + (["ease", "send"].includes(f.tier) ? 1 : 0) + (["half", "full"].includes(f.time) ? 1 : 0);
 
   /* ---------- Where you two are ---------- */
   const ORIGINS = {
@@ -117,7 +139,8 @@
   };
 
   const state = {
-    filters: store.get("filters", {}),
+    filters: (f => { if (f.budget === 3) delete f.budget; return f; })(store.get("filters", {})),  // old "$$$" meant any budget
+    moreOpen: store.get("moreOpen", false),
     saved: store.get("saved", []),
     history: store.get("history", []),
     custom: store.get("custom", []),   // ideas you added in the app
@@ -177,6 +200,7 @@
     if (key === "when") return idea.when === "any" || idea.when === val;
     if (key === "drive") { const d = driveFrom(idea, state.filters.from || "mid"); return d == null || d <= val; }
     if (key === "rainy") return isRainy(idea);
+    if (GROUPS[val]) return GROUPS[val].includes(idea[key]);
     return idea[key] === val;
   }
 
@@ -225,12 +249,15 @@
         <div class="f-row">
           <span class="f-label">${label}</span>
           <div class="seg" role="group" aria-label="${label}">
-            ${opts.map(([v, text]) => `
-              <button class="${(cur == null ? null : cur) === v ? "on" : ""}" aria-pressed="${(cur == null ? null : cur) === v}"
-                data-key="${key}" data-val='${JSON.stringify(v)}'>${text}</button>`).join("")}
+            ${opts.map(([v, text]) => {
+              const on = v == null ? cur == null : cur != null && covers(cur, v);
+              return `
+              <button class="${on ? "on" : ""}" aria-pressed="${on}"
+                data-key="${key}" data-val='${JSON.stringify(v)}'>${text}</button>`;
+            }).join("")}
           </div>
         </div>`;
-    $("#filter-rows").innerHTML = FILTERS.map(f => {
+    const rows = list => list.map(f => {
       let html = segRow(f.key, f.label, [[null, "Any"], ...f.options], state.filters[f.key]);
       if (f.key === "drive" && state.filters.drive != null) {
         html += segRow("from", "Starting from", Object.entries(ORIGINS).map(([k, o]) => [k, o.label]), state.filters.from || "mid")
@@ -238,6 +265,13 @@
       }
       return html;
     }).join("");
+    const n = moreCount(state.filters);
+    $("#filter-rows").innerHTML = rows(MAIN_ROWS) + `
+        <button class="more-toggle" id="more-toggle" aria-expanded="${state.moreOpen}" aria-controls="more-rows">
+          <span>More filters${n ? ` <span class="more-count">${n} on</span>` : ""}</span>
+          <svg class="i chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="more-rows" id="more-rows" ${state.moreOpen ? "" : "hidden"}>${rows(MORE_ROWS)}</div>`;
     $("#clear-filters").hidden = !FILTERS.some(f => state.filters[f.key] != null);
     renderPresets();
     renderCount();
@@ -259,6 +293,12 @@
   }
 
   $("#filter-rows").addEventListener("click", e => {
+    if (e.target.closest("#more-toggle")) {
+      state.moreOpen = !state.moreOpen;
+      store.set("moreOpen", state.moreOpen);
+      renderFilters();
+      return;
+    }
     const b = e.target.closest("button[data-key]");
     if (!b) return;
     state.filters[b.dataset.key] = JSON.parse(b.dataset.val);
