@@ -24,7 +24,7 @@ ideas.forEach((i, n) => {
   if (seen.has(i.id)) errors.push(`${name}: duplicate id`);
   seen.add(i.id);
   for (const k in ENUMS) if (!ENUMS[k].includes(i[k])) errors.push(`${name}: ${k} must be one of ${ENUMS[k].join(", ")}`);
-  if (![0, 1, 2, 3].includes(i.budget)) errors.push(`${name}: budget must be 0–3`);
+  if (![0, 1, 2, 3, 4].includes(i.budget)) errors.push(`${name}: budget must be 0–4`);
   if (i.plan !== undefined && (!Array.isArray(i.plan) || !i.plan.length)) errors.push(`${name}: plan must be a list of steps`);
   if (i.months !== undefined && (!Array.isArray(i.months) || i.months.some(m => m < 1 || m > 12))) errors.push(`${name}: months must be 1–12`);
   ["start", "end"].forEach(f => { if (i[f] !== undefined && !isDay(i[f])) errors.push(`${name}: ${f} must be YYYY-MM-DD`); });
@@ -39,6 +39,7 @@ const month = today.getMonth() + 1;
 const live = ideas.filter(i => (i.start || i.end)
   ? today >= new Date(new Date(i.start || i.end) - 30 * 864e5) && today <= new Date((i.end || i.start) + "T23:59:59")
   : !i.months || i.months.includes(month));
+// budget 4 ($200+) is a small splurge band, so it is left out of the pair check
 const F = { budget: [0, 1, 2, 3], energy: ENUMS.energy, time: ENUMS.time, tier: ENUMS.tier, when: ["day", "night"] };
 const fits = (i, k, v) => k === "budget" ? i.budget <= v : k === "when" ? (i.when === "any" || i.when === v) : i[k] === v;
 const keys = Object.keys(F);

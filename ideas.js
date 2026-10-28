@@ -15,7 +15,7 @@
    plan      2–4 short steps, in order: ["Step one", "Step two"]
    tip       One useful tip.
    tier      "in" (stay in, upgraded), "ease" (ease out), "send" (full send)
-   budget    0 = Free, 1 = $ (under ~$30), 2 = $$ (~$30–80), 3 = $$$ ($80+)
+   budget    For the two of you: 0 = Free, 1 = under ~$30, 2 = ~$30–80, 3 = ~$80–200, 4 = $200+ (big trips)
    energy    "lazy", "chill", or "active"
    time      "short" (a couple hours), "half" (half day), "full" (full day)
    when      "day", "night", or "any"
@@ -947,8 +947,8 @@ window.DATE_IDEAS = [
     desc: "A tiny getaway: a night at an inn in a small, pretty waterfront town.",
     plan: ["Book a room at an inn or B&B", "Walk the waterfront park at sunset", "Slow breakfast before driving home"],
     tip: "Sunday-to-Monday nights are usually cheapest.",
-    tier: "send", budget: 3, energy: "lazy", time: "full", when: "any",
-    area: "Beaufort", cost: "$150+", duration: "Overnight",
+    tier: "send", budget: 4, energy: "lazy", time: "full", when: "any",
+    area: "Beaufort", cost: "$200+", duration: "Overnight",
     place: "Henry C. Chambers Waterfront Park, Beaufort, SC", verify: true
   },
   {
@@ -957,7 +957,7 @@ window.DATE_IDEAS = [
     desc: "The laziest full send there is.",
     plan: ["Book a couples massage", "Arrive early for the relaxation room", "Get a light dinner after"],
     tip: "Ask about weekday deals.",
-    tier: "send", budget: 3, energy: "lazy", time: "short", when: "any",
+    tier: "send", budget: 4, energy: "lazy", time: "short", when: "any",
     area: "Mount Pleasant", cost: "$200+", duration: "~2 hrs",
     place: "couples massage, Mount Pleasant, SC", verify: true,
     rainy: true
@@ -1021,7 +1021,7 @@ window.DATE_IDEAS = [
     desc: "A guided ride along the sand at Seabrook Island.",
     plan: ["Book a guided beach ride", "Wear long pants and closed-toe shoes", "Lunch on Johns Island on the way back"],
     tip: "Rides book up weeks out in spring and fall.",
-    tier: "send", budget: 3, energy: "active", time: "half", when: "day",
+    tier: "send", budget: 4, energy: "active", time: "half", when: "day",
     area: "Seabrook Island", cost: "~$100+ each", duration: "~3 hrs",
     place: "Seabrook Island Equestrian Center, Seabrook Island, SC", verify: true
   },
@@ -1176,7 +1176,7 @@ window.DATE_IDEAS = [
     desc: "A captain takes you into the creeks for redfish. No experience needed.",
     plan: ["Book a half-day inshore charter", "Bring sunscreen, snacks, and drinks", "Take a photo with your best catch"],
     tip: "Charters usually supply rods, bait, and licenses. Ask when you book.",
-    tier: "send", budget: 3, energy: "active", time: "half", when: "day",
+    tier: "send", budget: 4, energy: "active", time: "half", when: "day",
     area: "Charleston area", cost: "$300+ total", duration: "~4 hrs",
     place: "inshore fishing charter, Charleston, SC", verify: true
   },
@@ -1186,7 +1186,7 @@ window.DATE_IDEAS = [
     desc: "A pontoon, a cooler, and a sandbar. The most Lowcountry day possible.",
     plan: ["Rent a pontoon boat", "Pack lunch and drinks", "Find a sandbar at low tide"],
     tip: "Ask the rental place where the good sandbars are and when the tide turns.",
-    tier: "send", budget: 3, energy: "chill", time: "full", when: "day",
+    tier: "send", budget: 4, energy: "chill", time: "full", when: "day",
     area: "Charleston area", cost: "$300+", duration: "All day",
     place: "boat rental, Charleston, SC", verify: true, months: [4, 5, 6, 7, 8, 9, 10]
   },
@@ -2143,7 +2143,7 @@ window.DATE_IDEAS = [
     desc: "Book one night at a hotel downtown and act like tourists in your own city.",
     plan: ["Book a hotel for one night", "Dinner and dessert within walking distance", "Slow breakfast and a walk before checkout"],
     tip: "Sunday nights are usually the cheapest.",
-    tier: "send", budget: 3, energy: "lazy", time: "full", when: "any",
+    tier: "send", budget: 4, energy: "lazy", time: "full", when: "any",
     area: "Downtown", cost: "$200+", duration: "Overnight",
     place: "hotels, downtown Charleston, SC", verify: true, rainy: true
   },
@@ -2153,7 +2153,7 @@ window.DATE_IDEAS = [
     desc: "The day trip, but you stay the night and do the evening too.",
     plan: ["Book a room near the squares", "Walk the city and have a long dinner", "Breakfast before driving home"],
     tip: "Weeknights are much cheaper than weekends.",
-    tier: "send", budget: 3, energy: "chill", time: "full", when: "any",
+    tier: "send", budget: 4, energy: "chill", time: "full", when: "any",
     area: "Savannah", cost: "$200+", duration: "Overnight",
     place: "Savannah, GA"
   },
@@ -2163,7 +2163,7 @@ window.DATE_IDEAS = [
     desc: "Mountains, leaves changing color, and a small, artsy downtown.",
     plan: ["Book a cheap cabin or room", "Drive the Blue Ridge Parkway", "Food and shops downtown"],
     tip: "Peak leaves are usually mid to late October. Check the foliage forecast.",
-    tier: "send", budget: 3, energy: "chill", time: "full", when: "any",
+    tier: "send", budget: 4, energy: "chill", time: "full", when: "any",
     area: "Asheville", cost: "$300+", duration: "Weekend",
     place: "Asheville, NC", months: [10, 11]
   },

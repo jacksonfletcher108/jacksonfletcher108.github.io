@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Date Night</title>
   <meta name="description" content="Pick our next Charleston date.">
-  <meta name="theme-color" content="#0a0909">
+  <meta name="theme-color" content="#110b0e">
 
   <!-- iPhone home-screen app settings -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,7 +16,8 @@
   <link rel="icon" type="image/png" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
 
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
   <div class="app">
@@ -25,7 +26,7 @@
     <main class="screen" id="screen-pick">
       <header class="large-title">
         <p class="kicker" id="today"></p>
-        <h1>Date Night</h1>
+        <h1>Date <em>Night</em></h1>
         <p class="weather" id="weather" hidden></p>
       </header>
 
@@ -45,7 +46,7 @@
       </section>
 
       <div class="pick-bar">
-        <button class="btn btn-primary btn-lg" id="pick-btn">Pick a date</button>
+        <button class="btn btn-primary btn-lg" id="pick-btn" data-icon="shuffle">Pick a date</button>
         <p class="pick-count" id="pick-count"></p>
       </div>
     </main>
@@ -125,6 +126,6 @@
   <div class="toast" id="toast" aria-live="polite"></div>
 
   <script src="ideas.js"></script>
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=13"></script>
 </body>
 </html>

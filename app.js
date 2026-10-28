@@ -9,7 +9,9 @@
     send: { label: "Full send" }
   };
   const WHEN = { day: "Daytime", night: "Evening", any: "Anytime" };
-  const BUDGET = ["Free", "$", "$$", "$$$"];
+  const BUDGET = ["Free", "$", "$$", "$$$", "$$$$"];
+  // What each budget level means for the two of you
+  const BUDGET_SPAN = ["Free", "Under $30", "$30 to $80", "$80 to $200", "$200+"];
 
   // Everything an idea can be filtered by. `label` is also used in "ignores your ___ setting".
   const FILTERS = [
@@ -23,7 +25,7 @@
   ];
   // The three broad choices everyone sees. "out" and "long" each cover two of the detailed options.
   const MAIN_ROWS = [
-    { key: "budget", label: "Budget",   options: [[0, "Free"], [1, "Under $30"], [2, "Under $80"]] },
+    { key: "budget", label: "Budget for two", options: [[0, "Free"], [1, "$30"], [2, "$80"], [3, "$200"], [4, "$200+"]] },
     { key: "tier",   label: "Where",    options: [["in", "Stay in"], ["out", "Go out"]] },
     { key: "time",   label: "How long", options: [["short", "Under 2 hours"], ["long", "Half day or more"]] }
   ];
@@ -83,6 +85,8 @@
     search:   '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
     share:    '<path d="M12 3.5v11"/><path d="m7.5 8 4.5-4.5L16.5 8"/><path d="M7 11.5H5.5v9h13v-9H17"/>',
     sync:     '<path d="M4 9a8 8 0 0 1 14-3l2 2"/><path d="M20 3.5V8h-4.5"/><path d="M20 15a8 8 0 0 1-14 3l-2-2"/><path d="M4 20.5V16h4.5"/>',
+    sun:      '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+    sunset:   '<path d="M7 17a5 5 0 0 1 10 0"/><path d="M3 20.5h18M12 3.5v6M8.5 7 12 3.5 15.5 7M4.2 12.2l1.4 1.4M19.8 12.2l-1.4 1.4"/>',
     rain:     '<path d="M7 15a4 4 0 0 1-.5-8 5.5 5.5 0 0 1 10.6 1.5A3.3 3.3 0 0 1 17 15z"/><path d="M8 18l-1 2.5M12 18l-1 2.5M16 18l-1 2.5"/>'
   };
   const icon = (name, cls = "i") =>
@@ -139,7 +143,7 @@
   };
 
   const state = {
-    filters: (f => { if (f.budget === 3) delete f.budget; return f; })(store.get("filters", {})),  // old "$$$" meant any budget
+    filters: store.get("filters", {}),
     moreOpen: store.get("moreOpen", false),
     saved: store.get("saved", []),
     history: store.get("history", []),
@@ -196,7 +200,7 @@
 
   /* ---------- Filtering & picking ---------- */
   function fits(idea, key, val) {
-    if (key === "budget") return idea.budget <= val;          // budget means "up to"
+    if (key === "budget") return val === 4 ? idea.budget === 4 : idea.budget <= val;  // "up to", except $200+ means the big ones
     if (key === "when") return idea.when === "any" || idea.when === val;
     if (key === "drive") { const d = driveFrom(idea, state.filters.from || "mid"); return d == null || d <= val; }
     if (key === "rainy") return isRainy(idea);
@@ -252,22 +256,30 @@
 
   function renderFilters() {
     // Each row is a set of tiles: tap one to choose it, tap it again to go back to "any"
-    const tileRow = (f, { counts = true, sub = false } = {}) => {
+    const tileRow = (f, { counts = f.key !== "budget", sub = false } = {}) => {
       const cur = f.key === "from" ? state.filters.from || "mid" : state.filters[f.key];
       const tiles = f.options.map(([v, text]) => {
         const on = cur != null && covers(cur, v);
-        const n = counts ? countWith(f.key, v) : null;
-        return `<button class="opt${on ? " on" : ""}${n === 0 && !on ? " empty" : ""}" aria-pressed="${on}"
+        const n = counts || f.key === "budget" ? countWith(f.key, v) : null;
+        // with a max price picked, the cheaper steps light up too, since they're included
+        const inRange = f.key === "budget" && cur != null && cur !== 4 && v !== 4 && v < cur;
+        return `<button class="opt${on ? " on" : ""}${inRange ? " inrange" : ""}${n === 0 && !on ? " empty" : ""}" aria-pressed="${on}"
             data-key="${f.key}" data-val='${JSON.stringify(v)}'>
             <span class="opt-t">${text}</span>${counts ? `<span class="opt-n">${n} ${n === 1 ? "idea" : "ideas"}</span>` : ""}</button>`;
       }).join("");
       const right = sub ? "" : cur != null
         ? `<button class="f-clear" data-key="${f.key}" data-val="null">Clear</button>`
         : `<span class="f-any">Any</span>`;
+      // The budget row says in words what the chosen price means
+      const caption = f.key !== "budget" ? "" : `<p class="f-caption">${
+        cur == null ? "Tap a price to set your max" :
+        cur === 4 ? `The big ones, $200 and up · ${countWith("budget", 4)} ideas` :
+        cur === 0 ? `Totally free · ${countWith("budget", 0)} ideas` :
+        `Up to ${f.options[cur][1]} for the two of you · ${countWith("budget", cur)} ideas`}</p>`;
       return `
-        <div class="f-row${sub ? " sub-row" : ""}">
+        <div class="f-row${sub ? " sub-row" : ""}${f.key === "budget" ? " ladder" : ""}">
           <div class="f-head"><span class="f-label">${f.label}</span>${right}</div>
-          <div class="opts" role="group" aria-label="${f.label}" style="--cols:${f.options.length}">${tiles}</div>
+          <div class="opts" role="group" aria-label="${f.label}" style="--cols:${f.options.length}">${tiles}</div>${caption}
         </div>`;
     };
     const rows = list => list.map(f => {
@@ -374,7 +386,7 @@
     else if (idea.months) badges.push(`<span class="badge season">In season</span>`);
     if (idea.age21) badges.push(`<span class="badge adult">21+</span>`);
     if (isRainy(idea) && idea.tier !== "in") badges.push(`<span class="badge">Rain-proof</span>`);
-    badges.push(`<span class="badge">${BUDGET[idea.budget] || ""}</span>`);
+    badges.push(`<span class="badge">${BUDGET_SPAN[idea.budget] || ""}</span>`);
     badges.push(`<span class="badge">${esc(idea.energy.charAt(0).toUpperCase() + idea.energy.slice(1))}</span>`);
 
     return headHTML(idea) + `
@@ -386,14 +398,14 @@
         ${idea.plan && idea.plan.length ? `
         <section>
           <h3 class="section-label pad">The plan</h3>
-          <ol class="group plan">${idea.plan.map(step => `<li>${esc(step)}</li>`).join("")}</ol>
+          <ol class="plan">${idea.plan.map(step => `<li>${esc(step)}</li>`).join("")}</ol>
         </section>` : ""}
-        <dl class="group facts">
-          <div class="fact"><dt>Cost</dt><dd>${esc(idea.cost || BUDGET[idea.budget])}</dd></div>
+        <dl class="facts">
+          <div class="fact"><dt>Cost</dt><dd>${esc(idea.cost || BUDGET_SPAN[idea.budget])}</dd></div>
           <div class="fact"><dt>Takes</dt><dd>${esc(idea.duration || "")}</dd></div>
-          <div class="fact"><dt>Where</dt><dd>${esc(idea.area || "")}</dd></div>
-          <div class="fact"><dt>Drive</dt><dd>${driveText(idea)}</dd></div>
           <div class="fact"><dt>Best</dt><dd>${WHEN[idea.when] || WHEN.any}</dd></div>
+          <div class="fact"><dt>Where</dt><dd>${esc(idea.area || "")}</dd></div>
+          <div class="fact wide"><dt>Drive</dt><dd>${driveText(idea)}</dd></div>
         </dl>
         ${idea.tip ? `<p class="tip"><b>Tip</b>${esc(idea.tip)}</p>` : ""}
         ${idea.verify ? `<p class="note">${icon("info", "i-sm")}<span>This is a real business. Places close and change hours, so check before you go.</span></p>` : ""}
@@ -664,8 +676,16 @@
     const soon = seasonal().filter(isDated).sort((a, b) => daysUntil(a) - daysUntil(b));
     let html = "";
     if (soon.length) {
-      html += `<section class="browse-section"><h2 class="section-label pad">Happening soon</h2><div class="group list">
-        ${soon.map(i => rowHTML(i, `${esc(dateLabel(i))} · ${esc(i.area || "")}`)).join("")}</div></section>`;
+      html += `<section class="browse-section"><h2 class="section-label pad">Happening soon</h2><div class="soon">
+        ${soon.map(i => {
+          const live = daysUntil(i) <= 0;   // already started: show when it ends
+          const d = parseDay(live ? i.end || i.start : i.start || i.end);
+          return `<button class="soon-card" data-tier="${i.tier}" data-open="${esc(i.id)}">
+            <span class="soon-date"><small>${live ? "Til " : ""}${d.toLocaleDateString(undefined, { month: "short" })}</small><b>${d.getDate()}</b></span>
+            <span class="soon-title">${esc(i.title)}</span>
+            <span class="soon-sub">${esc(dateLabel(i))}<br>${esc(i.area || "")}</span>
+          </button>`;
+        }).join("")}</div></section>`;
     }
     html += `<section class="browse-section"><h2 class="section-label pad">Today's three</h2><div class="group list">
       ${todaysThree().map(i => rowHTML(i, `${TIERS[i.tier].label} · ${esc(i.area || "")}`)).join("")}</div></section>`;
@@ -693,7 +713,7 @@
   /* ---------- Add your own idea ---------- */
   const FORM_SEGS = [
     { key: "tier",   label: "Setting", options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]], def: "ease" },
-    { key: "budget", label: "Budget",  options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"]], def: 1 },
+    { key: "budget", label: "Budget",  options: [[0, "Free"], [1, "$"], [2, "$$"], [3, "$$$"], [4, "$$$$"]], def: 1 },
     { key: "energy", label: "Energy",  options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]], def: "chill" },
     { key: "time",   label: "Time",    options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]], def: "short" },
     { key: "when",   label: "Best",    options: [["any", "Anytime"], ["day", "Day"], ["night", "Night"]], def: "any" }
@@ -801,7 +821,7 @@
       const rain = d.precipitation_probability_max[0];
       const sunset = new Date(d.sunset[0]).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
       const w = $("#weather");
-      w.textContent = `High of ${temp}° · ${rain}% chance of rain · Sunset ${sunset}`;
+      w.innerHTML = `<span class="wx">${icon("sun", "i-sm")}High of ${temp}°</span><span class="wx">${icon("rain", "i-sm")}${rain}% rain</span><span class="wx">${icon("sunset", "i-sm")}Sunset ${sunset}</span>`;
       w.hidden = false;
       if (rain >= 50) {
         const b = $("#rain-banner");
