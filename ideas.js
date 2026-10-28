@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-10-27";
+window.DATE_IDEAS_UPDATED = "2026-10-28";
 
 window.DATE_IDEAS = [
 
@@ -2237,6 +2237,16 @@ window.DATE_IDEAS = [
     tier: "send", budget: 2, energy: "lazy", time: "short", when: "any",
     area: "Downtown", cost: "~$25–50 each", duration: "~2 hrs",
     place: "Dock Street Theatre, Charleston, SC", verify: true, rainy: true, start: "2026-11-06", end: "2026-11-15"
+  },
+  {
+    id: "charleston-holiday-market-2026",
+    title: "Charleston Holiday Market",
+    desc: "A big indoor holiday market at the Coliseum with local makers, gifts, and food.",
+    plan: ["Set a small gift budget for each other", "Split up for 20 minutes and shop in secret", "Meet back up and swap what you found"],
+    tip: "Tickets are only a few bucks. Go Friday or early Sunday to skip the biggest crowds.",
+    tier: "ease", budget: 1, energy: "chill", time: "short", when: "day",
+    area: "North Charleston", cost: "~$8 each + gifts", duration: "~2 hrs",
+    place: "North Charleston Coliseum, North Charleston, SC", verify: true, rainy: true, start: "2026-11-20", end: "2026-11-22"
   },
   /* ================= ALCOHOL-FREE SWAPS ================= */
   {
