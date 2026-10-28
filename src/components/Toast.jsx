@@ -1,7 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function Toast({ toast, onDone }) {
-  useEffect(() => { if (!toast) return; const t = setTimeout(onDone, toast.action ? 5000 : 2800); return () => clearTimeout(t) }, [toast, onDone])
+  const done = useRef(onDone)
+  useEffect(() => { done.current = onDone })
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => done.current(), toast.action ? 5000 : 2800); return () => clearTimeout(t) }, [toast])
   if (!toast) return null
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-[calc(96px+var(--sab))] z-[60] flex justify-center px-4 md:bottom-8" role="status" aria-live="polite">

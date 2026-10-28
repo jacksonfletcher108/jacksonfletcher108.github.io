@@ -33,15 +33,18 @@ export function Progress({ value, className, color = 'from-emerald-400 to-teal-4
 /** Full-screen on phones, centered on bigger screens. Escape and the backdrop close it. */
 export function Modal({ open, onClose, title, label, children, wide, className }) {
   const ref = useRef(null)
+  // the app redraws every second for the live counters; keep the latest onClose without re-running setup (which would steal focus from inputs)
+  const close = useRef(onClose)
+  useEffect(() => { close.current = onClose })
   useEffect(() => {
     if (!open) return
     const prev = document.activeElement
-    const onKey = e => { if (e.key === 'Escape') onClose() }
+    const onKey = e => { if (e.key === 'Escape') close.current() }
     document.addEventListener('keydown', onKey)
     document.documentElement.style.overflow = 'hidden'
     const t = setTimeout(() => ref.current?.querySelector('[data-autofocus]')?.focus(), 40)
     return () => { clearTimeout(t); document.removeEventListener('keydown', onKey); document.documentElement.style.overflow = ''; prev?.focus?.({ preventScroll: true }) }
-  }, [open, onClose])
+  }, [open])
   if (!open) return null
   return (
     <div ref={ref} className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={label || title}>
