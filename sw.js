@@ -1,6 +1,6 @@
 /* Offline support. Tries the internet first (so your edits show up right away),
    and falls back to the saved copy when there's no signal. */
-const CACHE = "date-night-v10";
+const CACHE = "date-night-v11";
 const FILES = ["./", "index.html", "styles.css", "app.js", "ideas.js",
   "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 

@@ -23,14 +23,14 @@
   ];
   // The three broad choices everyone sees. "out" and "long" each cover two of the detailed options.
   const MAIN_ROWS = [
-    { key: "budget", label: "Budget", options: [[0, "Free"], [1, "Under $30"], [2, "Under $80"]] },
-    { key: "tier",   label: "Plans",  options: [["in", "Stay in"], ["out", "Go out"]] },
-    { key: "time",   label: "Time",   options: [["short", "Quick"], ["long", "Longer"]] }
+    { key: "budget", label: "Budget",   options: [[0, "Free"], [1, "Under $30"], [2, "Under $80"]] },
+    { key: "tier",   label: "Where",    options: [["in", "Stay in"], ["out", "Go out"]] },
+    { key: "time",   label: "How long", options: [["short", "Under 2 hours"], ["long", "Half day or more"]] }
   ];
   // The finer controls, tucked under "More filters"
   const MORE_ROWS = [
     { key: "tier",   label: "Setting",     options: [["in", "Stay in"], ["ease", "Ease out"], ["send", "Full send"]] },
-    { key: "time",   label: "How long",    options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]] },
+    { key: "time",   label: "Length",      options: [["short", "Under 2h"], ["half", "Half day"], ["full", "Full day"]] },
     { key: "energy", label: "Energy",      options: [["lazy", "Lazy"], ["chill", "Chill"], ["active", "Active"]] },
     { key: "when",   label: "Time of day", options: [["day", "Day"], ["night", "Night"]] },
     { key: "drive",  label: "Max drive",   options: [[15, "15 min"], [30, "30 min"], [45, "45 min"]] },
@@ -244,24 +244,36 @@
     $("#month-label").textContent = d.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   }
 
+  // How many in-season ideas you'd get if `key` were set to `val` (everything else as is)
+  const countWith = (key, val) => seasonal().filter(i => FILTERS.every(f => {
+    const v = f.key === key ? val : state.filters[f.key];
+    return v == null || fits(i, f.key, v);
+  })).length;
+
   function renderFilters() {
-    const segRow = (key, label, opts, cur) => `
-        <div class="f-row">
-          <span class="f-label">${label}</span>
-          <div class="seg" role="group" aria-label="${label}">
-            ${opts.map(([v, text]) => {
-              const on = v == null ? cur == null : cur != null && covers(cur, v);
-              return `
-              <button class="${on ? "on" : ""}" aria-pressed="${on}"
-                data-key="${key}" data-val='${JSON.stringify(v)}'>${text}</button>`;
-            }).join("")}
-          </div>
+    // Each row is a set of tiles: tap one to choose it, tap it again to go back to "any"
+    const tileRow = (f, { counts = true, sub = false } = {}) => {
+      const cur = f.key === "from" ? state.filters.from || "mid" : state.filters[f.key];
+      const tiles = f.options.map(([v, text]) => {
+        const on = cur != null && covers(cur, v);
+        const n = counts ? countWith(f.key, v) : null;
+        return `<button class="opt${on ? " on" : ""}${n === 0 && !on ? " empty" : ""}" aria-pressed="${on}"
+            data-key="${f.key}" data-val='${JSON.stringify(v)}'>
+            <span class="opt-t">${text}</span>${counts ? `<span class="opt-n">${n} ${n === 1 ? "idea" : "ideas"}</span>` : ""}</button>`;
+      }).join("");
+      const right = sub ? "" : cur != null
+        ? `<button class="f-clear" data-key="${f.key}" data-val="null">Clear</button>`
+        : `<span class="f-any">Any</span>`;
+      return `
+        <div class="f-row${sub ? " sub-row" : ""}">
+          <div class="f-head"><span class="f-label">${f.label}</span>${right}</div>
+          <div class="opts" role="group" aria-label="${f.label}" style="--cols:${f.options.length}">${tiles}</div>
         </div>`;
+    };
     const rows = list => list.map(f => {
-      let html = segRow(f.key, f.label, [[null, "Any"], ...f.options], state.filters[f.key]);
+      let html = tileRow(f);
       if (f.key === "drive" && state.filters.drive != null) {
-        html += segRow("from", "Starting from", Object.entries(ORIGINS).map(([k, o]) => [k, o.label]), state.filters.from || "mid")
-          .replace('class="f-row"', 'class="f-row sub-row"');
+        html += tileRow({ key: "from", label: "Starting from", options: Object.entries(ORIGINS).map(([k, o]) => [k, o.label]) }, { counts: false, sub: true });
       }
       return html;
     }).join("");
@@ -301,7 +313,9 @@
     }
     const b = e.target.closest("button[data-key]");
     if (!b) return;
-    state.filters[b.dataset.key] = JSON.parse(b.dataset.val);
+    const key = b.dataset.key, val = JSON.parse(b.dataset.val);
+    const again = key !== "from" && state.filters[key] === val;
+    state.filters[key] = again ? null : val;
     store.set("filters", state.filters);
     renderFilters();
     renderBrowse();
@@ -311,12 +325,11 @@
   const PRESETS = [
     { label: "Weeknight",  f: { time: "short", budget: 2, when: "night", drive: 30, from: "mid" } },
     { label: "Rainy day",  f: { rainy: true } },
-    { label: "Under $30",  f: { budget: 1 } },
     { label: "Near N. Chas", f: { drive: 15, from: "nchas", tier: "ease" } },
     { label: "Near Mt P",  f: { drive: 15, from: "mtp", tier: "ease" } },
     { label: "After work (Summerville)", f: { time: "short", when: "night", drive: 15, from: "sville" } },
     { label: "Big weekend", f: { tier: "send", time: "full" } },
-    { label: "Free",       f: { budget: 0 } }
+    { label: "Free date night", f: { budget: 0, when: "night" } }
   ];
   const sameFilters = (a, b) => {
     const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
