@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-10-28";
+window.DATE_IDEAS_UPDATED = "2026-10-29";
 
 window.DATE_IDEAS = [
 
@@ -2004,13 +2004,13 @@ window.DATE_IDEAS = [
   },
   {
     id: "boone-hall-market",
-    title: "Boone Hall Farms market",
-    desc: "A big farm market in Mount Pleasant with a café, local goods, and u-pick in season.",
-    plan: ["Wander the market", "Grab lunch at the café", "Do u-pick if something's in season"],
-    tip: "Strawberry picking in spring is the best time to go.",
+    title: "Boone Hall farm market",
+    desc: "Willie's Roadside Market, the Boone Hall farm stand on Hwy 17, with local produce and goods plus u-pick in season.",
+    plan: ["Wander the market", "Grab snacks for a picnic", "Do u-pick if something's in season"],
+    tip: "It's usually open late March to mid December. Strawberry season in spring is the best time to go.",
     tier: "ease", budget: 1, energy: "chill", time: "short", when: "day",
     area: "Mount Pleasant", cost: "~$25", duration: "~1.5 hrs",
-    place: "Boone Hall Farms, Mount Pleasant, SC", verify: true
+    place: "Willie's Roadside Market, 2434 N Hwy 17, Mount Pleasant, SC", verify: true
   },
 
   /* ================= AFTER WORK / MEET IN THE MIDDLE ================= */
