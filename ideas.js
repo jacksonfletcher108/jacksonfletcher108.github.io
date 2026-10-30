@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-10-29";
+window.DATE_IDEAS_UPDATED = "2026-10-30";
 
 window.DATE_IDEAS = [
 
@@ -1686,7 +1686,7 @@ window.DATE_IDEAS = [
     title: "Holiday market + lights downtown",
     desc: "Shop the holiday market, then walk King Street looking at the lights.",
     plan: ["Walk the holiday market", "Each buy the other a small gift", "Walk King Street and see the decorations"],
-    tip: "Set a gift budget first so it stays fun.",
+    tip: "This year the Marion Square market runs Dec 5-6, 12-13 and 19, 9 to 3. Go mid-afternoon, then stay for the lights. Set a gift budget first.",
     tier: "ease", budget: 1, energy: "chill", time: "short", when: "night",
     area: "Downtown", cost: "~$30", duration: "~2 hrs",
     place: "Marion Square, Charleston, SC", verify: true, months: [11, 12]
@@ -2247,6 +2247,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 1, energy: "chill", time: "short", when: "day",
     area: "North Charleston", cost: "~$8 each + gifts", duration: "~2 hrs",
     place: "North Charleston Coliseum, North Charleston, SC", verify: true, rainy: true, start: "2026-11-20", end: "2026-11-22"
+  },
+  {
+    id: "folly-christmas-parade-2026",
+    title: "Folly Beach Christmas Parade",
+    desc: "A goofy, small-town beach Christmas parade down Center Street with floats, bands and Santa.",
+    plan: ["Get to Folly before noon and grab a spot on Center Street", "Watch the parade roll by", "Follow it down to Folly River Park, then walk the beach"],
+    tip: "Parking fills up fast. Get there early or park off a side street and walk.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
+    area: "Folly Beach", cost: "Free", duration: "~2 hrs",
+    place: "Center Street, Folly Beach, SC", verify: true, start: "2026-12-12", end: "2026-12-12"
   },
   /* ================= ALCOHOL-FREE SWAPS ================= */
   {
