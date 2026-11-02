@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-01";
+window.DATE_IDEAS_UPDATED = "2026-11-02";
 
 window.DATE_IDEAS = [
 
@@ -2257,6 +2257,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
     area: "Folly Beach", cost: "Free", duration: "~2 hrs",
     place: "Center Street, Folly Beach, SC", verify: true, start: "2026-12-12", end: "2026-12-12"
+  },
+  {
+    id: "charleston-christmas-special-2026",
+    title: "The Charleston Christmas Special",
+    desc: "A big local holiday variety show at the Charleston Music Hall, with singers, dancers and a full band.",
+    plan: ["Get tickets for an evening show", "Grab dinner downtown first", "Walk King Street to see the lights after"],
+    tip: "Shows sell out close to Christmas. The earlier dates are easier to get good seats for.",
+    tier: "send", budget: 3, energy: "lazy", time: "short", when: "night",
+    area: "Downtown", cost: "~$70 each", duration: "~2.5 hrs",
+    place: "Charleston Music Hall, 37 John St, Charleston, SC", verify: true, rainy: true, start: "2026-12-11", end: "2026-12-22"
   },
   /* ================= ALCOHOL-FREE SWAPS ================= */
   {
