@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-05";
+window.DATE_IDEAS_UPDATED = "2026-11-06";
 
 window.DATE_IDEAS = [
 
@@ -579,17 +579,6 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "lazy", time: "short", when: "day",
     area: "Downtown", cost: "Free (+ food)", duration: "~2 hrs",
     place: "Hampton Park, Charleston, SC"
-  },
-  {
-    id: "the-alley",
-    title: "Bowling at The Alley",
-    desc: "Downtown bowling, arcade games, and food. Loser buys dessert.",
-    plan: ["Bowl one game", "Play a few arcade games", "Loser buys dessert"],
-    tip: "Reserve a lane on weekend nights.",
-    tier: "ease", budget: 2, energy: "chill", time: "short", when: "night",
-    area: "Downtown", cost: "~$50", duration: "~2 hrs",
-    place: "The Alley, Charleston, SC", verify: true,
-    rainy: true
   },
   {
     id: "riverdogs",
@@ -2247,6 +2236,26 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 1, energy: "chill", time: "short", when: "day",
     area: "North Charleston", cost: "~$8 each + gifts", duration: "~2 hrs",
     place: "North Charleston Coliseum, North Charleston, SC", verify: true, rainy: true, start: "2026-11-20", end: "2026-11-22"
+  },
+  {
+    id: "daniel-island-holiday-market-2026",
+    title: "Daniel Island Holiday Market",
+    desc: "A free holiday market with 40+ local vendors, handmade gifts, baked goods and chocolates.",
+    plan: ["Set a small gift budget for each other", "Shop the booths and grab a treat", "Walk the Daniel Island waterfront after"],
+    tip: "Free entry and free parking. Go early for the best pick.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
+    area: "Daniel Island", cost: "Free (+ gifts)", duration: "~2 hrs",
+    place: "Daniel Island Rec Center, 160 Fairbanks Dr, Daniel Island, SC", verify: true, rainy: true, start: "2026-11-14", end: "2026-11-14"
+  },
+  {
+    id: "mtp-holiday-market-2026",
+    title: "Mount Pleasant Holiday Market",
+    desc: "The farmers market pavilion turns into a holiday craft show with local makers, treats, live music and Santa.",
+    plan: ["Pick one ornament for each other", "Get a caricature drawn together", "Grab lunch on Coleman after"],
+    tip: "Free to get in and free parking. Runs 11 to 4.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
+    area: "Mount Pleasant", cost: "Free (+ gifts)", duration: "~2 hrs",
+    place: "Mount Pleasant Farmers Market Pavilion, 645 Coleman Blvd, Mount Pleasant, SC", verify: true, start: "2026-12-12", end: "2026-12-12"
   },
   {
     id: "folly-christmas-parade-2026",
