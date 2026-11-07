@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-06";
+window.DATE_IDEAS_UPDATED = "2026-11-07";
 
 window.DATE_IDEAS = [
 
@@ -2256,6 +2256,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
     area: "Mount Pleasant", cost: "Free (+ gifts)", duration: "~2 hrs",
     place: "Mount Pleasant Farmers Market Pavilion, 645 Coleman Blvd, Mount Pleasant, SC", verify: true, start: "2026-12-12", end: "2026-12-12"
+  },
+  {
+    id: "homegrown-holiday-bazaar-2026",
+    title: "Homegrown Holiday Bazaar",
+    desc: "A big local holiday market at Johns Island County Park with 100+ vendors, food trucks and bakeries.",
+    plan: ["Set a small gift budget for each other", "Shop the booths and grab lunch from a food truck", "Walk one of the park trails after"],
+    tip: "Runs 10 to 3. Go early before the best stuff sells out.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
+    area: "Johns Island", cost: "Free (+ food and gifts)", duration: "~2 hrs",
+    place: "Johns Island County Park, 2662 Mullet Hall Rd, Johns Island, SC", verify: true, start: "2026-12-05", end: "2026-12-05"
   },
   {
     id: "folly-christmas-parade-2026",
