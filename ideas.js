@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-07";
+window.DATE_IDEAS_UPDATED = "2026-11-08";
 
 window.DATE_IDEAS = [
 
@@ -2206,16 +2206,6 @@ window.DATE_IDEAS = [
     tier: "send", budget: 3, energy: "chill", time: "half", when: "day",
     area: "North Charleston", cost: "~$95 each", duration: "~4 hrs",
     place: "Riverfront Park, North Charleston, SC", verify: true, start: "2026-11-14", end: "2026-11-14"
-  },
-  {
-    id: "harvest-festival-2026",
-    title: "Harvest Festival on Johns Island",
-    desc: "Bluegrass, hayrides, pumpkin decorating, and barbecue at Johns Island County Park.",
-    plan: ["Get there after 11 when it opens", "Decorate a pumpkin for each other", "Catch a bluegrass set with some kettle corn"],
-    tip: "Admission is about $10 a person. Check the county parks site for the latest.",
-    tier: "ease", budget: 1, energy: "chill", time: "half", when: "day",
-    area: "Johns Island", cost: "~$10 each", duration: "~3 hrs",
-    place: "Johns Island County Park, Johns Island, SC", verify: true, start: "2026-11-07", end: "2026-11-07"
   },
   {
     id: "charleston-literary-festival-2026",
