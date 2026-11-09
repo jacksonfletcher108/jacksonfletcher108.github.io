@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Fredoka"; src: url("fredoka-700.ttf") /* download Fredoka Bold from fonts.google.com/specimen/Fredoka */; font-weight: 700; }
+  html, body { margin: 0; padding: 0; background: #000; }
+  .canvas { position: relative; overflow: hidden; font-family: "Fredoka", sans-serif; }
+  .sky { position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 115%, #5b3fa8 0%, #2a1f6b 38%, #12123f 70%, #080a24 100%); }
+  .title { position: absolute; left: 0; right: 0; text-align: center; color: #ffd23f; font-weight: 700;
+    letter-spacing: 0.02em; line-height: 0.92;
+    -webkit-text-stroke: 0.09em #1a0f3d; paint-order: stroke fill;
+    text-shadow: 0 0.09em 0 #1a0f3d, 0 0 0.5em rgba(255,210,63,0.55); }
+  .sub { position: absolute; left: 0; right: 0; text-align: center; color: #fff; font-weight: 700;
+    -webkit-text-stroke: 0.12em #1a0f3d; paint-order: stroke fill; text-shadow: 0 0.08em 0 #1a0f3d; }
+  .pop { position: absolute; font-weight: 700; -webkit-text-stroke: 0.12em #1a0f3d; paint-order: stroke fill;
+    text-shadow: 0 0.08em 0 #1a0f3d; transform: rotate(-8deg); }
+  svg { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+// Deterministic random so the art is the same every render
+let seed = 7;
+function rand() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+
+const STAR = "M0,-1 L0.2245,-0.309 L0.951,-0.309 L0.363,0.118 L0.588,0.809 L0,0.382 L-0.588,0.809 L-0.363,0.118 L-0.951,-0.309 L-0.2245,-0.309 Z";
+
+function bgStars(w, h, n) {
+  let s = "";
+  for (let i = 0; i < n; i++) {
+    const x = rand() * w, y = rand() * h * 0.8, r = rand() * 1.8 + 0.4;
+    s += `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity="${0.35 + rand() * 0.6}"/>`;
+  }
+  return s;
+}
+
+// a falling star with a glowing streak behind it
+function fallingStar(x, y, size, color, angle, trail, id) {
+  const rad = angle * Math.PI / 180;
+  const tx = x - Math.cos(rad) * trail, ty = y - Math.sin(rad) * trail;
+  return `
+    <defs>
+      <linearGradient id="t${id}" gradientUnits="userSpaceOnUse" x1="${tx}" y1="${ty}" x2="${x}" y2="${y}">
+        <stop offset="0" stop-color="${color}" stop-opacity="0"/>
+        <stop offset="1" stop-color="${color}" stop-opacity="0.95"/>
+      </linearGradient>
+      <radialGradient id="g${id}"><stop offset="0" stop-color="${color}" stop-opacity="0.75"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></radialGradient>
+    </defs>
+    <line x1="${tx}" y1="${ty}" x2="${x}" y2="${y}" stroke="url(#t${id})" stroke-width="${size * 0.9}" stroke-linecap="round"/>
+    <circle cx="${x}" cy="${y}" r="${size * 2.2}" fill="url(#g${id})"/>
+    <path d="${STAR}" transform="translate(${x},${y}) scale(${size}) rotate(${angle - 90})" fill="${color}" stroke="#1a0f3d" stroke-width="${0.09}" stroke-linejoin="round"/>
+    <path d="${STAR}" transform="translate(${x - size * 0.12},${y - size * 0.14}) scale(${size * 0.45}) rotate(${angle - 90})" fill="#fff" opacity="0.55"/>`;
+}
+
+function ring(x, y, rx, color) {
+  return `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${rx * 0.28}" fill="none" stroke="${color}" stroke-width="${rx * 0.12}" opacity="0.85"/>
+          <ellipse cx="${x}" cy="${y}" rx="${rx * 0.6}" ry="${rx * 0.17}" fill="${color}" opacity="0.25"/>`;
+}
+
+// a simple blocky character mid-jump, arms up
+function hero(x, y, s) {
+  const o = "#1a0f3d";
+  return `<g transform="translate(${x},${y}) scale(${s})" stroke="${o}" stroke-width="5" stroke-linejoin="round">
+    <rect x="-38" y="40" width="30" height="78" rx="6" fill="#2b4fd6" transform="rotate(-14 -23 40)"/>
+    <rect x="8" y="40" width="30" height="78" rx="6" fill="#2b4fd6" transform="rotate(18 23 40)"/>
+    <rect x="-44" y="-50" width="88" height="96" rx="10" fill="#ff5c96"/>
+    <rect x="-82" y="-118" width="30" height="86" rx="6" fill="#ffc9a0" transform="rotate(-24 -67 -40)"/>
+    <rect x="52" y="-118" width="30" height="86" rx="6" fill="#ffc9a0" transform="rotate(20 67 -40)"/>
+    <rect x="-34" y="-120" width="68" height="68" rx="12" fill="#ffc9a0"/>
+    <rect x="-18" y="-98" width="10" height="16" rx="4" fill="${o}" stroke="none"/>
+    <rect x="8" y="-98" width="10" height="16" rx="4" fill="${o}" stroke="none"/>
+    <path d="M-14,-72 Q0,-60 14,-72" fill="none" stroke="${o}" stroke-width="5" stroke-linecap="round"/>
+  </g>`;
+}
+
+function hills(w, h, colorA, colorB) {
+  return `<path d="M0,${h * 0.78} C${w * 0.18},${h * 0.7} ${w * 0.32},${h * 0.74} ${w * 0.5},${h * 0.76} C${w * 0.7},${h * 0.79} ${w * 0.84},${h * 0.7} ${w},${h * 0.73} L${w},${h} L0,${h} Z" fill="${colorA}" stroke="#1a0f3d" stroke-width="6"/>
+          <path d="M0,${h * 0.86} C${w * 0.25},${h * 0.8} ${w * 0.55},${h * 0.9} ${w},${h * 0.83} L${w},${h} L0,${h} Z" fill="${colorB}"/>`;
+}
+
+function render(kind) {
+  const root = document.getElementById("root");
+  let w, h, html = "";
+  if (kind === "icon") {
+    w = 512; h = 512; seed = 11;
+    html = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+      ${bgStars(w, h, 90)}
+      ${hills(w, h + 40, "#3f9a4a", "#2f7a3a")}
+      ${ring(300, 430, 120, "#ffd23f")}
+      ${fallingStar(130, 120, 22, "#50e6ff", 52, 150, 1)}
+      ${fallingStar(420, 90, 18, "#ff69b4", 62, 110, 2)}
+      ${fallingStar(285, 255, 120, "#ffd23f", 58, 330, 3)}
+    </svg>`;
+  } else {
+    w = 1920; h = 1080; seed = kind === "thumb-a" ? 3 : 5;
+    const shower = kind === "thumb-b";
+    let stars = "";
+    const colors = ["#ffaa3c", "#aad2ff", "#ffd700", "#ff69b4", "#50e6ff", "#78ffaa", "#aa5aff"];
+    const n = shower ? 26 : 9;
+    for (let i = 0; i < n; i++) {
+      const x = 120 + rand() * 1700, y = 300 + rand() * 360;
+      if (!shower && x > 640 && x < 1280 && y < 560) continue; // keep the title area clear
+      stars += fallingStar(x, y, 14 + rand() * 18, colors[i % colors.length], 60 + rand() * 12, 120 + rand() * 160, 10 + i);
+    }
+    html = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+      ${bgStars(w, h, 320)}
+      ${hills(w, h, shower ? "#4a3a8a" : "#3f9a4a", shower ? "#33276b" : "#2f7a3a")}
+      ${stars}
+      ${shower ? "" : ring(1420, 905, 190, "#ffd23f")}
+      ${shower ? ring(960, 925, 230, "#ffffff") : ""}
+      ${shower ? fallingStar(960, 600, 95, "#ffffff", 62, 420, 98) : fallingStar(1440, 470, 90, "#ffd23f", 60, 380, 99)}
+      ${shower ? hero(560, 840, 1.35) + hero(1380, 860, 1.25) : hero(1420, 790, 1.6)}
+    </svg>
+    <div class="title" style="top:${shower ? 60 : 70}px; font-size:${shower ? 150 : 175}px">STARFALL<br>VALLEY</div>
+    ${shower
+      ? `<div class="sub" style="top:395px; font-size:64px; color:#ff8fc0">☄ METEOR SHOWER! ☄</div>
+         <div class="pop" style="left:330px; top:560px; font-size:92px; color:#ffd23f">+2,500</div>
+         <div class="pop" style="left:1290px; top:540px; font-size:84px; color:#78ffaa; transform:rotate(8deg)">NOVA!</div>`
+      : `<div class="sub" style="top:430px; font-size:66px">CATCH FALLING STARS!</div>
+         <div class="pop" style="left:1520px; top:300px; font-size:86px; color:#78ffaa">AIR CATCH!</div>
+         <div class="pop" style="left:160px; top:700px; font-size:96px; color:#ffd23f">+1,500</div>`}`;
+  }
+  root.innerHTML = `<div class="canvas" style="width:${w}px;height:${h}px"><div class="sky"></div>${html}</div>`;
+}
+const kind = new URLSearchParams(location.search).get("kind") || "thumb-a";
+document.fonts.load('700 100px "Fredoka"').then(() => { render(kind); document.body.dataset.ready = "1"; });
+</script>
+</body>
+</html>

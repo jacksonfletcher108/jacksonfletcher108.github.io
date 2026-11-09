@@ -1,0 +1,15 @@
+206279	yt-dlp/yt-dlp	2026-11-04	Unlicense	A feature-rich command-line audio/video downloader
+112261	openai/whisper	2026-08-31	MIT	Robust Speech Recognition via Large-Scale Weak Supervision
+110361	Panniantong/Agent-Reach	2026-11-08	MIT	Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongSh
+55028	ggml-org/whisper.cpp	2026-11-08	MIT	Port of OpenAI's Whisper model in C/C++
+44589	danielmiessler/Fabric	2026-11-08	MIT	Fabric is an open-source framework for augmenting humans using AI. It provides a modular system for solving specific pro
+26603	SYSTRAN/faster-whisper	2026-11-06	MIT	Faster Whisper transcription with CTranslate2
+25158	m-bain/whisperX	2026-10-22	BSD-2-Clause	WhisperX:  Automatic Speech Recognition with Word-level Timestamps (& Diarization)
+11101	nexmoe/VidBee	2026-11-08	MIT	Download video and audio from 1000+ sites, transcribe locally with speaker labels, and summarize, translate, or chat wit
+8580	jdepoix/youtube-transcript-api	2026-11-05	MIT	This is a python API which allows you to get the transcript/subtitles for a given YouTube video. It also works for autom
+1733	zarazhangrui/youtube-digest	2026-08-27	MIT	Turn YouTube videos into deep learning resources with transcripts, bilingual translation, AI overviews, explanations, an
+1182	ZeroPointRepo/youtube-skills	2026-11-03	MIT	YouTube Transcript API skills for AI agents. Get transcripts, search videos, browse channels. Works with OpenClaw, Herme
+696	Dicklesworthstone/bulk_transcribe_youtube_videos_from_playlist	2025-02-27	MIT	Easily take an entire YouTube playlist and turn it into high quality transcripts using Whisper.
+495	jkawamoto/mcp-youtube-transcript	2026-11-09	MIT	MCP server retrieving transcripts of YouTube videos
+233	martinopiaggi/summarize	2026-10-29	MIT	Video AI summarization from multiple sources (YouTube, X, Instagram, TikTok, Reddit, Facebook, Google Drive, Dropbox, an
+72	AgriciDaniel/youtube-scout	2026-10-30	MIT	Claude Code skill: one topic in, one ranked YouTube research workbook out. Searches YouTube Data API v3, ranks by views,

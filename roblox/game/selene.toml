@@ -1,0 +1,5 @@
+std = "roblox"
+
+[lints]
+# Roblox scripts commonly shadow names like `player` inside callbacks.
+shadowing = "allow"

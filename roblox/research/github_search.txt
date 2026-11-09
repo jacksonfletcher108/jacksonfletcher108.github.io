@@ -1,0 +1,88 @@
+=== youtube transcript
+8580	jdepoix/youtube-transcript-api	2026-11-05	This is a python API which allows you to get the transcript/subtitles for a given YouTube video. It also works
+5190	Jakeschincariol/youtube-agent-skill	2026-09-16	Eleven Claude skills that run a YouTube channel: scripts off 21 hook formulas with a scored hook, title and th
+2667	nateherkai/herk-edit-kit	2026-10-14	Herk Edit Kit by Nate Herk: edit videos, reels, and YouTube Shorts with Codex or Claude Code. 15 skills, trans
+2027	jimmc414/onefilellm	2026-06-12	Specify a github or local repo, github pull request,  arXiv or Sci-Hub paper, Youtube transcript or documentat
+1733	zarazhangrui/youtube-digest	2026-08-27	Turn YouTube videos into deep learning resources with transcripts, bilingual translation, AI overviews, explan
+1182	ZeroPointRepo/youtube-skills	2026-11-03	YouTube Transcript API skills for AI agents. Get transcripts, search videos, browse channels. Works with OpenC
+865	kazuki-sf/YouTube_Summary_with_ChatGPT	2023-01-11	YouTube Summary with ChatGPT is a simple Chrome Extension (manifest v3) that allows you to get both YouTube vi
+696	Dicklesworthstone/bulk_transcribe_youtube_videos_from_playlist	2025-02-27	Easily take an entire YouTube playlist and turn it into high quality transcripts using Whisper.
+665	PaoloJN/recap	2026-10-26	Recap AI for YouTube summaries, a searchable transcript and chat about the video
+603	kimtaeyoon83/mcp-server-youtube-transcript	2026-07-21	This is an MCP server that allows you to directly download transcripts of YouTube videos.
+=== youtube video summarizer
+11101	nexmoe/VidBee	2026-11-08	Download video and audio from 1000+ sites, transcribe locally with speaker labels, and summarize, translate, o
+3402	wendy7756/AI-Video-Transcriber	2026-10-11	 Transcribe and summarize videos and podcasts using AI. Open-source, multi-platform, and supports multiple lan
+668	lycohana/BiliSum	2026-11-07	为 Bilibili、YouTube 及本地视频提供 AI 视频摘要和知识库.AI video summarizer and knowledge base for Bilibili, YouTube and local 
+354	HenestrosaDev/audiotext	2026-11-03	A desktop app to transcribe audio and video from files, URLs, YouTube videos, or your mic, then edit, translat
+288	molyswu/hand_detection	2022-01-11	using Neural Networks (SSD) on Tensorflow.  This repo documents steps and scripts used to train a hand detecto
+254	Milkshiift/YouTubeTLDR	2026-06-18	⚡ A lightweight, self-hosted YouTube video summarizer with Gemini AI
+234	tpai/summary-gpt-bot	2025-09-18	An AI-powered text summarization Telegram bot that generates concise summaries of text, URLs, PDFs, and YouTub
+233	martinopiaggi/summarize	2026-10-29	Video AI summarization from multiple sources (YouTube, X, Instagram, TikTok, Reddit, Facebook, Google Drive, D
+217	DevRico003/youtube_summarizer	2026-01-29	A modern Next.js-based tool for AI-powered YouTube video summarization.   Features smart chapter detection wit
+204	talosross/SummaryYou	2026-04-17	Summarize YouTube-Videos, Articles, Images and Documents with AI
+=== youtube download
+141499	ytdl-org/youtube-dl	2026-11-06	Command-line program to download videos from YouTube.com and other video sites
+31828	iawia002/lux	2026-03-29	👾 Fast and simple video download library and CLI tool written in Go
+26757	spotDL/spotify-downloader	2026-11-03	Download your Spotify playlists and songs along with album art and metadata (from YouTube if a match is found)
+16673	Tyrrrz/YoutubeDownloader	2026-11-06	Downloads videos and playlists from YouTube
+13416	abus-aikorea/voice-pro	2026-07-13	Gradio WebUI for creators and developers, featuring key TTS (Edge-TTS, kokoro) and zero-shot Voice Cloning (E2
+11101	nexmoe/VidBee	2026-11-08	Download video and audio from 1000+ sites, transcribe locally with speaker labels, and summarize, translate, o
+10611	aandrew-me/ytDownloader	2026-11-08	Desktop app to download audio/video from hundreds of sites
+7579	NickvisionApps/Parabolic	2026-11-09	Download web video and audio
+5113	mhogomchungu/media-downloader	2026-11-05	Media Downloader is a Qt/C++ front end to yt-dlp, youtube-dl, gallery-dl, lux, you-get, svtplay-dl, aria2c, wg
+5035	OpenSelena/omniget	2026-11-08	Open-source download manager for courses (Udemy/Hotmart), YouTube, music & 1,800+ sites. Built with Tauri 2.0,
+=== speech to text whisper
+12707	PaddlePaddle/PaddleSpeech	2026-08-12	Easy-to-use Speech Toolkit including Self-Supervised Learning model, SOTA/Streaming ASR with punctuation, Stre
+11221	QuentinFuxa/WhisperLiveKit	2026-11-08	Real-time, local speech-to-text with streaming ASR, speaker diarization, translation, and OpenAI/Deepgram-comp
+5980	buxuku/SmartSub	2026-11-06	视频转字幕、字幕翻译、AI 配音与声音克隆、字幕烧录——免费开源的一站式桌面工具。基于 Whisper / FunASR 等本地模型离线语音转文字，批量处理 + 全平台 GPU 加速，跨 Windows / macOS 
+4659	WhisperSpeech/WhisperSpeech	2025-12-14	An Open Source text-to-speech system built by inverting Whisper.
+3680	ufal/whisper_streaming	2025-11-12	Whisper realtime streaming for long speech-to-text transcription and translation
+3355	off-grid-ai/OGAM	2026-11-08	The Swiss Army Knife of Offline AI. Chat, see, speak, and generate images on your phone or Mac — GGUF LLMs, vi
+1912	TypeWhisper/typewhisper-mac	2026-11-09	Local speech-to-text for macOS  on-device AI, fully private, optional cloud
+1318	Robitx/gp.nvim	2025-08-11	Gp.nvim (GPT prompt) Neovim AI plugin: ChatGPT sessions & Instructable text/code operations & Speech to text [
+1289	kubeai-project/kubeai	2026-11-03	AI Inference Operator for Kubernetes. The easiest way to serve ML models in production. Supports VLMs, LLMs, e
+1276	goodroot/hyprwhspr	2026-11-05	 Native speech-to-text for Linux - Fast, accurate, private, and hackable system-wide dictation
+=== youtube video analysis llm
+434	ptnghia-j/ChordMiniApp	2026-07-30	Music Analysis, Chord Recognition, Beat Tracking, Guitar Diagrams, Piano Visualizer, Lyrics Transcription Appl
+26	itsmevictor/clean-transcribe	2026-03-26	A simple CLI to transcribe Youtube videos or local audio/video files and produce LLM-cleaned transcripts for a
+25	KazKozDev/video-analyser	2024-11-13	⚡ The YouTube Video Analyzer Pro brings AI-powered analysis capabilities to your fingertips, offering deep ins
+7	khou/watch-video	2026-05-03	Video-analysis skill for AI agents. 
+7	CarlAmine/AI_Editor	2026-06-03	AI assisted video editing pipeline | scene analysis, LLM edit planning, ffmpeg rendering, and YouTube publishi
+5	johunsang/gemma-media-study	2026-06-18	Local-first desktop app to study YouTube, video & audio with Gemma 4 on Ollama — verbatim Whisper subtitles, A
+4	udaysrinu/viral-video-analyzer	2026-05-29	Zero-cost pipeline for reverse-engineering viral TikTok / Instagram Reels / YouTube Shorts. Downloads + transc
+4	XynaxDev/youtube-rag-system	2026-03-23	A professional Retrieval-Augmented Generation (RAG) system for YouTube videos. Features timestamp-preserving a
+4	t-charura/yt-quick-insights	2026-04-11	Python webapp for rapid extraction and analysis of YouTube content, enabling users to gain insights from video
+3	debankanmitra/Finalytics-backend	2024-07-30	🤖 Finalytics is an AI-driven backend for cryptocurrency technical analysis. Built with Python FastAPI and host
+=== youtube transcript mcp
+603	kimtaeyoon83/mcp-server-youtube-transcript	2026-07-21	This is an MCP server that allows you to directly download transcripts of YouTube videos.
+495	jkawamoto/mcp-youtube-transcript	2026-11-09	MCP server retrieving transcripts of YouTube videos
+165	0xchamin/mcptube	2026-04-13	Transform YouTube videos into a compounding knowledge base with transcripts, vision analysis, and agentic sear
+157	egoist/fetch-mcp	2025-04-04	An MCP server for fetching URLs / Youtube video transcript.
+117	guimatheus92/mcp-video-analyzer	2026-11-08	MCP server that turns any video — YouTube, Instagram, TikTok, Loom, X, Vimeo, direct URLs, local files — into 
+74	cottongeeks/ytt-mcp	2025-10-15	MCP server to fetch YouTube transcripts
+68	ShellyDeng08/youtube-connector-mcp	2026-03-19	MCP server for YouTube — search videos, channels, playlists, and transcripts. Works with Claude, Cursor, Winds
+66	xhoantran/scrapeio-agent	2026-11-07	Agent skills for social media research: influencer discovery, creator vetting, competitor audits, transcripts,
+63	supadata-ai/mcp	2026-11-04	Official Supadata MCP Server - Adds powerful video & web scraping to Cursor, Claude and any other LLM clients.
+58	mybuddymichael/youtube-transcript-mcp	2025-07-15	An MCP server for fetching transcripts of YouTube videos.
+=== youtube search api python
+110361	Panniantong/Agent-Reach	2026-11-08	Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, 
+800	alexmercerind/youtube-search-python	2022-06-30	🔎 Search for YouTube videos, channels & playlists. Get 🎞 video &  📑 playlist info using link. Get search sugge
+602	Taoviqinvicible/Tools-termux	2018-11-25	1.[Script Termux] -Cmatrix *apt-get update *apt-get upgrade *apt-get install nmap *apt-get install python *apt
+530	SPThole/CoexistAI	2026-03-10	CoexistAI is a modular, developer-friendly research assistant framework . It enables you to build, search, sum
+461	uday-khan/Termux	2021-05-23	KUMPULAN CODE TERMUX LENGKAP   | SPAM CHAT WHATSAPP || nggk usah nyepam gw -_*   atau hp lu gw ledakin!!#@vms 
+366	zszszszsz/.config	2023-10-05	# # Automatically generated file; DO NOT EDIT. # OpenWrt Configuration # CONFIG_MODULES=y CONFIG_HAVE_DOT_CONF
+198	Rizalcahdemak/akun-termux	2022-07-08	Skip to content arysandi/kumpulan kode di termux Created 3 years ago • Report abuse Code Revisions 1 Stars 105
+108	zall-4RT/kumpulan-code-termuxs-lenkap	2022-09-15	termux KUMPULAN CODE TERMUX LENGKAP   | SPAM CHAT WHATSAPP || nggk usah nyepam gw -_*   atau hp lu gw ledakin!
+72	AgriciDaniel/youtube-scout	2026-10-30	Claude Code skill: one topic in, one ranked YouTube research workbook out. Searches YouTube Data API v3, ranks
+64	saulojoab/Spotify-To-Youtube	2021-05-23	▶ A simple python script that makes it easier to search Spotify songs on YouTube.
+=== video understanding
+7441	facebookresearch/SlowFast	2026-03-16	PySlowFast: video understanding codebase from FAIR for reproducing state-of-the-art video models.
+5194	open-mmlab/mmaction2	2026-03-18	OpenMMLab's Next Generation Video Understanding Toolbox and Benchmark
+4096	QwenLM/Qwen2.5-Omni	2025-06-12	Qwen2.5-Omni is an end-to-end multimodal model by Qwen team at Alibaba Cloud, capable of understanding text, a
+4096	QwenLM/Qwen3-Omni	2026-04-23	Qwen3-omni is a natively end-to-end, omni-modal LLM developed by the Qwen team at Alibaba Cloud, capable of un
+3570	facebookresearch/pytorchvideo	2026-10-16	A deep learning library for video understanding research.
+3363	OpenGVLab/Ask-Anything	2026-07-17	[CVPR2024 Highlight][VideoChatGPT] ChatGPT with video understanding! And many more supported LMs such as miniG
+3307	yoloytang/Awesome-LLMs-for-Video-Understanding	2026-11-08	🔥🔥🔥 [IEEE TCSVT] Latest Papers, Codes and Datasets on Vid-LLMs.
+3138	DAMO-NLP-SG/Video-LLaMA	2024-06-04	[EMNLP 2023 Demo] Video-LLaMA: An Instruction-tuned Audio-Visual Language Model for Video Understanding
+2415	OpenGVLab/InternVideo	2026-07-02	[ECCV2024] Video Foundation Models & Data for Multimodal Understanding
+2229	mit-han-lab/temporal-shift-module	2024-07-11	[ICCV 2019] TSM: Temporal Shift Module for Efficient Video Understanding

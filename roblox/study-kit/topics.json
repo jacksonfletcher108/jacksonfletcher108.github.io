@@ -1,0 +1,58 @@
+{
+  "_about": "The six study topics from the video, in his order. Each topic is searched with several queries, results are merged, and the top 20 are kept. A video stays on the list only if its title or description has a word from 'must_match', a word from 'also_match' (when given), and none of the words in 'exclude' or 'exclude_everywhere'. 'skip_ids' drops specific videos found by hand to be off-topic (e.g. programming tutorials about a 'game loop').",
+  "per_query": 40,
+  "keep": 20,
+  "min_seconds": 120,
+  "max_seconds": 5400,
+  "exclude_everywhere": ["asmr", "minecraft", "scratch tutorial", "board game", "gameplay walkthrough", "full game", "let's play", "lets play", "tunneling", "killer", "forsaken", "violence district", "survive", "speedrun", "trapped", "horror", "story time", "obby gameplay"],
+  "topics": [
+    {
+      "slug": "1-roblox-dev-and-game-design",
+      "name": "Roblox development and game design",
+      "queries": ["roblox game design", "how to make a popular roblox game", "roblox game development tips", "roblox game dev advice", "how to make a successful roblox game"],
+      "must_match": ["roblox"],
+      "also_match": ["make", "making", "made", "develop", "dev", "design", "studio", "build", "game"]
+    },
+    {
+      "slug": "2-player-retention",
+      "name": "Player retention",
+      "queries": ["roblox player retention", "how to increase retention roblox game", "player retention game design", "how to keep players playing your game", "roblox game retention tips"],
+      "must_match": ["retention", "retain", "keep players", "come back", "players leave", "players quit", "playtime", "engagement"],
+      "also_match": ["game", "roblox", "player", "ftue"],
+      "exclude": ["audience retention", "youtube channel", "video creators", "views on youtube", "algorithm", "slot", "casino", "igaming"]
+    },
+    {
+      "slug": "3-gameplay-loops",
+      "name": "Gameplay loops",
+      "queries": ["roblox gameplay loop", "core gameplay loop game design", "game loop design", "core loop game design explained", "gameplay loop roblox game"],
+      "must_match": ["core loop", "gameplay loop", "game loop", "feedback loop", "loops in game design", "core game loop", "loops keep", "chains are in", "loop design", "loops - simple game design", "core loops"],
+      "exclude": ["scripting tutorial", "for loop", "while loop", "looping", "c++", "sdl", "game programming", "programming", "timestep", "delta time", "frame rate", "fps", "d&d", "dnd", "campaign", "opengl", "javascript", "python"],
+      "skip_ids": ["44tO977slsU", "lW6ZtvQVzyg", "u-YyCiy50n4", "9HXCPiP54R8", "ASlKBNgNIwI", "UrMKjIMCRsc"]
+    },
+    {
+      "slug": "4-ui-design",
+      "name": "UI design",
+      "queries": ["roblox ui design", "game ui design tips", "roblox ui design tips", "game ui ux design", "how to make good roblox ui"],
+      "must_match": ["ui", "ux", "interface", "hud", "menu", "gui"],
+      "also_match": ["game", "roblox", "studio", "unity", "player"],
+      "exclude": ["website", "web design", "landing page", "figma tutorial for beginners", "app design"]
+    },
+    {
+      "slug": "5-monetization",
+      "name": "Monetization",
+      "queries": ["roblox monetization", "how to monetize roblox game", "roblox game monetization tips", "roblox gamepass dev product monetization", "game monetization design"],
+      "must_match": ["monetiz", "monetis", "robux", "gamepass", "game pass", "money", "revenue", "earn", "microtransaction", "dev product"],
+      "also_match": ["game", "roblox", "f2p", "free to play", "free-to-play", "developer", "dev"],
+      "exclude": ["free robux", "robux generator", "promo code", "codes"]
+    },
+    {
+      "slug": "6-what-makes-a-game-fun",
+      "name": "What makes a game fun",
+      "queries": ["what makes a game fun", "what makes a roblox game fun", "game design what makes games fun", "why are games fun game design", "how to make your game fun"],
+      "must_match": ["fun", "enjoy", "addictive", "satisfying", "engaging"],
+      "also_match": ["design", "designer", "game dev", "gamedev", "developer", "psychology", "make your game", "make games", "making games", "game feel", "your game", "roblox game"],
+      "exclude": ["fun squad", "kids", "crayola", "diy", "fitness", "workout", "warm-up", "warm up", "classroom", "students"],
+      "skip_ids": ["bsJwdppA62s"]
+    }
+  ]
+}

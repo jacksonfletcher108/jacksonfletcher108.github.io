@@ -1,0 +1,370 @@
+{
+  "topic": "UI design",
+  "slug": "4-ui-design",
+  "queries": [
+    "roblox ui design",
+    "game ui design tips",
+    "roblox ui design tips",
+    "game ui ux design",
+    "how to make good roblox ui"
+  ],
+  "candidates_seen": 125,
+  "on_topic": 92,
+  "fetched": "2026-11-09",
+  "videos": [
+    {
+      "id": "9kuWl_t1AOE",
+      "url": "https://www.youtube.com/watch?v=9kuWl_t1AOE",
+      "title": "Essential UI Tips & Tricks | Roblox Studio",
+      "channel": "Stewiepfing",
+      "view_count": 318594,
+      "duration": 559,
+      "description": "WE LOVE UI TIPS & TRICKS Discord: https://discord.gg/US6PDTMDau 0:00 - Intro 0:12 - Fixing UIStroke Bug 0:52 - Fixing ...",
+      "hits": 4,
+      "best_rank": 3,
+      "queries": [
+        "roblox ui design",
+        "game ui design tips",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 1,
+      "score": 7.303
+    },
+    {
+      "id": "L8Fg1pxPrzY",
+      "url": "https://www.youtube.com/watch?v=L8Fg1pxPrzY",
+      "title": "How To Make GUI | Roblox Studio",
+      "channel": "Kingkade 3D",
+      "view_count": 695403,
+      "duration": 635,
+      "description": "Discord: https://discord.gg/rgtEQcpM8T ------------------------------ Become a Member: ...",
+      "hits": 3,
+      "best_rank": 5,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 2,
+      "score": 7.042
+    },
+    {
+      "id": "_q4fcM1eWvg",
+      "url": "https://www.youtube.com/watch?v=_q4fcM1eWvg",
+      "title": "This New UI is Insane",
+      "channel": "DeHapy",
+      "view_count": 187486,
+      "duration": 532,
+      "description": "Making new UI for my Game! #roblox #gamedev #gaming Hey guys, in today's video we spend 24 hours learning how to create UI ...",
+      "hits": 3,
+      "best_rank": 14,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 3,
+      "score": 6.473
+    },
+    {
+      "id": "HjjPZAFaClE",
+      "url": "https://www.youtube.com/watch?v=HjjPZAFaClE",
+      "title": "How To Make Stud GUI In Roblox Studio",
+      "channel": "Kingkade 3D",
+      "view_count": 184123,
+      "duration": 526,
+      "description": "This is how to make stud gui in roblox studio Discord: https://discord.gg/rgtEQcpM8T ------------------------------ Become a Member: ...",
+      "hits": 3,
+      "best_rank": 8,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 4,
+      "score": 6.465
+    },
+    {
+      "id": "Ezk3vEOvv8o",
+      "url": "https://www.youtube.com/watch?v=Ezk3vEOvv8o",
+      "title": "How Modern Roblox UI Actually Works",
+      "channel": "Leif",
+      "view_count": 181657,
+      "duration": 896,
+      "description": "Want to make Roblox UI like the pros? In this tutorial, I'll walk you through everything you need to build a game using React Luau.",
+      "hits": 3,
+      "best_rank": 12,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 5,
+      "score": 6.459
+    },
+    {
+      "id": "ZTzUHfMeYKA",
+      "url": "https://www.youtube.com/watch?v=ZTzUHfMeYKA",
+      "title": "Making Good UI is EASY, People Are Just Lazy",
+      "channel": "ByteBlox",
+      "view_count": 175684,
+      "duration": 1049,
+      "description": "get my full Roblox Studio course here (50% OFF): https://linktr.ee/ByteBlox photos of my pet pigeons: ...",
+      "hits": 3,
+      "best_rank": 4,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 6,
+      "score": 6.445
+    },
+    {
+      "id": "F6AtQKo3uIY",
+      "url": "https://www.youtube.com/watch?v=F6AtQKo3uIY",
+      "title": "Make Your Roblox UI Look 10x Better",
+      "channel": "Develuper",
+      "view_count": 159000,
+      "duration": 423,
+      "description": "There aren't many Roblox UI tutorials on YouTube, so I decided to bring you a simple guide on how to make your Roblox UI look ...",
+      "hits": 3,
+      "best_rank": 1,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 7,
+      "score": 6.401
+    },
+    {
+      "id": "lmNWskz9cEI",
+      "url": "https://www.youtube.com/watch?v=lmNWskz9cEI",
+      "title": "The Ultimate Beginner’s Guide to Roblox GUI",
+      "channel": "Kek",
+      "view_count": 145357,
+      "duration": 1096,
+      "description": "Learn how to create clean GUIs in Roblox Studio! In this video, we cover the basics of ScreenGui, Frames, Scaling vs Offset, ...",
+      "hits": 3,
+      "best_rank": 1,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 8,
+      "score": 6.362
+    },
+    {
+      "id": "2z4rebjBnQA",
+      "url": "https://www.youtube.com/watch?v=2z4rebjBnQA",
+      "title": "Make Your Roblox UI Buttons SUPER Smooth in 8 Minutes!",
+      "channel": "PineappleDev",
+      "view_count": 136782,
+      "duration": 515,
+      "description": "In this video, I show you how to create Roblox button animations, that grow when the player hovers over it, and shrinks back to ...",
+      "hits": 3,
+      "best_rank": 10,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 9,
+      "score": 6.336
+    },
+    {
+      "id": "sc3h5JXtIzw",
+      "url": "https://www.youtube.com/watch?v=sc3h5JXtIzw",
+      "title": "So You Wanna Make Games?? | Episode 9: User Interface Design",
+      "channel": "Riot Games",
+      "view_count": 533437,
+      "duration": 749,
+      "description": "Many games require you to have immediate access to a ton of critical information like stats, inventory, mission info, and location.",
+      "hits": 2,
+      "best_rank": 2,
+      "queries": [
+        "game ui design tips",
+        "game ui ux design"
+      ],
+      "rank": 10,
+      "score": 6.327
+    },
+    {
+      "id": "z16zs2v-FNI",
+      "url": "https://www.youtube.com/watch?v=z16zs2v-FNI",
+      "title": "The Greatest Cartoony UI Tutorial on Roblox (w/ Figma)",
+      "channel": "Kek",
+      "view_count": 93611,
+      "duration": 2514,
+      "description": "Learn how to create a Front-page Cartoony UI for your Roblox game! The video will take you through a step-by-step guide on how ...",
+      "hits": 3,
+      "best_rank": 6,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 11,
+      "score": 6.171
+    },
+    {
+      "id": "5_3BUU9ZmNo",
+      "url": "https://www.youtube.com/watch?v=5_3BUU9ZmNo",
+      "title": "Inventory UX Design - How Zelda, Resident Evil, and Doom Make Great Game Menu UX",
+      "channel": "Design Doc",
+      "view_count": 309697,
+      "duration": 998,
+      "description": "Thanks to Squarespace for sponsoring this video. Go to Squarespace.com for a free trial and when you're ready to launch, go to ...",
+      "hits": 2,
+      "best_rank": 15,
+      "queries": [
+        "game ui design tips",
+        "game ui ux design"
+      ],
+      "rank": 12,
+      "score": 6.091
+    },
+    {
+      "id": "gnIKtS3nUqo",
+      "url": "https://www.youtube.com/watch?v=gnIKtS3nUqo",
+      "title": "The Greatest Stud UI Tutorial on Roblox (w/ Figma)",
+      "channel": "Kek",
+      "view_count": 71398,
+      "duration": 3711,
+      "description": "Learn how to create a Front-page Stud UI for your Roblox game! The video will take you through a step-by-step guide on how to ...",
+      "hits": 3,
+      "best_rank": 21,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 13,
+      "score": 6.054
+    },
+    {
+      "id": "DBC6FsdvP-M",
+      "url": "https://www.youtube.com/watch?v=DBC6FsdvP-M",
+      "title": "This AI Makes INSANE Roblox GUIs",
+      "channel": "DitchyDevelopments",
+      "view_count": 70543,
+      "duration": 214,
+      "description": "In this Roblox UI tutorial, we look at an incredible new Roblox AI tool that designs Roblox GUIs instantly without complex Roblox ...",
+      "hits": 3,
+      "best_rank": 13,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 14,
+      "score": 6.048
+    },
+    {
+      "id": "8pJGBz-J75w",
+      "url": "https://www.youtube.com/watch?v=8pJGBz-J75w",
+      "title": "Make Your UI Feel 10x Times Better With ANIMATIONS",
+      "channel": "Develuper",
+      "view_count": 53587,
+      "duration": 419,
+      "description": "In this video, I'll show you how to bring your Roblox UI to life with smooth animations, interactive states, hover effects, and more!",
+      "hits": 3,
+      "best_rank": 13,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 15,
+      "score": 5.929
+    },
+    {
+      "id": "UN6aLrhZlK0",
+      "url": "https://www.youtube.com/watch?v=UN6aLrhZlK0",
+      "title": "Best UI Plugins To Use In Roblox Studio",
+      "channel": "gfxcomet",
+      "view_count": 208846,
+      "duration": 431,
+      "description": "Get Lifetime Assets For Roblox! https://gfxcomet.com/unlimited Price will go up as more assets are added! Get Roblox UI ...",
+      "hits": 2,
+      "best_rank": 23,
+      "queries": [
+        "roblox ui design",
+        "how to make good roblox ui"
+      ],
+      "rank": 16,
+      "score": 5.92
+    },
+    {
+      "id": "7U0IwCP6jBs",
+      "url": "https://www.youtube.com/watch?v=7U0IwCP6jBs",
+      "title": "This AI Makes INSANE Roblox GUIs!",
+      "channel": "RoBuilder",
+      "view_count": 207509,
+      "duration": 542,
+      "description": "Forge GUI: https://forgegui.com/ Fly & Save Baddies: https://www.roblox.com/games/82298882958454/Fly-Save-Baddies ...",
+      "hits": 2,
+      "best_rank": 11,
+      "queries": [
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 17,
+      "score": 5.917
+    },
+    {
+      "id": "HwdweCX5aMI",
+      "url": "https://www.youtube.com/watch?v=HwdweCX5aMI",
+      "title": "Making UI That Looks Good In Unity",
+      "channel": "Game Dev Guide",
+      "view_count": 774866,
+      "duration": 1086,
+      "description": "Learn ways to improve your understanding of how to design UI in Unity! URP Examples: ...",
+      "hits": 1,
+      "best_rank": 24,
+      "queries": [
+        "game ui design tips"
+      ],
+      "rank": 18,
+      "score": 5.889
+    },
+    {
+      "id": "o3VHJ7g7M08",
+      "url": "https://www.youtube.com/watch?v=o3VHJ7g7M08",
+      "title": "Pixel Art Class - Intro to Game UI",
+      "channel": "AdamCYounis",
+      "view_count": 184873,
+      "duration": 1936,
+      "description": "Heya, Pals. This one is pretty theory-heavy and covers a lot of ground in very light detail because there's a lot of it. Next week we'll ...",
+      "hits": 2,
+      "best_rank": 11,
+      "queries": [
+        "game ui design tips",
+        "game ui ux design"
+      ],
+      "rank": 19,
+      "score": 5.867
+    },
+    {
+      "id": "RPqIm0I_gsw",
+      "url": "https://www.youtube.com/watch?v=RPqIm0I_gsw",
+      "title": "How To Improve Your UI In Roblox Studio",
+      "channel": "Kingkade 3D",
+      "view_count": 45765,
+      "duration": 704,
+      "description": "This is how to improve your ui in roblox studio Discord: https://discord.gg/rgtEQcpM8T ------------------------------ Become a Member: ...",
+      "hits": 3,
+      "best_rank": 2,
+      "queries": [
+        "roblox ui design",
+        "roblox ui design tips",
+        "how to make good roblox ui"
+      ],
+      "rank": 20,
+      "score": 5.861
+    }
+  ]
+}

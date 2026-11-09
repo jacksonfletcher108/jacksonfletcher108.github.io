@@ -1,0 +1,343 @@
+{
+  "topic": "Player retention",
+  "slug": "2-player-retention",
+  "queries": [
+    "roblox player retention",
+    "how to increase retention roblox game",
+    "player retention game design",
+    "how to keep players playing your game",
+    "roblox game retention tips"
+  ],
+  "candidates_seen": 132,
+  "on_topic": 34,
+  "fetched": "2026-11-09",
+  "videos": [
+    {
+      "id": "hbzGO_Qonu0",
+      "url": "https://www.youtube.com/watch?v=hbzGO_Qonu0",
+      "title": "How to Keep Players Engaged (Without Being Evil)",
+      "channel": "Game Maker's Toolkit",
+      "view_count": 2780696,
+      "duration": 646,
+      "description": "Get bonus content by supporting Game Maker's Toolkit - https://gamemakerstoolkit.com/support/ Why do some games keep us ...",
+      "hits": 2,
+      "best_rank": 1,
+      "queries": [
+        "player retention game design",
+        "how to keep players playing your game"
+      ],
+      "rank": 1,
+      "score": 7.044
+    },
+    {
+      "id": "LpAU6TheAZ4",
+      "url": "https://www.youtube.com/watch?v=LpAU6TheAZ4",
+      "title": "What are retention metrics on Roblox?",
+      "channel": "Roblox Creators",
+      "view_count": 34997,
+      "duration": 174,
+      "description": "Learn how to understand your players and how to keep them coming back to your experience. For more information on ...",
+      "hits": 3,
+      "best_rank": 7,
+      "queries": [
+        "roblox player retention",
+        "how to increase retention roblox game",
+        "roblox game retention tips"
+      ],
+      "rank": 2,
+      "score": 5.744
+    },
+    {
+      "id": "ftiHgyFt72M",
+      "url": "https://www.youtube.com/watch?v=ftiHgyFt72M",
+      "title": "Keeping players Interested - Pacing in Game Design",
+      "channel": "Brackeys",
+      "view_count": 141229,
+      "duration": 697,
+      "description": "In this video we explore how Pacing can be used to keep players hooked! ▻ Get The Complete C# Masterclass: ...",
+      "hits": 1,
+      "best_rank": 4,
+      "queries": [
+        "how to keep players playing your game"
+      ],
+      "rank": 3,
+      "score": 5.15
+    },
+    {
+      "id": "zm1ypw2mLPI",
+      "url": "https://www.youtube.com/watch?v=zm1ypw2mLPI",
+      "title": "A guide to increasing your RETENTION | Roblox game design",
+      "channel": "dev_fraudkuna",
+      "view_count": 989,
+      "duration": 145,
+      "description": "Want to increase your game's retention? Look no further! Sol's rng video https://www.youtube.com/watch?v=xlO6ZPf-4_c ...",
+      "hits": 4,
+      "best_rank": 1,
+      "queries": [
+        "roblox player retention",
+        "how to increase retention roblox game",
+        "player retention game design",
+        "roblox game retention tips"
+      ],
+      "rank": 4,
+      "score": 4.796
+    },
+    {
+      "id": "_Hjm9LLSICg",
+      "url": "https://www.youtube.com/watch?v=_Hjm9LLSICg",
+      "title": "From Rational to Emotional: Designs that Increase Player Retention",
+      "channel": "GDC Festival of Gaming",
+      "view_count": 35141,
+      "duration": 3709,
+      "description": "In this 2017 session, Epic's Jim Brown provides specific examples of design techniques that encourage the formation of enduring ...",
+      "hits": 1,
+      "best_rank": 6,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 5,
+      "score": 4.546
+    },
+    {
+      "id": "1VX4ctxvVv4",
+      "url": "https://www.youtube.com/watch?v=1VX4ctxvVv4",
+      "title": "How to Maximise Game Retention: The Engagement Power of Game Maps - Hybridcasual - Scrape Master",
+      "channel": "Homa Academy",
+      "view_count": 21510,
+      "duration": 4622,
+      "description": "In this video, we explore the importance of adding game maps to your mobile game as a game developer. From increasing user ...",
+      "hits": 1,
+      "best_rank": 20,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 6,
+      "score": 4.333
+    },
+    {
+      "id": "xNG0UNbRpgA",
+      "url": "https://www.youtube.com/watch?v=xNG0UNbRpgA",
+      "title": "Successful Roblox GAME DEV Tutorial #1: RETENTION!",
+      "channel": "TehLemonsRUs",
+      "view_count": 3594,
+      "duration": 759,
+      "description": "Just some tips and a guide to help you think of good game ideas and make a successful game on Roblox that will reach the front ...",
+      "hits": 2,
+      "best_rank": 30,
+      "queries": [
+        "how to increase retention roblox game",
+        "roblox game retention tips"
+      ],
+      "rank": 7,
+      "score": 4.156
+    },
+    {
+      "id": "3LnrzbqX_Xc",
+      "url": "https://www.youtube.com/watch?v=3LnrzbqX_Xc",
+      "title": "Returners and Retention - How to Win Back Lapsed Players",
+      "channel": "GDC Festival of Gaming",
+      "view_count": 10315,
+      "duration": 3029,
+      "description": "In this 2015 GDC session, Jagex's Phil Mansell describe a range of design and product management techniques for improving the ...",
+      "hits": 1,
+      "best_rank": 28,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 8,
+      "score": 4.014
+    },
+    {
+      "id": "5Q1PPJFkVQk",
+      "url": "https://www.youtube.com/watch?v=5Q1PPJFkVQk",
+      "title": "How to Boost Mobile Game Retention - Mastering the FTUE Experience ( UI/UX )",
+      "channel": "Homa Academy",
+      "view_count": 6336,
+      "duration": 3718,
+      "description": "The first-time user experience (FTUE) is paramount when designing mobile games. It serves as a critical bridge that can make or ...",
+      "hits": 1,
+      "best_rank": 22,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 9,
+      "score": 3.802
+    },
+    {
+      "id": "gPV0qmyGs-o",
+      "url": "https://www.youtube.com/watch?v=gPV0qmyGs-o",
+      "title": "Getting Players to Care: Using Narrative to Drive Retention",
+      "channel": "GDC Festival of Gaming",
+      "view_count": 5477,
+      "duration": 3283,
+      "description": "In this 2014 GDC session, Pixelberry Studios' Kara Loo and Royal McGraw explain High School Story's strategy of using drama, ...",
+      "hits": 1,
+      "best_rank": 39,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 10,
+      "score": 3.739
+    },
+    {
+      "id": "CRL8hBrf-Xo",
+      "url": "https://www.youtube.com/watch?v=CRL8hBrf-Xo",
+      "title": "How to Increase Retention for Casual Mobile Games",
+      "channel": "App Masters",
+      "view_count": 4107,
+      "duration": 588,
+      "description": "Kevin Wolstenholme is the founder of ​RisingHigh Studio​ and ​RisingHigh Academy​. He runs a two-person indie game ...",
+      "hits": 1,
+      "best_rank": 24,
+      "queries": [
+        "how to increase retention roblox game"
+      ],
+      "rank": 11,
+      "score": 3.614
+    },
+    {
+      "id": "sZWJw1RWH6s",
+      "url": "https://www.youtube.com/watch?v=sZWJw1RWH6s",
+      "title": "Game Design For Engagement & Retention: How to keep your players playing",
+      "channel": "PocketGamerbiz",
+      "view_count": 2008,
+      "duration": 3727,
+      "description": "Want to learn how to build lasting engagement into your game? This Game Design For Engagement & Retention free webinar ...",
+      "hits": 1,
+      "best_rank": 8,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 12,
+      "score": 3.303
+    },
+    {
+      "id": "KTZm_lUMHuY",
+      "url": "https://www.youtube.com/watch?v=KTZm_lUMHuY",
+      "title": "Experts Reveal Game Retention Tips From Day 1 To Day 180",
+      "channel": "Stash",
+      "view_count": 1264,
+      "duration": 157,
+      "description": "What is game retention and how can you improve it in the short-term AND in the long-term? Tune in. Let's break down game ...",
+      "hits": 1,
+      "best_rank": 4,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 13,
+      "score": 3.102
+    },
+    {
+      "id": "Ti9eXM7tvm4",
+      "url": "https://www.youtube.com/watch?v=Ti9eXM7tvm4",
+      "title": "ThursDev: First Time User Experience - FTUE & Player retention through your crucial first minutes",
+      "channel": "Level 0 Gamedev",
+      "view_count": 1200,
+      "duration": 652,
+      "description": "This week on ThursDev, Luke gets into the idea of making a good first impression with your game. In an era of extreme market ...",
+      "hits": 1,
+      "best_rank": 14,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 14,
+      "score": 3.08
+    },
+    {
+      "id": "NyAALyob86E",
+      "url": "https://www.youtube.com/watch?v=NyAALyob86E",
+      "title": "ThursDev: Metrics-aware Game Design - Part 2 - Player Retention: How do we measure it and why?",
+      "channel": "Level 0 Gamedev",
+      "view_count": 506,
+      "duration": 532,
+      "description": "This week on ThursDev, Luke continues the Metrics-Aware Game Design series with a look at the first and most significant metric ...",
+      "hits": 1,
+      "best_rank": 16,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 15,
+      "score": 2.705
+    },
+    {
+      "id": "Izq2FwmV-_w",
+      "url": "https://www.youtube.com/watch?v=Izq2FwmV-_w",
+      "title": "How to Make Players Addicted to Your Game (Proven Psychology Hacks that Boost Retention by 300%)",
+      "channel": "Justin G",
+      "view_count": 456,
+      "duration": 220,
+      "description": "Download 6 Figure Game Blueprint for FREE : https://www.indiedreamlab.com/product-page/6-figure-blueprint Instagram ...",
+      "hits": 1,
+      "best_rank": 3,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 16,
+      "score": 2.66
+    },
+    {
+      "id": "kN-G9hCUR2E",
+      "url": "https://www.youtube.com/watch?v=kN-G9hCUR2E",
+      "title": "How to retain your players!",
+      "channel": "Rule of Carnage",
+      "view_count": 420,
+      "duration": 1293,
+      "description": "Ep 172. Player retention is hard. Is it important? And how do you do it? Find out here! Follow Here come the Bastards here: ...",
+      "hits": 1,
+      "best_rank": 25,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 17,
+      "score": 2.624
+    },
+    {
+      "id": "5ZKem59Fwjg",
+      "url": "https://www.youtube.com/watch?v=5ZKem59Fwjg",
+      "title": "ThursDev: Metrics-Aware Game Design Part 5 - Designing to increase retention and session length",
+      "channel": "Level 0 Gamedev",
+      "view_count": 308,
+      "duration": 674,
+      "description": "This week on ThursDev, Luke continues the Metrics-Aware Game Design series by revisiting Retention, and talking a little bit ...",
+      "hits": 1,
+      "best_rank": 9,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 18,
+      "score": 2.49
+    },
+    {
+      "id": "RXEDY3vOVC8",
+      "url": "https://www.youtube.com/watch?v=RXEDY3vOVC8",
+      "title": "How to drive player engagement from the best in Finnish mobile gaming",
+      "channel": "PocketGamerbiz",
+      "view_count": 304,
+      "duration": 2012,
+      "description": "From indie devs just hitting the scene, to those who have grown into full-fledged studios, learn lessons from the leaders in mobile ...",
+      "hits": 1,
+      "best_rank": 10,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 19,
+      "score": 2.484
+    },
+    {
+      "id": "hhKUBRT9_fo",
+      "url": "https://www.youtube.com/watch?v=hhKUBRT9_fo",
+      "title": "ThursDev: Metrics-Aware game design Part 3 - Retention - Building the Play Pattern Profile",
+      "channel": "Level 0 Gamedev",
+      "view_count": 290,
+      "duration": 471,
+      "description": "This week on ThursDev, Luke continues the Metrics-Aware Game Design series with a look at creating a Play Pattern Profile: an ...",
+      "hits": 1,
+      "best_rank": 11,
+      "queries": [
+        "player retention game design"
+      ],
+      "rank": 20,
+      "score": 2.464
+    }
+  ]
+}

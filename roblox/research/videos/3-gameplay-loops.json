@@ -1,0 +1,370 @@
+{
+  "topic": "Gameplay loops",
+  "slug": "3-gameplay-loops",
+  "queries": [
+    "roblox gameplay loop",
+    "core gameplay loop game design",
+    "game loop design",
+    "core loop game design explained",
+    "gameplay loop roblox game"
+  ],
+  "candidates_seen": 122,
+  "on_topic": 57,
+  "fetched": "2026-11-09",
+  "videos": [
+    {
+      "id": "aDE69s3pp7M",
+      "url": "https://www.youtube.com/watch?v=aDE69s3pp7M",
+      "title": "Core Game Loops",
+      "channel": "Timothy Cain",
+      "view_count": 86603,
+      "duration": 808,
+      "description": "I talk about the core game loop, both what it is and why you want to define it for your game. Video I reference: Design Pillars: ...",
+      "hits": 5,
+      "best_rank": 1,
+      "queries": [
+        "roblox gameplay loop",
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained",
+        "gameplay loop roblox game"
+      ],
+      "rank": 1,
+      "score": 7.338
+    },
+    {
+      "id": "wTbSrOexWZU",
+      "url": "https://www.youtube.com/watch?v=wTbSrOexWZU",
+      "title": "How To Design a Gameplay Loop",
+      "channel": "Apox Fox",
+      "view_count": 56222,
+      "duration": 455,
+      "description": "How To Design a Game Loop Join our Discord with other cool devs! https://discord.gg/JMfuBKkSdj Today we talk about the most ...",
+      "hits": 5,
+      "best_rank": 2,
+      "queries": [
+        "roblox gameplay loop",
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained",
+        "gameplay loop roblox game"
+      ],
+      "rank": 2,
+      "score": 7.15
+    },
+    {
+      "id": "Sk-nbAtIUko",
+      "url": "https://www.youtube.com/watch?v=Sk-nbAtIUko",
+      "title": "How Gameplay Loops Keep You Playing",
+      "channel": "Adam Millard - The Architect of Games",
+      "view_count": 316591,
+      "duration": 856,
+      "description": "Check out Errant Signal: https://t.co/57JMC0IPXm?amp=1 Also I lied the link to my patreon is in the comments, sike! The Architect ...",
+      "hits": 3,
+      "best_rank": 10,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 3,
+      "score": 6.7
+    },
+    {
+      "id": "H4kbJObhcHw",
+      "url": "https://www.youtube.com/watch?v=H4kbJObhcHw",
+      "title": "How Games Use Feedback Loops",
+      "channel": "Game Maker's Toolkit",
+      "view_count": 1181676,
+      "duration": 791,
+      "description": "Get bonus content by supporting Game Maker's Toolkit - https://gamemakerstoolkit.com/support/ Playing Pyre over Christmas ...",
+      "hits": 2,
+      "best_rank": 31,
+      "queries": [
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 4,
+      "score": 6.672
+    },
+    {
+      "id": "mGL5YGcAxEI",
+      "url": "https://www.youtube.com/watch?v=mGL5YGcAxEI",
+      "title": "The Real Core Loop - What Every Game Has In Common - Extra Credits",
+      "channel": "Extra Credits",
+      "view_count": 188704,
+      "duration": 547,
+      "description": "Join us ONLINE or come play in-person October 6th at 2pm EDT in Toronto at the University of Waterloo, or in Saskatchewan at ...",
+      "hits": 3,
+      "best_rank": 6,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 5,
+      "score": 6.476
+    },
+    {
+      "id": "6SYX17NzNqE",
+      "url": "https://www.youtube.com/watch?v=6SYX17NzNqE",
+      "title": "Gameplay Loops Are Out, Chains Are In",
+      "channel": "Indie Game Clinic",
+      "view_count": 156685,
+      "duration": 662,
+      "description": "Warning for flashing images. This is a video essay about how designers use visual and spatial metaphors to explain and plan for ...",
+      "hits": 3,
+      "best_rank": 5,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 6,
+      "score": 6.395
+    },
+    {
+      "id": "MIMMJ4xHYR8",
+      "url": "https://www.youtube.com/watch?v=MIMMJ4xHYR8",
+      "title": "Go from Ideas to Gameplay using Gameplay Loops",
+      "channel": "Game Design with Michael",
+      "view_count": 35997,
+      "duration": 332,
+      "description": "Using well made gameplay loops, game devs can get ideas into gamplay for their game design. The primary loop is the most ...",
+      "hits": 4,
+      "best_rank": 2,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained",
+        "gameplay loop roblox game"
+      ],
+      "rank": 7,
+      "score": 6.356
+    },
+    {
+      "id": "PMj8Q4ViKzs",
+      "url": "https://www.youtube.com/watch?v=PMj8Q4ViKzs",
+      "title": "What are loops in game design? - Loops - Game Design Theory",
+      "channel": "Game Design with Michael",
+      "view_count": 106178,
+      "duration": 584,
+      "description": "Learn how players come up with actions when they are playing your game so that you can design around this. People use a loop ...",
+      "hits": 3,
+      "best_rank": 4,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 8,
+      "score": 6.226
+    },
+    {
+      "id": "B2Ut-LH8ai8",
+      "url": "https://www.youtube.com/watch?v=B2Ut-LH8ai8",
+      "title": "Core loops - Simple Game Design",
+      "channel": "Matthew Palaje",
+      "view_count": 79471,
+      "duration": 359,
+      "description": "Hey everyone! In this video I discuss core loops and how they may help you come up with new ideas whilst designing games!",
+      "hits": 3,
+      "best_rank": 26,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 9,
+      "score": 6.1
+    },
+    {
+      "id": "f5I6uo39ujQ",
+      "url": "https://www.youtube.com/watch?v=f5I6uo39ujQ",
+      "title": "Mechanics Shaping Story - Re-examining the Core Gameplay Loop - Extra Credits",
+      "channel": "Extra Credits",
+      "view_count": 187532,
+      "duration": 443,
+      "description": "Pokemon and old-school Dungeons & Dragons have a lot in common--their core gameplay loop is very combat-centric, which ...",
+      "hits": 2,
+      "best_rank": 10,
+      "queries": [
+        "core gameplay loop game design",
+        "core loop game design explained"
+      ],
+      "rank": 10,
+      "score": 5.873
+    },
+    {
+      "id": "tfSqZloxMPw",
+      "url": "https://www.youtube.com/watch?v=tfSqZloxMPw",
+      "title": "ROBLOX Pressure: Terrible Game, Incredible Experience (Game Review)",
+      "channel": "Eclipse",
+      "view_count": 135509,
+      "duration": 1100,
+      "description": "This game has one of the most unfun gameplay loops, and yet, I just cannot in good faith say that the overall experience isn't still ...",
+      "hits": 2,
+      "best_rank": 23,
+      "queries": [
+        "roblox gameplay loop",
+        "gameplay loop roblox game"
+      ],
+      "rank": 11,
+      "score": 5.732
+    },
+    {
+      "id": "irMiPwLefwg",
+      "url": "https://www.youtube.com/watch?v=irMiPwLefwg",
+      "title": "How we designed the Gameloop of our Indie Game! ⋆ ⁺₊ || GOLEMBERT Devlog #04",
+      "channel": "Studio Firlefanz",
+      "view_count": 12730,
+      "duration": 525,
+      "description": "In this video, we talk about how we created the game loop for our Indie Gardening Game. ☕     The sequence in which we ...",
+      "hits": 3,
+      "best_rank": 6,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 12,
+      "score": 5.305
+    },
+    {
+      "id": "AcDrpN0xkXk",
+      "url": "https://www.youtube.com/watch?v=AcDrpN0xkXk",
+      "title": "Building the core gameplay loop for my cozy game | Beginner Dev Diaries",
+      "channel": "Rooi",
+      "view_count": 39133,
+      "duration": 1679,
+      "description": "yep still making game. slowly. ✦ mentions ⋆ Godot saving packed scenes - Coding Quests (@CodingQuests): ...",
+      "hits": 2,
+      "best_rank": 30,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design"
+      ],
+      "rank": 13,
+      "score": 5.193
+    },
+    {
+      "id": "xznspQkSD6c",
+      "url": "https://www.youtube.com/watch?v=xznspQkSD6c",
+      "title": "How Dave the Diver’s Addictive Gameplay Loop Captured Millions of Gamers",
+      "channel": "IGN",
+      "view_count": 117871,
+      "duration": 529,
+      "description": "Dave the Diver was this summer's surprise hit. Now available on the Nintendo Switch, here's how an unlikely scuba diving, sushi ...",
+      "hits": 1,
+      "best_rank": 27,
+      "queries": [
+        "core gameplay loop game design"
+      ],
+      "rank": 14,
+      "score": 5.071
+    },
+    {
+      "id": "jtAWB46XHKw",
+      "url": "https://www.youtube.com/watch?v=jtAWB46XHKw",
+      "title": "Roblox and the Plight of Soulless Mediocrity",
+      "channel": "FlameWorks",
+      "view_count": 27822,
+      "duration": 541,
+      "description": "This leads to a very strange ecosystem that tends to favor games with simple gameplay loops, simplistic but recognizable visuals, ...",
+      "hits": 2,
+      "best_rank": 16,
+      "queries": [
+        "roblox gameplay loop",
+        "gameplay loop roblox game"
+      ],
+      "rank": 15,
+      "score": 5.044
+    },
+    {
+      "id": "pG4UxqRMNX0",
+      "url": "https://www.youtube.com/watch?v=pG4UxqRMNX0",
+      "title": "Developing 'Hi-Fi RUSH' Backwards and Finding Our Positive Gameplay Loop",
+      "channel": "GDC Festival of Gaming",
+      "view_count": 77615,
+      "duration": 3746,
+      "description": "In this session, Game Director John Johanas shares how the initial concept for Hi-Fi RUSH came to be. From there, he provides ...",
+      "hits": 1,
+      "best_rank": 24,
+      "queries": [
+        "core gameplay loop game design"
+      ],
+      "rank": 16,
+      "score": 4.89
+    },
+    {
+      "id": "sTa7GatZC98",
+      "url": "https://www.youtube.com/watch?v=sTa7GatZC98",
+      "title": "The Core Loop of Helldivers 2 Keeps You Playing",
+      "channel": "Andrew Chambers",
+      "view_count": 14099,
+      "duration": 1315,
+      "description": "If you enjoyed the content, Id appreciate it if you would buy me a coffee https://ko-fi.com/andrewchambersdesign Contact me at ...",
+      "hits": 2,
+      "best_rank": 12,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design"
+      ],
+      "rank": 17,
+      "score": 4.749
+    },
+    {
+      "id": "XcIp2zPydMU",
+      "url": "https://www.youtube.com/watch?v=XcIp2zPydMU",
+      "title": "5 Steps to Create an Engaging Game Loop | Game Design Fundamentals",
+      "channel": "Ludonaut",
+      "view_count": 2801,
+      "duration": 1518,
+      "description": "Learn how to create an engaging core loop for your game that will save you time and money while boosting sales.",
+      "hits": 3,
+      "best_rank": 2,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 18,
+      "score": 4.647
+    },
+    {
+      "id": "BXnGV6SuOsw",
+      "url": "https://www.youtube.com/watch?v=BXnGV6SuOsw",
+      "title": "What is a Core Gameplay Loop? How to Design a Gameplay Loop",
+      "channel": "IxDF - Interaction Design Foundation",
+      "view_count": 2463,
+      "duration": 341,
+      "description": "In this video, Om Tandom delves into the concept of a game's core loop, a fundamental element in game design that determines ...",
+      "hits": 3,
+      "best_rank": 3,
+      "queries": [
+        "core gameplay loop game design",
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 19,
+      "score": 4.592
+    },
+    {
+      "id": "4T2Ok650IGs",
+      "url": "https://www.youtube.com/watch?v=4T2Ok650IGs",
+      "title": "What are “Game Loops”? Explained with Music!",
+      "channel": "Indie Game Clinic",
+      "view_count": 7853,
+      "duration": 1357,
+      "description": "... Contact: https://indiegameclinic.com/ ⌚Key Moments⌚ 00:00 what are \"game loops\" 01:24 repetition with variation is key 02:33 ...",
+      "hits": 2,
+      "best_rank": 13,
+      "queries": [
+        "game loop design",
+        "core loop game design explained"
+      ],
+      "rank": 20,
+      "score": 4.495
+    }
+  ]
+}
