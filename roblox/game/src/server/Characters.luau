@@ -115,11 +115,13 @@ function Characters.teleport(player: Player, cframe: CFrame)
 	local _, root = getParts(player)
 	if root then
 		player.Character:PivotTo(cframe)
+		S.Stars.resetMotion(player) -- a teleport isn't cheating
 	end
 end
 
 local function onPlayer(player: Player)
 	player.CharacterAdded:Connect(function(character)
+		S.Stars.resetMotion(player) -- respawning moves you back to spawn
 		character:WaitForChild("HumanoidRootPart", 10)
 		character:WaitForChild("Humanoid", 10)
 		S.Data.waitFor(player)

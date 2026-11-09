@@ -1,6 +1,9 @@
 --[[
 	Loads and saves each player's progress with DataStoreService.
 
+	- Session lock: only one server owns your save at a time. If you hop
+	  servers, the new one waits for the old one to finish saving, so an old
+	  server can never overwrite newer progress (or a purchase).
 	- Retries with backoff when Roblox's servers hiccup.
 	- Fills in any new fields when you add them to TEMPLATE later.
 	- Autosaves, saves on leave, and saves on server shutdown.
@@ -112,18 +115,56 @@ function DataService.waitFor(player: Player, timeout: number?)
 	return DataService.get(player)
 end
 
+local LOCK_KEY = "_session"
+local LOCK_TIMEOUT = 300 -- a lock older than this belongs to a crashed server
+local LOCK_WAIT_TRIES = 10 -- x 3s: wait up to ~30s for another server to let go
+
+-- Claims this player's save for this server and returns the stored data.
+-- Returns (ok, data). If another server holds a fresh lock, waits for it.
+local function claim(player: Player)
+	local key = keyFor(player)
+	for attempt = 1, LOCK_WAIT_TRIES do
+		local lockedElsewhere = false
+		local force = attempt == LOCK_WAIT_TRIES -- last try: assume the other server died
+		local ok, result = withRetries("load " .. player.Name, function()
+			return store:UpdateAsync(key, function(stored)
+				stored = type(stored) == "table" and stored or {}
+				local lock = stored[LOCK_KEY]
+				lockedElsewhere = false
+				if not force and type(lock) == "table" and lock.job ~= game.JobId and os.time() - (lock.at or 0) < LOCK_TIMEOUT then
+					lockedElsewhere = true
+					return nil -- leave it alone; try again shortly
+				end
+				stored[LOCK_KEY] = { job = game.JobId, at = os.time() }
+				return stored
+			end)
+		end)
+		if not ok then
+			return false, nil
+		end
+		if not lockedElsewhere then
+			return true, result
+		end
+		if not player.Parent then
+			return false, nil
+		end
+		task.wait(3)
+	end
+	return false, nil
+end
+
 local function load(player: Player)
 	local data, temporary = nil, false
 	if storeOk then
-		local ok, result = withRetries("load " .. player.Name, function()
-			return store:GetAsync(keyFor(player))
-		end)
+		local ok, result = claim(player)
 		if ok then
 			data = result
 		elseif RunService:IsStudio() then
 			temporary = true
 		else
-			player:Kick("Couldn't load your progress. Roblox's servers may be busy; please rejoin in a minute.")
+			if player.Parent then
+				player:Kick("Couldn't load your progress. Roblox's servers may be busy; please rejoin in a minute.")
+			end
 			return
 		end
 	else
@@ -131,9 +172,23 @@ local function load(player: Player)
 	end
 
 	if not player.Parent then
+		-- left while loading: let go of the lock right away
+		if storeOk and not temporary then
+			pcall(function()
+				store:UpdateAsync(keyFor(player), function(stored)
+					if type(stored) == "table" and type(stored[LOCK_KEY]) == "table" and stored[LOCK_KEY].job == game.JobId then
+						stored[LOCK_KEY] = nil
+						return stored
+					end
+					return nil
+				end)
+			end)
+		end
 		return
 	end
-	data = reconcile(type(data) == "table" and data or {}, TEMPLATE)
+	data = type(data) == "table" and data or {}
+	data[LOCK_KEY] = nil -- the lock lives only in the store, never in memory
+	data = reconcile(data, TEMPLATE)
 	local now = os.time()
 	if data.firstJoin == 0 then
 		data.firstJoin = now
@@ -152,7 +207,8 @@ end
 
 -- Saves right away. Returns true if the save reached Roblox's servers.
 -- Used by purchases, which must be saved before they are confirmed.
-function DataService.saveNow(player: Player): boolean
+-- `final` also releases the session lock (when the player leaves).
+local function save(player: Player, final: boolean): boolean
 	local profile = profiles[player]
 	if not profile then
 		return false
@@ -160,19 +216,41 @@ function DataService.saveNow(player: Player): boolean
 	if profile.temporary then
 		return true -- Studio test data: nothing to save, treat as saved
 	end
+	if profile.lost then
+		return false
+	end
 	profile.data.lastSeen = os.time()
 	local snapshot = deepCopy(profile.data)
+	snapshot[LOCK_KEY] = (not final) and { job = game.JobId, at = os.time() } or nil
+	local lostLock = false
 	local ok = withRetries("save " .. player.Name, function()
-		store:UpdateAsync(keyFor(player), function()
+		store:UpdateAsync(keyFor(player), function(stored)
+			local lock = type(stored) == "table" and stored[LOCK_KEY] or nil
+			lostLock = type(lock) == "table" and lock.job ~= game.JobId
+			if lostLock then
+				return nil -- another server owns this save now; never overwrite it
+			end
 			return snapshot
 		end)
 	end, 3)
+	if lostLock then
+		profile.lost = true
+		warn("[Data] " .. player.Name .. "'s save is owned by another server; not saving here.")
+		return false
+	end
 	return ok
 end
 
+function DataService.saveNow(player: Player): boolean
+	return save(player, false)
+end
+
+-- Final save and release. Safe to call twice (leaving during shutdown).
 local function release(player: Player)
-	if profiles[player] then
-		DataService.saveNow(player)
+	local profile = profiles[player]
+	if profile and not profile.releasing then
+		profile.releasing = true
+		save(player, true)
 		profiles[player] = nil
 	end
 end
@@ -206,23 +284,20 @@ function DataService.start()
 	task.spawn(function()
 		while true do
 			task.wait(Config.AutosaveSeconds)
-			for player in pairs(profiles) do
-				task.spawn(DataService.saveNow, player)
+			for player, profile in pairs(profiles) do
+				if not profile.releasing then
+					task.spawn(DataService.saveNow, player)
+				end
 			end
 		end
 	end)
 
 	game:BindToClose(function()
-		local pending = 0
 		for player in pairs(profiles) do
-			pending += 1
-			task.spawn(function()
-				DataService.saveNow(player)
-				pending -= 1
-			end)
+			task.spawn(release, player)
 		end
 		local deadline = os.clock() + 25
-		while pending > 0 and os.clock() < deadline do
+		while next(profiles) and os.clock() < deadline do
 			task.wait(0.1)
 		end
 	end)

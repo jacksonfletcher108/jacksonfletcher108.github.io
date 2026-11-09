@@ -8,15 +8,12 @@ local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
 
 local Config = require(game:GetService("ReplicatedStorage").Shared.Config)
-local Net = require(game:GetService("ReplicatedStorage").Shared.Net)
 
 local Leaderboard = {}
 local S
 
-local leaderboardEvent = Net.event("Leaderboard")
 local store
 local names = {}
-local lastRows = {}
 
 local function nameFor(userId: number): string
 	if names[userId] then
@@ -47,9 +44,7 @@ local function refresh()
 		table.sort(rows, function(a, b)
 			return a.value > b.value
 		end)
-		lastRows = rows
 		S.Map.setLeaderboard(rows)
-		leaderboardEvent:FireAllClients(rows)
 		return
 	end
 	for _, player in ipairs(Players:GetPlayers()) do
@@ -70,9 +65,7 @@ local function refresh()
 	for _, entry in ipairs(pages:GetCurrentPage()) do
 		table.insert(rows, { name = nameFor(tonumber(entry.key) or 0), value = entry.value })
 	end
-	lastRows = rows
 	S.Map.setLeaderboard(rows)
-	leaderboardEvent:FireAllClients(rows)
 end
 
 local function setupLeaderstats(player: Player)
@@ -85,10 +78,6 @@ local function setupLeaderstats(player: Player)
 	novas.Name = "Supernovas"
 	novas.Parent = stats
 	stats.Parent = player
-end
-
-function Leaderboard.sendTo(player: Player)
-	leaderboardEvent:FireClient(player, lastRows)
 end
 
 function Leaderboard.init(services)

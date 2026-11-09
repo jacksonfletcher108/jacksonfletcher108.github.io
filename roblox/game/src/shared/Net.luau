@@ -9,16 +9,16 @@
 	  StarCaught   (info)                      someone caught a star
 	  Toast        (text, kind)                a short message for you
 	  ShowerState  (phase, startsAt, endsAt)   Meteor Shower timing
-	  Leaderboard  ({ {name, value} })         the all-time top 10
 
 	Client -> server:
 	  Action       (name, ...) -> { ok, message }   every button press goes through here
+	  Ready        ()                               UI is listening; send me everything
 ]]
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local EVENTS = { "State", "StarSpawned", "StarSnapshot", "StarCaught", "Toast", "ShowerState", "Leaderboard", "Ready" }
+local EVENTS = { "State", "StarSpawned", "StarSnapshot", "StarCaught", "Toast", "ShowerState", "Ready" }
 local FUNCTIONS = { "Action" }
 
 local Net = {}

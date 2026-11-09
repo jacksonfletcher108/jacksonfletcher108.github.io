@@ -618,16 +618,16 @@ return Formulas
 	  StarCaught   (info)                      someone caught a star
 	  Toast        (text, kind)                a short message for you
 	  ShowerState  (phase, startsAt, endsAt)   Meteor Shower timing
-	  Leaderboard  ({ {name, value} })         the all-time top 10
 
 	Client -> server:
 	  Action       (name, ...) -> { ok, message }   every button press goes through here
+	  Ready        ()                               UI is listening; send me everything
 ]]
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local EVENTS = { "State", "StarSpawned", "StarSnapshot", "StarCaught", "Toast", "ShowerState", "Leaderboard", "Ready" }
+local EVENTS = { "State", "StarSpawned", "StarSnapshot", "StarCaught", "Toast", "ShowerState", "Ready" }
 local FUNCTIONS = { "Action" }
 
 local Net = {}
@@ -760,6 +760,7 @@ local S
 
 local MAX_PER_SECOND = 12
 local recent = {} -- [Player] = { windowStart, count }
+local lastReady = {} -- [Player] = os.clock() of their last "Ready"
 
 local function throttled(player: Player): boolean
 	local now = os.clock()
@@ -827,18 +828,24 @@ function Actions.start()
 	end
 
 	-- the client says "Ready" once its UI is listening; send it everything
+	-- (at most once every 10 seconds, so it can't be spammed)
 	Net.event("Ready").OnServerEvent:Connect(function(player)
+		local now = os.clock()
+		if lastReady[player] and now - lastReady[player] < 10 then
+			return
+		end
+		lastReady[player] = now
 		task.spawn(function()
 			S.Data.waitFor(player)
 			S.State.sendNow(player)
 			S.Stars.sendSnapshot(player)
 			S.Events.sendTo(player)
-			S.Leaderboard.sendTo(player)
 		end)
 	end)
 
 	Players.PlayerRemoving:Connect(function(player)
 		recent[player] = nil
+		lastReady[player] = nil
 	end)
 end
 
@@ -905,20 +912,20 @@ local function logEconomy(player: Player, isSource: boolean, amount: number, tra
 	end)
 end
 
+-- Stardust bought with Robux uses an sku starting with "Robux_" and is
+-- logged as an in-app purchase; everything else is gameplay.
 function Analytics.earned(player: Player, amount: number, sku: string)
 	if sku == "StarCatch" then
 		pendingCatches[player] = (pendingCatches[player] or 0) + amount
 		return
 	end
-	logEconomy(player, true, amount, Enum.AnalyticsEconomyTransactionType.Gameplay.Name, sku)
+	local transactionType = string.sub(sku, 1, 6) == "Robux_" and Enum.AnalyticsEconomyTransactionType.IAP.Name
+		or Enum.AnalyticsEconomyTransactionType.Gameplay.Name
+	logEconomy(player, true, amount, transactionType, sku)
 end
 
 function Analytics.spent(player: Player, amount: number, sku: string)
 	logEconomy(player, false, amount, Enum.AnalyticsEconomyTransactionType.Shop.Name, sku)
-end
-
-function Analytics.purchasedWithRobux(player: Player, amount: number, sku: string)
-	logEconomy(player, true, amount, Enum.AnalyticsEconomyTransactionType.IAP.Name, sku)
 end
 
 local function flush(player: Player)
@@ -1113,11 +1120,13 @@ function Characters.teleport(player: Player, cframe: CFrame)
 	local _, root = getParts(player)
 	if root then
 		player.Character:PivotTo(cframe)
+		S.Stars.resetMotion(player) -- a teleport isn't cheating
 	end
 end
 
 local function onPlayer(player: Player)
 	player.CharacterAdded:Connect(function(character)
+		S.Stars.resetMotion(player) -- respawning moves you back to spawn
 		character:WaitForChild("HumanoidRootPart", 10)
 		character:WaitForChild("Humanoid", 10)
 		S.Data.waitFor(player)
@@ -1153,6 +1162,9 @@ return Characters
           <string name="Source"><![CDATA[--[[
 	Loads and saves each player's progress with DataStoreService.
 
+	- Session lock: only one server owns your save at a time. If you hop
+	  servers, the new one waits for the old one to finish saving, so an old
+	  server can never overwrite newer progress (or a purchase).
 	- Retries with backoff when Roblox's servers hiccup.
 	- Fills in any new fields when you add them to TEMPLATE later.
 	- Autosaves, saves on leave, and saves on server shutdown.
@@ -1264,18 +1276,56 @@ function DataService.waitFor(player: Player, timeout: number?)
 	return DataService.get(player)
 end
 
+local LOCK_KEY = "_session"
+local LOCK_TIMEOUT = 300 -- a lock older than this belongs to a crashed server
+local LOCK_WAIT_TRIES = 10 -- x 3s: wait up to ~30s for another server to let go
+
+-- Claims this player's save for this server and returns the stored data.
+-- Returns (ok, data). If another server holds a fresh lock, waits for it.
+local function claim(player: Player)
+	local key = keyFor(player)
+	for attempt = 1, LOCK_WAIT_TRIES do
+		local lockedElsewhere = false
+		local force = attempt == LOCK_WAIT_TRIES -- last try: assume the other server died
+		local ok, result = withRetries("load " .. player.Name, function()
+			return store:UpdateAsync(key, function(stored)
+				stored = type(stored) == "table" and stored or {}
+				local lock = stored[LOCK_KEY]
+				lockedElsewhere = false
+				if not force and type(lock) == "table" and lock.job ~= game.JobId and os.time() - (lock.at or 0) < LOCK_TIMEOUT then
+					lockedElsewhere = true
+					return nil -- leave it alone; try again shortly
+				end
+				stored[LOCK_KEY] = { job = game.JobId, at = os.time() }
+				return stored
+			end)
+		end)
+		if not ok then
+			return false, nil
+		end
+		if not lockedElsewhere then
+			return true, result
+		end
+		if not player.Parent then
+			return false, nil
+		end
+		task.wait(3)
+	end
+	return false, nil
+end
+
 local function load(player: Player)
 	local data, temporary = nil, false
 	if storeOk then
-		local ok, result = withRetries("load " .. player.Name, function()
-			return store:GetAsync(keyFor(player))
-		end)
+		local ok, result = claim(player)
 		if ok then
 			data = result
 		elseif RunService:IsStudio() then
 			temporary = true
 		else
-			player:Kick("Couldn't load your progress. Roblox's servers may be busy; please rejoin in a minute.")
+			if player.Parent then
+				player:Kick("Couldn't load your progress. Roblox's servers may be busy; please rejoin in a minute.")
+			end
 			return
 		end
 	else
@@ -1283,9 +1333,23 @@ local function load(player: Player)
 	end
 
 	if not player.Parent then
+		-- left while loading: let go of the lock right away
+		if storeOk and not temporary then
+			pcall(function()
+				store:UpdateAsync(keyFor(player), function(stored)
+					if type(stored) == "table" and type(stored[LOCK_KEY]) == "table" and stored[LOCK_KEY].job == game.JobId then
+						stored[LOCK_KEY] = nil
+						return stored
+					end
+					return nil
+				end)
+			end)
+		end
 		return
 	end
-	data = reconcile(type(data) == "table" and data or {}, TEMPLATE)
+	data = type(data) == "table" and data or {}
+	data[LOCK_KEY] = nil -- the lock lives only in the store, never in memory
+	data = reconcile(data, TEMPLATE)
 	local now = os.time()
 	if data.firstJoin == 0 then
 		data.firstJoin = now
@@ -1304,7 +1368,8 @@ end
 
 -- Saves right away. Returns true if the save reached Roblox's servers.
 -- Used by purchases, which must be saved before they are confirmed.
-function DataService.saveNow(player: Player): boolean
+-- `final` also releases the session lock (when the player leaves).
+local function save(player: Player, final: boolean): boolean
 	local profile = profiles[player]
 	if not profile then
 		return false
@@ -1312,19 +1377,41 @@ function DataService.saveNow(player: Player): boolean
 	if profile.temporary then
 		return true -- Studio test data: nothing to save, treat as saved
 	end
+	if profile.lost then
+		return false
+	end
 	profile.data.lastSeen = os.time()
 	local snapshot = deepCopy(profile.data)
+	snapshot[LOCK_KEY] = (not final) and { job = game.JobId, at = os.time() } or nil
+	local lostLock = false
 	local ok = withRetries("save " .. player.Name, function()
-		store:UpdateAsync(keyFor(player), function()
+		store:UpdateAsync(keyFor(player), function(stored)
+			local lock = type(stored) == "table" and stored[LOCK_KEY] or nil
+			lostLock = type(lock) == "table" and lock.job ~= game.JobId
+			if lostLock then
+				return nil -- another server owns this save now; never overwrite it
+			end
 			return snapshot
 		end)
 	end, 3)
+	if lostLock then
+		profile.lost = true
+		warn("[Data] " .. player.Name .. "'s save is owned by another server; not saving here.")
+		return false
+	end
 	return ok
 end
 
+function DataService.saveNow(player: Player): boolean
+	return save(player, false)
+end
+
+-- Final save and release. Safe to call twice (leaving during shutdown).
 local function release(player: Player)
-	if profiles[player] then
-		DataService.saveNow(player)
+	local profile = profiles[player]
+	if profile and not profile.releasing then
+		profile.releasing = true
+		save(player, true)
 		profiles[player] = nil
 	end
 end
@@ -1358,23 +1445,20 @@ function DataService.start()
 	task.spawn(function()
 		while true do
 			task.wait(Config.AutosaveSeconds)
-			for player in pairs(profiles) do
-				task.spawn(DataService.saveNow, player)
+			for player, profile in pairs(profiles) do
+				if not profile.releasing then
+					task.spawn(DataService.saveNow, player)
+				end
 			end
 		end
 	end)
 
 	game:BindToClose(function()
-		local pending = 0
 		for player in pairs(profiles) do
-			pending += 1
-			task.spawn(function()
-				DataService.saveNow(player)
-				pending -= 1
-			end)
+			task.spawn(release, player)
 		end
 		local deadline = os.clock() + 25
-		while pending > 0 and os.clock() < deadline do
+		while next(profiles) and os.clock() < deadline do
 			task.wait(0.1)
 		end
 	end)
@@ -1655,15 +1739,12 @@ local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
 
 local Config = require(game:GetService("ReplicatedStorage").Shared.Config)
-local Net = require(game:GetService("ReplicatedStorage").Shared.Net)
 
 local Leaderboard = {}
 local S
 
-local leaderboardEvent = Net.event("Leaderboard")
 local store
 local names = {}
-local lastRows = {}
 
 local function nameFor(userId: number): string
 	if names[userId] then
@@ -1694,9 +1775,7 @@ local function refresh()
 		table.sort(rows, function(a, b)
 			return a.value > b.value
 		end)
-		lastRows = rows
 		S.Map.setLeaderboard(rows)
-		leaderboardEvent:FireAllClients(rows)
 		return
 	end
 	for _, player in ipairs(Players:GetPlayers()) do
@@ -1717,9 +1796,7 @@ local function refresh()
 	for _, entry in ipairs(pages:GetCurrentPage()) do
 		table.insert(rows, { name = nameFor(tonumber(entry.key) or 0), value = entry.value })
 	end
-	lastRows = rows
 	S.Map.setLeaderboard(rows)
-	leaderboardEvent:FireAllClients(rows)
 end
 
 local function setupLeaderstats(player: Player)
@@ -1732,10 +1809,6 @@ local function setupLeaderstats(player: Player)
 	novas.Name = "Supernovas"
 	novas.Parent = stats
 	stats.Parent = player
-end
-
-function Leaderboard.sendTo(player: Player)
-	leaderboardEvent:FireClient(player, lastRows)
 end
 
 function Leaderboard.init(services)
@@ -2500,8 +2573,9 @@ function Progression.supernova(player: Player)
 	if not ok then
 		return { ok = false, message = why }
 	end
-	S.Analytics.spent(player, data.stardust, "Supernova")
+	local given = data.stardust
 	data.stardust = 0
+	S.Analytics.spent(player, given, "Supernova")
 	for key in pairs(data.upgrades) do
 		data.upgrades[key] = 0
 	end
@@ -2887,7 +2961,6 @@ local function processReceipt(receipt)
 		-- the grant is lost too and Roblox retries next time: still consistent.
 		return Enum.ProductPurchaseDecision.NotProcessedYet
 	end
-	S.Analytics.purchasedWithRobux(player, 1, product.key)
 	return Enum.ProductPurchaseDecision.PurchaseGranted
 end
 
@@ -3016,6 +3089,31 @@ local function rootOf(player: Player): BasePart?
 end
 
 -- Players standing in each zone that they've actually unlocked.
+--
+-- Characters are moved by their own client, so an exploiter could teleport
+-- around to sweep up every star. Anyone who moved farther since the last
+-- check than their run speed allows (with generous slack for lag) is skipped
+-- for that tick. Real players never notice; teleport-farming gets nothing.
+local lastPosition = {} -- [Player] = { position = Vector3 (flat), at = number }
+
+function Stars.resetMotion(player: Player)
+	lastPosition[player] = nil
+end
+
+local function movedTooFast(player: Player, root: BasePart): boolean
+	local now = os.clock()
+	local flat = Vector3.new(root.Position.X, 0, root.Position.Z)
+	local previous = lastPosition[player]
+	lastPosition[player] = { position = flat, at = now }
+	if not previous then
+		return false
+	end
+	local humanoid = root.Parent and root.Parent:FindFirstChildOfClass("Humanoid")
+	local speed = humanoid and humanoid.WalkSpeed or Config.BaseWalkSpeed
+	local allowed = (speed * 1.5 + 4) * (now - previous.at) + 2
+	return (flat - previous.position).Magnitude > allowed
+end
+
 local function playersByZone()
 	local byZone = {}
 	for _, zone in ipairs(Config.Zones) do
@@ -3024,7 +3122,7 @@ local function playersByZone()
 	for _, player in ipairs(Players:GetPlayers()) do
 		local data = S.Data.get(player)
 		local root = rootOf(player)
-		if data and root then
+		if data and root and not movedTooFast(player, root) then
 			local zoneId = S.Map.zoneAt(root.Position)
 			if zoneId <= data.bestZone then
 				table.insert(byZone[zoneId], { player = player, root = root, data = data })
@@ -3222,6 +3320,7 @@ end
 function Stars.start()
 	Players.PlayerRemoving:Connect(function(player)
 		combos[player] = nil
+		lastPosition[player] = nil
 	end)
 	task.spawn(function()
 		local last = os.clock()
@@ -3431,9 +3530,11 @@ local function screenGui(name: string, displayOrder: number, fullscreen: boolean
 end
 
 local App = {}
-App.screen = screenGui("StarfallHud", 1, false) -- always-on HUD
-App.fullscreen = screenGui("StarfallBackdrop", 2, true) -- dims the game behind menus
-App.overlay = screenGui("StarfallMenus", 3, false) -- menus and toasts
+-- layers, bottom to top: the dimmer behind menus, the HUD (so its buttons
+-- still work and switch menus while one is open), then menus and toasts
+App.fullscreen = screenGui("StarfallBackdrop", 1, true)
+App.screen = screenGui("StarfallHud", 2, false)
+App.overlay = screenGui("StarfallMenus", 3, false)
 
 App.Theme = require(script.Theme)
 App.Sounds = require(script.Sounds)
@@ -3887,26 +3988,68 @@ local function sideButton(parent, name: string, icon: string, color: Color3, ord
 	return holder, badge, caption
 end
 
-local function column(name: string, anchorX: number, positionX: number)
+-- Short screens (phones held sideways) get a compact 2x2 grid so the right
+-- side stays clear of the jump button and the left of the thumbstick.
+-- Taller screens get one column per side.
+local SHORT_SCREEN = 500
+
+local function layoutColumn(frame: Frame, short: boolean)
 	local Theme = App.Theme
-	local frame = Theme.new("Frame", {
+	for _, child in ipairs(frame:GetChildren()) do
+		if child:IsA("UIGridStyleLayout") or child:IsA("UISizeConstraint") then
+			child:Destroy()
+		end
+	end
+	if short then
+		frame.SizeConstraint = Enum.SizeConstraint.RelativeXY
+		frame.Size = UDim2.fromOffset(112, 140)
+		Theme.new("UIGridLayout", {
+			CellSize = UDim2.fromOffset(46, 46),
+			CellPadding = UDim2.fromOffset(18, 24),
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			Parent = frame,
+		})
+	else
+		-- width is 9.5% of screen height (RelativeYY), so buttons are the same
+		-- physical size on every screen shape; never smaller than 46px
+		frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
+		frame.Size = UDim2.fromScale(0.095, 0.62)
+		Theme.new("UISizeConstraint", { MinSize = Vector2.new(46, 200), Parent = frame })
+		Theme.new("UIListLayout", {
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Padding = UDim.new(0.07, 0),
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			Parent = frame,
+		})
+	end
+end
+
+local function isShortScreen(): boolean
+	local camera = workspace.CurrentCamera
+	return camera ~= nil and camera.ViewportSize.Y < SHORT_SCREEN
+end
+
+local function column(name: string, anchorX: number, positionX: number)
+	local frame = App.Theme.new("Frame", {
 		Name = name,
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(anchorX, 0),
 		Position = UDim2.new(positionX, positionX == 0 and 10 or -10, 0.2, 0),
-		-- width is 9% of screen height (RelativeYY), so buttons are the same
-		-- physical size on every screen shape; never smaller than 46px
-		Size = UDim2.fromScale(0.095, 0.62),
-		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		Parent = App.screen,
 	})
-	Theme.new("UISizeConstraint", { MinSize = Vector2.new(46, 200), Parent = frame })
-	Theme.new("UIListLayout", {
-		SortOrder = Enum.SortOrder.LayoutOrder,
-		Padding = UDim.new(0.07, 0),
-		HorizontalAlignment = Enum.HorizontalAlignment.Center,
-		Parent = frame,
-	})
+	local short = isShortScreen()
+	layoutColumn(frame, short)
+	local camera = workspace.CurrentCamera
+	if camera then
+		camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+			local nowShort = isShortScreen()
+			if nowShort ~= short then
+				short = nowShort
+				layoutColumn(frame, short)
+			end
+		end)
+	end
 	return frame
 end
 
@@ -4646,6 +4789,8 @@ local function updateZones(content, state)
 	note(content, "You can also walk through a zone's gate to unlock it.", 99)
 end
 
+local supernovaArmedAt = 0 -- first tap arms the button; a second tap within 3s confirms
+
 local function updateSupernova(content, state)
 	local C = App.Theme.Colors
 	clear(content)
@@ -4663,14 +4808,24 @@ local function updateSupernova(content, state)
 	local r = row(content, 2, 72)
 	local ok, why = Formulas.canSupernova(state.stardust, state.bestZone, state.novas)
 	rowText(r, "Supernova #" .. (state.novas + 1), ok and "Ready!" or why)
-	rowButton(r, "★ " .. Formulas.formatNumber(state.supernovaCost), ok and C.Purple or C.Gray, function()
-		if ok then
-			App.State.act("Supernova")
-			Panels.close()
-		else
+	local _, buttonLabel = rowButton(r, "★ " .. Formulas.formatNumber(state.supernovaCost), ok and C.Purple or C.Gray, function()
+		if not ok then
 			App.Toasts.show(why, "warn")
+			return
 		end
+		if os.clock() - supernovaArmedAt > 3 then
+			-- one mis-tap shouldn't wipe your progress
+			supernovaArmedAt = os.clock()
+			App.Toasts.show("Tap again to go Supernova. This resets Stardust, upgrades and zones!", "warn")
+			return
+		end
+		supernovaArmedAt = 0
+		App.State.act("Supernova")
+		Panels.close()
 	end)
+	if ok and buttonLabel then
+		buttonLabel.Text = "★ " .. Formulas.formatNumber(state.supernovaCost) .. " · GO"
+	end
 end
 
 ---------------------------------------------------------------------------
@@ -4696,7 +4851,8 @@ local signatures = {
 	Quests = function(state)
 		local parts = {}
 		for _, quest in ipairs(state.quests) do
-			table.insert(parts, quest.progress .. (quest.claimed and "c" or "") .. quest.reward)
+			local step = quest.claimed and "c" or quest.done and "d" or tostring(math.floor(quest.progress / quest.goal * 20))
+			table.insert(parts, step .. ":" .. quest.reward)
 		end
 		return table.concat(parts, ",")
 	end,
@@ -4941,6 +5097,7 @@ local function makeStar(info)
 	trail.WidthScale = NumberSequence.new(1, 0)
 	trail.Transparency = NumberSequence.new(0.2, 1)
 	trail.Parent = part
+	local fx = { trail }
 
 	-- rare stars sparkle and glow
 	if tier >= 2 then
@@ -4953,11 +5110,13 @@ local function makeStar(info)
 		sparkle.SpreadAngle = Vector2.new(180, 180)
 		sparkle.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.4), NumberSequenceKeypoint.new(1, 0) })
 		sparkle.Parent = part
+		table.insert(fx, sparkle)
 		local light = Instance.new("PointLight")
 		light.Color = def.color
 		light.Range = 8 + tier * 2
 		light.Brightness = 1.5
 		light.Parent = part
+		table.insert(fx, light)
 	end
 
 	-- the landing ring
@@ -4978,6 +5137,9 @@ local function makeStar(info)
 	part.Parent = folder
 	ring.Parent = folder
 	stars[info.id] = {
+		fx = fx,
+		trail = trail,
+		far = false,
 		info = info,
 		def = def,
 		tier = tier,
@@ -5055,6 +5217,19 @@ local function onCaught(info)
 	end
 end
 
+local function setFar(star, far: boolean)
+	star.far = far
+	star.part.Transparency = far and 1 or 0
+	if far then
+		star.ring.Transparency = 1
+	else
+		star.trail:Clear() -- don't draw a streak from where it was last drawn
+	end
+	for _, effect in ipairs(star.fx) do
+		effect.Enabled = not far
+	end
+end
+
 local function update()
 	local now = workspace:GetServerTimeNow()
 	local camera = workspace.CurrentCamera
@@ -5066,27 +5241,32 @@ local function update()
 			removeStar(id, true)
 		else
 			local y, landed = heightAt(info, now)
-			star.spin += 0.05
-			local bob = landed and math.sin(os.clock() * 3 + star.spin) * 0.35 + 0.35 or 0
-			local position = Vector3.new(info.x, y + bob, info.z)
-			local far = (position - cameraPos).Magnitude > MAX_DRAW_DISTANCE
-			star.part.Transparency = far and 1 or 0
-			star.part.CFrame = CFrame.new(position) * CFrame.Angles(0, star.spin, 0)
-
-			-- the ring grows from small to full as the star drops
-			local progress = math.clamp((now - info.t0) / info.fall, 0, 1)
-			local ringSize = landed and star.def.size * 2.2 or (2 + progress * 6)
-			star.ring.Size = Vector3.new(0.15, ringSize, ringSize)
-			star.ring.Transparency = far and 1 or (landed and 0.7 or (0.9 - progress * 0.35))
-
-			if star.def.rainbow then
-				local color = Color3.fromHSV(hue, 0.6, 1)
-				star.part.Color = color
-				star.ring.Color = color
+			local dx, dz = info.x - cameraPos.X, info.z - cameraPos.Z
+			local far = dx * dx + dz * dz > MAX_DRAW_DISTANCE * MAX_DRAW_DISTANCE
+			if far ~= star.far then
+				setFar(star, far)
 			end
-			-- landed stars blink in their last 3 seconds
-			if landed and star.expiresAt - now < 3 then
-				star.part.Transparency = (math.floor(now * 6) % 2 == 0) and 0.6 or 0
+			-- stars far from the camera are hidden and skipped entirely
+			if not far then
+				star.spin += 0.05
+				local bob = landed and math.sin(os.clock() * 3 + star.spin) * 0.35 + 0.35 or 0
+				star.part.CFrame = CFrame.new(info.x, y + bob, info.z) * CFrame.Angles(0, star.spin, 0)
+
+				-- the ring grows from small to full as the star drops
+				local progress = math.clamp((now - info.t0) / info.fall, 0, 1)
+				local ringSize = landed and star.def.size * 2.2 or (2 + progress * 6)
+				star.ring.Size = Vector3.new(0.15, ringSize, ringSize)
+				star.ring.Transparency = landed and 0.7 or (0.9 - progress * 0.35)
+
+				if star.def.rainbow then
+					local color = Color3.fromHSV(hue, 0.6, 1)
+					star.part.Color = color
+					star.ring.Color = color
+				end
+				-- landed stars blink in their last 3 seconds
+				if landed and star.expiresAt - now < 3 then
+					star.part.Transparency = (math.floor(now * 6) % 2 == 0) and 0.6 or 0
+				end
 			end
 		end
 	end

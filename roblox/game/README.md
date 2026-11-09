@@ -45,12 +45,12 @@ No loot boxes, no fake timers, and you can finish everything for free. See playb
 | Friends bonus, Invite button, shared luck, shout-outs, all-time leaderboard | `server/Economy.luau`, `client/Hud.luau`, `server/Leaderboard.luau` | #8 |
 | Meteor Shower every 8 minutes | `server/Events.luau` | #9 |
 | Daily rewards (streak pauses, never resets), 3 daily quests, welcome-back gift | `server/Rewards.luau` | #10 |
-| Mobile-first HUD with safe-area insets and a NEXT GOAL bar | `client/Hud.luau`, `client/init.client.luau` | #1, #5, #11 |
+| Mobile-first HUD with safe-area insets, a compact layout on phones that keeps the jump and thumbstick zones clear, and a NEXT GOAL bar | `client/Hud.luau`, `client/init.client.luau` | #1, #5, #11 |
 | One-line-at-a-time tutorial | `client/Tutorial.luau` | #1 |
 | Cartoony UI kit (one font, fixed color meanings, button feedback) | `client/Theme.luau` | #12 |
 | Onboarding funnel and economy analytics | `server/Analytics.luau` | #13 |
 | Safe purchases (saved before they're confirmed), live prices | `server/Shop.luau`, `client/Panels.luau` | #14 |
-| Saving with retries, autosave, and shutdown save | `server/DataService.luau` | (needed) |
+| Saving with a session lock (server hops never lose progress), retries, autosave, shutdown save | `server/DataService.luau` | (needed) |
 
 **Tune anything** (star values, zone costs, spawn rates, rewards, event timing) in [`src/shared/Config.luau`](src/shared/Config.luau). Every number is there, with a comment saying what it's for.
 
@@ -68,8 +68,9 @@ lune run tests/run.luau                      # unit tests for the game math
 Checks that passed before this was committed:
 - Every file compiles with the Luau compiler.
 - Selene with the full Roblox API: 0 errors, 0 warnings.
-- 692 property and method uses checked against Roblox's API dump: 0 problems.
+- 700 property and method uses checked against Roblox's API dump: 0 problems.
 - 21 unit tests on prices, pacing, odds, rewards and quests: all passing.
+- An independent code review found no runtime errors; its 9 fixes are in. They cover the phone layout clearing the jump button, anti-teleport-farming, culling far stars, the save lock, a two-tap Supernova confirm, and more.
 
 It has not been play-tested in Roblox Studio yet (it was built on a server without Studio), so press Play and tell Claude about anything that looks off.
 

@@ -131,7 +131,6 @@ local function processReceipt(receipt)
 		-- the grant is lost too and Roblox retries next time: still consistent.
 		return Enum.ProductPurchaseDecision.NotProcessedYet
 	end
-	S.Analytics.purchasedWithRobux(player, 1, product.key)
 	return Enum.ProductPurchaseDecision.PurchaseGranted
 end
 

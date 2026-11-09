@@ -77,6 +77,31 @@ local function rootOf(player: Player): BasePart?
 end
 
 -- Players standing in each zone that they've actually unlocked.
+--
+-- Characters are moved by their own client, so an exploiter could teleport
+-- around to sweep up every star. Anyone who moved farther since the last
+-- check than their run speed allows (with generous slack for lag) is skipped
+-- for that tick. Real players never notice; teleport-farming gets nothing.
+local lastPosition = {} -- [Player] = { position = Vector3 (flat), at = number }
+
+function Stars.resetMotion(player: Player)
+	lastPosition[player] = nil
+end
+
+local function movedTooFast(player: Player, root: BasePart): boolean
+	local now = os.clock()
+	local flat = Vector3.new(root.Position.X, 0, root.Position.Z)
+	local previous = lastPosition[player]
+	lastPosition[player] = { position = flat, at = now }
+	if not previous then
+		return false
+	end
+	local humanoid = root.Parent and root.Parent:FindFirstChildOfClass("Humanoid")
+	local speed = humanoid and humanoid.WalkSpeed or Config.BaseWalkSpeed
+	local allowed = (speed * 1.5 + 4) * (now - previous.at) + 2
+	return (flat - previous.position).Magnitude > allowed
+end
+
 local function playersByZone()
 	local byZone = {}
 	for _, zone in ipairs(Config.Zones) do
@@ -85,7 +110,7 @@ local function playersByZone()
 	for _, player in ipairs(Players:GetPlayers()) do
 		local data = S.Data.get(player)
 		local root = rootOf(player)
-		if data and root then
+		if data and root and not movedTooFast(player, root) then
 			local zoneId = S.Map.zoneAt(root.Position)
 			if zoneId <= data.bestZone then
 				table.insert(byZone[zoneId], { player = player, root = root, data = data })
@@ -283,6 +308,7 @@ end
 function Stars.start()
 	Players.PlayerRemoving:Connect(function(player)
 		combos[player] = nil
+		lastPosition[player] = nil
 	end)
 	task.spawn(function()
 		local last = os.clock()

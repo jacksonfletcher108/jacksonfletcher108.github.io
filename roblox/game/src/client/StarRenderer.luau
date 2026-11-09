@@ -69,6 +69,7 @@ local function makeStar(info)
 	trail.WidthScale = NumberSequence.new(1, 0)
 	trail.Transparency = NumberSequence.new(0.2, 1)
 	trail.Parent = part
+	local fx = { trail }
 
 	-- rare stars sparkle and glow
 	if tier >= 2 then
@@ -81,11 +82,13 @@ local function makeStar(info)
 		sparkle.SpreadAngle = Vector2.new(180, 180)
 		sparkle.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.4), NumberSequenceKeypoint.new(1, 0) })
 		sparkle.Parent = part
+		table.insert(fx, sparkle)
 		local light = Instance.new("PointLight")
 		light.Color = def.color
 		light.Range = 8 + tier * 2
 		light.Brightness = 1.5
 		light.Parent = part
+		table.insert(fx, light)
 	end
 
 	-- the landing ring
@@ -106,6 +109,9 @@ local function makeStar(info)
 	part.Parent = folder
 	ring.Parent = folder
 	stars[info.id] = {
+		fx = fx,
+		trail = trail,
+		far = false,
 		info = info,
 		def = def,
 		tier = tier,
@@ -183,6 +189,19 @@ local function onCaught(info)
 	end
 end
 
+local function setFar(star, far: boolean)
+	star.far = far
+	star.part.Transparency = far and 1 or 0
+	if far then
+		star.ring.Transparency = 1
+	else
+		star.trail:Clear() -- don't draw a streak from where it was last drawn
+	end
+	for _, effect in ipairs(star.fx) do
+		effect.Enabled = not far
+	end
+end
+
 local function update()
 	local now = workspace:GetServerTimeNow()
 	local camera = workspace.CurrentCamera
@@ -194,27 +213,32 @@ local function update()
 			removeStar(id, true)
 		else
 			local y, landed = heightAt(info, now)
-			star.spin += 0.05
-			local bob = landed and math.sin(os.clock() * 3 + star.spin) * 0.35 + 0.35 or 0
-			local position = Vector3.new(info.x, y + bob, info.z)
-			local far = (position - cameraPos).Magnitude > MAX_DRAW_DISTANCE
-			star.part.Transparency = far and 1 or 0
-			star.part.CFrame = CFrame.new(position) * CFrame.Angles(0, star.spin, 0)
-
-			-- the ring grows from small to full as the star drops
-			local progress = math.clamp((now - info.t0) / info.fall, 0, 1)
-			local ringSize = landed and star.def.size * 2.2 or (2 + progress * 6)
-			star.ring.Size = Vector3.new(0.15, ringSize, ringSize)
-			star.ring.Transparency = far and 1 or (landed and 0.7 or (0.9 - progress * 0.35))
-
-			if star.def.rainbow then
-				local color = Color3.fromHSV(hue, 0.6, 1)
-				star.part.Color = color
-				star.ring.Color = color
+			local dx, dz = info.x - cameraPos.X, info.z - cameraPos.Z
+			local far = dx * dx + dz * dz > MAX_DRAW_DISTANCE * MAX_DRAW_DISTANCE
+			if far ~= star.far then
+				setFar(star, far)
 			end
-			-- landed stars blink in their last 3 seconds
-			if landed and star.expiresAt - now < 3 then
-				star.part.Transparency = (math.floor(now * 6) % 2 == 0) and 0.6 or 0
+			-- stars far from the camera are hidden and skipped entirely
+			if not far then
+				star.spin += 0.05
+				local bob = landed and math.sin(os.clock() * 3 + star.spin) * 0.35 + 0.35 or 0
+				star.part.CFrame = CFrame.new(info.x, y + bob, info.z) * CFrame.Angles(0, star.spin, 0)
+
+				-- the ring grows from small to full as the star drops
+				local progress = math.clamp((now - info.t0) / info.fall, 0, 1)
+				local ringSize = landed and star.def.size * 2.2 or (2 + progress * 6)
+				star.ring.Size = Vector3.new(0.15, ringSize, ringSize)
+				star.ring.Transparency = landed and 0.7 or (0.9 - progress * 0.35)
+
+				if star.def.rainbow then
+					local color = Color3.fromHSV(hue, 0.6, 1)
+					star.part.Color = color
+					star.ring.Color = color
+				end
+				-- landed stars blink in their last 3 seconds
+				if landed and star.expiresAt - now < 3 then
+					star.part.Transparency = (math.floor(now * 6) % 2 == 0) and 0.6 or 0
+				end
 			end
 		end
 	end

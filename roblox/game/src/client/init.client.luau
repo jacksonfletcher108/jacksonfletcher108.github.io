@@ -28,9 +28,11 @@ local function screenGui(name: string, displayOrder: number, fullscreen: boolean
 end
 
 local App = {}
-App.screen = screenGui("StarfallHud", 1, false) -- always-on HUD
-App.fullscreen = screenGui("StarfallBackdrop", 2, true) -- dims the game behind menus
-App.overlay = screenGui("StarfallMenus", 3, false) -- menus and toasts
+-- layers, bottom to top: the dimmer behind menus, the HUD (so its buttons
+-- still work and switch menus while one is open), then menus and toasts
+App.fullscreen = screenGui("StarfallBackdrop", 1, true)
+App.screen = screenGui("StarfallHud", 2, false)
+App.overlay = screenGui("StarfallMenus", 3, false)
 
 App.Theme = require(script.Theme)
 App.Sounds = require(script.Sounds)

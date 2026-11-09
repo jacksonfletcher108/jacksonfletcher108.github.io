@@ -68,26 +68,68 @@ local function sideButton(parent, name: string, icon: string, color: Color3, ord
 	return holder, badge, caption
 end
 
-local function column(name: string, anchorX: number, positionX: number)
+-- Short screens (phones held sideways) get a compact 2x2 grid so the right
+-- side stays clear of the jump button and the left of the thumbstick.
+-- Taller screens get one column per side.
+local SHORT_SCREEN = 500
+
+local function layoutColumn(frame: Frame, short: boolean)
 	local Theme = App.Theme
-	local frame = Theme.new("Frame", {
+	for _, child in ipairs(frame:GetChildren()) do
+		if child:IsA("UIGridStyleLayout") or child:IsA("UISizeConstraint") then
+			child:Destroy()
+		end
+	end
+	if short then
+		frame.SizeConstraint = Enum.SizeConstraint.RelativeXY
+		frame.Size = UDim2.fromOffset(112, 140)
+		Theme.new("UIGridLayout", {
+			CellSize = UDim2.fromOffset(46, 46),
+			CellPadding = UDim2.fromOffset(18, 24),
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			Parent = frame,
+		})
+	else
+		-- width is 9.5% of screen height (RelativeYY), so buttons are the same
+		-- physical size on every screen shape; never smaller than 46px
+		frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
+		frame.Size = UDim2.fromScale(0.095, 0.62)
+		Theme.new("UISizeConstraint", { MinSize = Vector2.new(46, 200), Parent = frame })
+		Theme.new("UIListLayout", {
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Padding = UDim.new(0.07, 0),
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			Parent = frame,
+		})
+	end
+end
+
+local function isShortScreen(): boolean
+	local camera = workspace.CurrentCamera
+	return camera ~= nil and camera.ViewportSize.Y < SHORT_SCREEN
+end
+
+local function column(name: string, anchorX: number, positionX: number)
+	local frame = App.Theme.new("Frame", {
 		Name = name,
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(anchorX, 0),
 		Position = UDim2.new(positionX, positionX == 0 and 10 or -10, 0.2, 0),
-		-- width is 9% of screen height (RelativeYY), so buttons are the same
-		-- physical size on every screen shape; never smaller than 46px
-		Size = UDim2.fromScale(0.095, 0.62),
-		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		Parent = App.screen,
 	})
-	Theme.new("UISizeConstraint", { MinSize = Vector2.new(46, 200), Parent = frame })
-	Theme.new("UIListLayout", {
-		SortOrder = Enum.SortOrder.LayoutOrder,
-		Padding = UDim.new(0.07, 0),
-		HorizontalAlignment = Enum.HorizontalAlignment.Center,
-		Parent = frame,
-	})
+	local short = isShortScreen()
+	layoutColumn(frame, short)
+	local camera = workspace.CurrentCamera
+	if camera then
+		camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+			local nowShort = isShortScreen()
+			if nowShort ~= short then
+				short = nowShort
+				layoutColumn(frame, short)
+			end
+		end)
+	end
 	return frame
 end
 

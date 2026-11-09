@@ -54,20 +54,20 @@ local function logEconomy(player: Player, isSource: boolean, amount: number, tra
 	end)
 end
 
+-- Stardust bought with Robux uses an sku starting with "Robux_" and is
+-- logged as an in-app purchase; everything else is gameplay.
 function Analytics.earned(player: Player, amount: number, sku: string)
 	if sku == "StarCatch" then
 		pendingCatches[player] = (pendingCatches[player] or 0) + amount
 		return
 	end
-	logEconomy(player, true, amount, Enum.AnalyticsEconomyTransactionType.Gameplay.Name, sku)
+	local transactionType = string.sub(sku, 1, 6) == "Robux_" and Enum.AnalyticsEconomyTransactionType.IAP.Name
+		or Enum.AnalyticsEconomyTransactionType.Gameplay.Name
+	logEconomy(player, true, amount, transactionType, sku)
 end
 
 function Analytics.spent(player: Player, amount: number, sku: string)
 	logEconomy(player, false, amount, Enum.AnalyticsEconomyTransactionType.Shop.Name, sku)
-end
-
-function Analytics.purchasedWithRobux(player: Player, amount: number, sku: string)
-	logEconomy(player, true, amount, Enum.AnalyticsEconomyTransactionType.IAP.Name, sku)
 end
 
 local function flush(player: Player)

@@ -100,8 +100,9 @@ function Progression.supernova(player: Player)
 	if not ok then
 		return { ok = false, message = why }
 	end
-	S.Analytics.spent(player, data.stardust, "Supernova")
+	local given = data.stardust
 	data.stardust = 0
+	S.Analytics.spent(player, given, "Supernova")
 	for key in pairs(data.upgrades) do
 		data.upgrades[key] = 0
 	end

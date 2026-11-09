@@ -445,6 +445,8 @@ local function updateZones(content, state)
 	note(content, "You can also walk through a zone's gate to unlock it.", 99)
 end
 
+local supernovaArmedAt = 0 -- first tap arms the button; a second tap within 3s confirms
+
 local function updateSupernova(content, state)
 	local C = App.Theme.Colors
 	clear(content)
@@ -462,14 +464,24 @@ local function updateSupernova(content, state)
 	local r = row(content, 2, 72)
 	local ok, why = Formulas.canSupernova(state.stardust, state.bestZone, state.novas)
 	rowText(r, "Supernova #" .. (state.novas + 1), ok and "Ready!" or why)
-	rowButton(r, "★ " .. Formulas.formatNumber(state.supernovaCost), ok and C.Purple or C.Gray, function()
-		if ok then
-			App.State.act("Supernova")
-			Panels.close()
-		else
+	local _, buttonLabel = rowButton(r, "★ " .. Formulas.formatNumber(state.supernovaCost), ok and C.Purple or C.Gray, function()
+		if not ok then
 			App.Toasts.show(why, "warn")
+			return
 		end
+		if os.clock() - supernovaArmedAt > 3 then
+			-- one mis-tap shouldn't wipe your progress
+			supernovaArmedAt = os.clock()
+			App.Toasts.show("Tap again to go Supernova. This resets Stardust, upgrades and zones!", "warn")
+			return
+		end
+		supernovaArmedAt = 0
+		App.State.act("Supernova")
+		Panels.close()
 	end)
+	if ok and buttonLabel then
+		buttonLabel.Text = "★ " .. Formulas.formatNumber(state.supernovaCost) .. " · GO"
+	end
 end
 
 ---------------------------------------------------------------------------
@@ -495,7 +507,8 @@ local signatures = {
 	Quests = function(state)
 		local parts = {}
 		for _, quest in ipairs(state.quests) do
-			table.insert(parts, quest.progress .. (quest.claimed and "c" or "") .. quest.reward)
+			local step = quest.claimed and "c" or quest.done and "d" or tostring(math.floor(quest.progress / quest.goal * 20))
+			table.insert(parts, step .. ":" .. quest.reward)
 		end
 		return table.concat(parts, ",")
 	end,

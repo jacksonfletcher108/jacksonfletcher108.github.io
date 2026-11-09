@@ -13,6 +13,7 @@ local S
 
 local MAX_PER_SECOND = 12
 local recent = {} -- [Player] = { windowStart, count }
+local lastReady = {} -- [Player] = os.clock() of their last "Ready"
 
 local function throttled(player: Player): boolean
 	local now = os.clock()
@@ -80,18 +81,24 @@ function Actions.start()
 	end
 
 	-- the client says "Ready" once its UI is listening; send it everything
+	-- (at most once every 10 seconds, so it can't be spammed)
 	Net.event("Ready").OnServerEvent:Connect(function(player)
+		local now = os.clock()
+		if lastReady[player] and now - lastReady[player] < 10 then
+			return
+		end
+		lastReady[player] = now
 		task.spawn(function()
 			S.Data.waitFor(player)
 			S.State.sendNow(player)
 			S.Stars.sendSnapshot(player)
 			S.Events.sendTo(player)
-			S.Leaderboard.sendTo(player)
 		end)
 	end)
 
 	Players.PlayerRemoving:Connect(function(player)
 		recent[player] = nil
+		lastReady[player] = nil
 	end)
 end
 
