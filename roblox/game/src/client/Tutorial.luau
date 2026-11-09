@@ -117,7 +117,12 @@ function Tutorial.start()
 		local showBeam = false
 
 		if current == 1 then
-			setHint(string.format("Run under a falling star to catch it!  <font color=\"#FFFFFF\">%d/5</font>", state.stats.catches))
+			setHint(
+				string.format(
+					'Run under a falling star to catch it!  <font color="#FFFFFF">%d/5</font>',
+					state.stats.catches
+				)
+			)
 			local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 			local target = root and App.StarRenderer.nearest(root.Position)
 			if target and ensureBeam() then
@@ -130,7 +135,9 @@ function Tutorial.start()
 				setHint("Tap <b>Upgrades</b> and buy a <b>Bigger Net</b>!")
 				pulseTime += dt
 				local button = App.Hud.buttonFor("Upgrades")
-				local scale = button and button:FindFirstChild("Button") and button.Button:FindFirstChildOfClass("UIScale")
+				local scale = button
+					and button:FindFirstChild("Button")
+					and button.Button:FindFirstChildOfClass("UIScale")
 				if scale and not App.Panels.isOpen("Upgrades") and not Theme.reducedMotion() then
 					pulsing = scale
 					scale.Scale = 1 + math.abs(math.sin(pulseTime * 4)) * 0.12

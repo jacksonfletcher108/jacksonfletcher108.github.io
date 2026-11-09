@@ -113,10 +113,7 @@ function Progression.supernova(player: Player)
 	S.Characters.refresh(player)
 	S.Characters.teleport(player, S.Map.spawnPoint(1))
 	S.State.push(player)
-	S.Toasts.all(
-		string.format("💥 %s went SUPERNOVA #%d!", player.DisplayName, data.novas),
-		"rare"
-	)
+	S.Toasts.all(string.format("💥 %s went SUPERNOVA #%d!", player.DisplayName, data.novas), "rare")
 	S.Toasts.send(
 		player,
 		string.format("Every catch now pays x%s, forever!", tostring(Formulas.supernovaMultiplier(data.novas))),

@@ -97,7 +97,10 @@ function Toasts.start()
 		ZIndex = 50,
 		Parent = App.overlay,
 	})
-	Theme.new("UISizeConstraint", { MinSize = Vector2.new(260, 0), MaxSize = Vector2.new(520, math.huge), Parent = container })
+	Theme.new(
+		"UISizeConstraint",
+		{ MinSize = Vector2.new(260, 0), MaxSize = Vector2.new(520, math.huge), Parent = container }
+	)
 	Theme.new("UIListLayout", {
 		SortOrder = Enum.SortOrder.LayoutOrder,
 		Padding = UDim.new(0, 6),

@@ -131,7 +131,12 @@ local function claim(player: Player)
 				stored = type(stored) == "table" and stored or {}
 				local lock = stored[LOCK_KEY]
 				lockedElsewhere = false
-				if not force and type(lock) == "table" and lock.job ~= game.JobId and os.time() - (lock.at or 0) < LOCK_TIMEOUT then
+				if
+					not force
+					and type(lock) == "table"
+					and lock.job ~= game.JobId
+					and os.time() - (lock.at or 0) < LOCK_TIMEOUT
+				then
 					lockedElsewhere = true
 					return nil -- leave it alone; try again shortly
 				end
@@ -176,7 +181,11 @@ local function load(player: Player)
 		if storeOk and not temporary then
 			pcall(function()
 				store:UpdateAsync(keyFor(player), function(stored)
-					if type(stored) == "table" and type(stored[LOCK_KEY]) == "table" and stored[LOCK_KEY].job == game.JobId then
+					if
+						type(stored) == "table"
+						and type(stored[LOCK_KEY]) == "table"
+						and stored[LOCK_KEY].job == game.JobId
+					then
 						stored[LOCK_KEY] = nil
 						return stored
 					end
@@ -271,7 +280,9 @@ function DataService.start()
 		end)
 		if not probeOk then
 			storeOk = false
-			warn("[Data] Saving is OFF in Studio. Turn it on: Game Settings > Security > Enable Studio Access to API Services.")
+			warn(
+				"[Data] Saving is OFF in Studio. Turn it on: Game Settings > Security > Enable Studio Access to API Services."
+			)
 		end
 	end
 

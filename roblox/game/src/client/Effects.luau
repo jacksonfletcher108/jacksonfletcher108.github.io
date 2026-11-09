@@ -104,11 +104,8 @@ function Effects.shake(strength: number)
 	task.spawn(function()
 		for i = 1, 6 do
 			local falloff = (7 - i) / 6
-			humanoid.CameraOffset = Vector3.new(
-				(math.random() - 0.5) * strength * falloff,
-				(math.random() - 0.5) * strength * falloff,
-				0
-			)
+			humanoid.CameraOffset =
+				Vector3.new((math.random() - 0.5) * strength * falloff, (math.random() - 0.5) * strength * falloff, 0)
 			task.wait(0.03)
 		end
 		humanoid.CameraOffset = Vector3.new()
@@ -128,7 +125,13 @@ function Effects.myCatch(position: Vector3, starType: string, info)
 	if info.combo >= 5 then
 		extra = (extra and (extra .. "  ") or "") .. "x" .. info.combo
 	end
-	Effects.popNumber(position, "+" .. Formulas.formatNumber(info.value), tier >= 2 and rarityColor or def.color, tier >= 2, extra)
+	Effects.popNumber(
+		position,
+		"+" .. Formulas.formatNumber(info.value),
+		tier >= 2 and rarityColor or def.color,
+		tier >= 2,
+		extra
+	)
 	-- the ping climbs a semitone-ish per combo step, capped
 	local pitch = 1 + math.min(info.combo - 1, Config.ComboMaxSteps) * 0.035
 	App.Sounds.play("Catch", pitch, tier >= 2 and 0.8 or 0.45)

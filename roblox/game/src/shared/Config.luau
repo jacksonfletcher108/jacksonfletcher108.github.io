@@ -19,16 +19,90 @@ Config.LeaderboardStoreName = "StarfallValley_AllTime_v1"
 -- are worth much more (a reason to chase them).
 ---------------------------------------------------------------------------
 Config.Stars = {
-	{ id = "Ember", name = "Ember Star", value = 1, color = Color3.fromRGB(255, 170, 60), size = 1.6, fallTime = 4.0, rarity = "Common" },
-	{ id = "Moon", name = "Moon Star", value = 3, color = Color3.fromRGB(170, 210, 255), size = 1.7, fallTime = 3.8, rarity = "Common" },
-	{ id = "Gold", name = "Gold Star", value = 10, color = Color3.fromRGB(255, 215, 0), size = 1.9, fallTime = 3.5, rarity = "Uncommon" },
-	{ id = "Rose", name = "Rose Star", value = 30, color = Color3.fromRGB(255, 105, 180), size = 2.0, fallTime = 3.3, rarity = "Uncommon" },
-	{ id = "Comet", name = "Comet", value = 90, color = Color3.fromRGB(80, 230, 255), size = 2.1, fallTime = 3.0, rarity = "Rare" },
-	{ id = "Aurora", name = "Aurora Star", value = 260, color = Color3.fromRGB(120, 255, 170), size = 2.3, fallTime = 2.8, rarity = "Rare" },
-	{ id = "Void", name = "Void Star", value = 750, color = Color3.fromRGB(170, 90, 255), size = 2.4, fallTime = 2.6, rarity = "Epic" },
-	{ id = "Prism", name = "Prism Star", value = 2500, color = Color3.fromRGB(255, 255, 255), size = 2.6, fallTime = 2.4, rarity = "Legendary", rainbow = true },
+	{
+		id = "Ember",
+		name = "Ember Star",
+		value = 1,
+		color = Color3.fromRGB(255, 170, 60),
+		size = 1.6,
+		fallTime = 4.0,
+		rarity = "Common",
+	},
+	{
+		id = "Moon",
+		name = "Moon Star",
+		value = 3,
+		color = Color3.fromRGB(170, 210, 255),
+		size = 1.7,
+		fallTime = 3.8,
+		rarity = "Common",
+	},
+	{
+		id = "Gold",
+		name = "Gold Star",
+		value = 10,
+		color = Color3.fromRGB(255, 215, 0),
+		size = 1.9,
+		fallTime = 3.5,
+		rarity = "Uncommon",
+	},
+	{
+		id = "Rose",
+		name = "Rose Star",
+		value = 30,
+		color = Color3.fromRGB(255, 105, 180),
+		size = 2.0,
+		fallTime = 3.3,
+		rarity = "Uncommon",
+	},
+	{
+		id = "Comet",
+		name = "Comet",
+		value = 90,
+		color = Color3.fromRGB(80, 230, 255),
+		size = 2.1,
+		fallTime = 3.0,
+		rarity = "Rare",
+	},
+	{
+		id = "Aurora",
+		name = "Aurora Star",
+		value = 260,
+		color = Color3.fromRGB(120, 255, 170),
+		size = 2.3,
+		fallTime = 2.8,
+		rarity = "Rare",
+	},
+	{
+		id = "Void",
+		name = "Void Star",
+		value = 750,
+		color = Color3.fromRGB(170, 90, 255),
+		size = 2.4,
+		fallTime = 2.6,
+		rarity = "Epic",
+	},
+	{
+		id = "Prism",
+		name = "Prism Star",
+		value = 2500,
+		color = Color3.fromRGB(255, 255, 255),
+		size = 2.6,
+		fallTime = 2.4,
+		rarity = "Legendary",
+		rainbow = true,
+	},
 	-- Only falls during a Meteor Shower (event-only reward).
-	{ id = "Nova", name = "Nova", value = 8000, color = Color3.fromRGB(255, 250, 220), size = 3.0, fallTime = 2.2, rarity = "Mythic", eventOnly = true },
+	{
+		id = "Nova",
+		name = "Nova",
+		value = 8000,
+		color = Color3.fromRGB(255, 250, 220),
+		size = 3.0,
+		fallTime = 2.2,
+		rarity = "Mythic",
+		eventOnly = true,
+	},
 }
 
 Config.RarityColors = {
@@ -249,10 +323,34 @@ Config.Funnel = {
 -- Create these in the Creator Dashboard, then paste the IDs here.
 ---------------------------------------------------------------------------
 Config.GamePasses = {
-	{ key = "DoubleStardust", id = 0, name = "2x Stardust", description = "Earn double Stardust forever.", suggestedPrice = 199 },
-	{ key = "StarMagnet", id = 0, name = "Star Magnet", description = "+50% catch radius forever.", suggestedPrice = 149 },
-	{ key = "LuckyCharm", id = 0, name = "Lucky Charm", description = "Rare stars fall 25% more often.", suggestedPrice = 249 },
-	{ key = "CometTrail", id = 0, name = "Comet Trail", description = "A rainbow trail and a ★ name tag. Looks only.", suggestedPrice = 79 },
+	{
+		key = "DoubleStardust",
+		id = 0,
+		name = "2x Stardust",
+		description = "Earn double Stardust forever.",
+		suggestedPrice = 199,
+	},
+	{
+		key = "StarMagnet",
+		id = 0,
+		name = "Star Magnet",
+		description = "+50% catch radius forever.",
+		suggestedPrice = 149,
+	},
+	{
+		key = "LuckyCharm",
+		id = 0,
+		name = "Lucky Charm",
+		description = "Rare stars fall 25% more often.",
+		suggestedPrice = 249,
+	},
+	{
+		key = "CometTrail",
+		id = 0,
+		name = "Comet Trail",
+		description = "A rainbow trail and a ★ name tag. Looks only.",
+		suggestedPrice = 79,
+	},
 }
 Config.PassEffects = {
 	DoubleStardust = 2,
@@ -261,10 +359,36 @@ Config.PassEffects = {
 }
 
 Config.DevProducts = {
-	{ key = "MeteorShower", id = 0, name = "Call a Meteor Shower", description = "Starts a Meteor Shower for EVERYONE in the server.", suggestedPrice = 49 },
-	{ key = "Boost30", id = 0, name = "2x Boost (30 min)", description = "Double Stardust for 30 minutes.", suggestedPrice = 39 },
-	{ key = "PouchSmall", id = 0, name = "Stardust Pouch", description = "15 minutes of earnings, right now.", suggestedPrice = 25, minutes = 15 },
-	{ key = "PouchLarge", id = 0, name = "Stardust Chest", description = "90 minutes of earnings, right now.", suggestedPrice = 99, minutes = 90 },
+	{
+		key = "MeteorShower",
+		id = 0,
+		name = "Call a Meteor Shower",
+		description = "Starts a Meteor Shower for EVERYONE in the server.",
+		suggestedPrice = 49,
+	},
+	{
+		key = "Boost30",
+		id = 0,
+		name = "2x Boost (30 min)",
+		description = "Double Stardust for 30 minutes.",
+		suggestedPrice = 39,
+	},
+	{
+		key = "PouchSmall",
+		id = 0,
+		name = "Stardust Pouch",
+		description = "15 minutes of earnings, right now.",
+		suggestedPrice = 25,
+		minutes = 15,
+	},
+	{
+		key = "PouchLarge",
+		id = 0,
+		name = "Stardust Chest",
+		description = "90 minutes of earnings, right now.",
+		suggestedPrice = 99,
+		minutes = 90,
+	},
 }
 
 ---------------------------------------------------------------------------

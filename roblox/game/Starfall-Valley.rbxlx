@@ -43,16 +43,90 @@ Config.LeaderboardStoreName = "StarfallValley_AllTime_v1"
 -- are worth much more (a reason to chase them).
 ---------------------------------------------------------------------------
 Config.Stars = {
-	{ id = "Ember", name = "Ember Star", value = 1, color = Color3.fromRGB(255, 170, 60), size = 1.6, fallTime = 4.0, rarity = "Common" },
-	{ id = "Moon", name = "Moon Star", value = 3, color = Color3.fromRGB(170, 210, 255), size = 1.7, fallTime = 3.8, rarity = "Common" },
-	{ id = "Gold", name = "Gold Star", value = 10, color = Color3.fromRGB(255, 215, 0), size = 1.9, fallTime = 3.5, rarity = "Uncommon" },
-	{ id = "Rose", name = "Rose Star", value = 30, color = Color3.fromRGB(255, 105, 180), size = 2.0, fallTime = 3.3, rarity = "Uncommon" },
-	{ id = "Comet", name = "Comet", value = 90, color = Color3.fromRGB(80, 230, 255), size = 2.1, fallTime = 3.0, rarity = "Rare" },
-	{ id = "Aurora", name = "Aurora Star", value = 260, color = Color3.fromRGB(120, 255, 170), size = 2.3, fallTime = 2.8, rarity = "Rare" },
-	{ id = "Void", name = "Void Star", value = 750, color = Color3.fromRGB(170, 90, 255), size = 2.4, fallTime = 2.6, rarity = "Epic" },
-	{ id = "Prism", name = "Prism Star", value = 2500, color = Color3.fromRGB(255, 255, 255), size = 2.6, fallTime = 2.4, rarity = "Legendary", rainbow = true },
+	{
+		id = "Ember",
+		name = "Ember Star",
+		value = 1,
+		color = Color3.fromRGB(255, 170, 60),
+		size = 1.6,
+		fallTime = 4.0,
+		rarity = "Common",
+	},
+	{
+		id = "Moon",
+		name = "Moon Star",
+		value = 3,
+		color = Color3.fromRGB(170, 210, 255),
+		size = 1.7,
+		fallTime = 3.8,
+		rarity = "Common",
+	},
+	{
+		id = "Gold",
+		name = "Gold Star",
+		value = 10,
+		color = Color3.fromRGB(255, 215, 0),
+		size = 1.9,
+		fallTime = 3.5,
+		rarity = "Uncommon",
+	},
+	{
+		id = "Rose",
+		name = "Rose Star",
+		value = 30,
+		color = Color3.fromRGB(255, 105, 180),
+		size = 2.0,
+		fallTime = 3.3,
+		rarity = "Uncommon",
+	},
+	{
+		id = "Comet",
+		name = "Comet",
+		value = 90,
+		color = Color3.fromRGB(80, 230, 255),
+		size = 2.1,
+		fallTime = 3.0,
+		rarity = "Rare",
+	},
+	{
+		id = "Aurora",
+		name = "Aurora Star",
+		value = 260,
+		color = Color3.fromRGB(120, 255, 170),
+		size = 2.3,
+		fallTime = 2.8,
+		rarity = "Rare",
+	},
+	{
+		id = "Void",
+		name = "Void Star",
+		value = 750,
+		color = Color3.fromRGB(170, 90, 255),
+		size = 2.4,
+		fallTime = 2.6,
+		rarity = "Epic",
+	},
+	{
+		id = "Prism",
+		name = "Prism Star",
+		value = 2500,
+		color = Color3.fromRGB(255, 255, 255),
+		size = 2.6,
+		fallTime = 2.4,
+		rarity = "Legendary",
+		rainbow = true,
+	},
 	-- Only falls during a Meteor Shower (event-only reward).
-	{ id = "Nova", name = "Nova", value = 8000, color = Color3.fromRGB(255, 250, 220), size = 3.0, fallTime = 2.2, rarity = "Mythic", eventOnly = true },
+	{
+		id = "Nova",
+		name = "Nova",
+		value = 8000,
+		color = Color3.fromRGB(255, 250, 220),
+		size = 3.0,
+		fallTime = 2.2,
+		rarity = "Mythic",
+		eventOnly = true,
+	},
 }
 
 Config.RarityColors = {
@@ -273,10 +347,34 @@ Config.Funnel = {
 -- Create these in the Creator Dashboard, then paste the IDs here.
 ---------------------------------------------------------------------------
 Config.GamePasses = {
-	{ key = "DoubleStardust", id = 0, name = "2x Stardust", description = "Earn double Stardust forever.", suggestedPrice = 199 },
-	{ key = "StarMagnet", id = 0, name = "Star Magnet", description = "+50% catch radius forever.", suggestedPrice = 149 },
-	{ key = "LuckyCharm", id = 0, name = "Lucky Charm", description = "Rare stars fall 25% more often.", suggestedPrice = 249 },
-	{ key = "CometTrail", id = 0, name = "Comet Trail", description = "A rainbow trail and a ★ name tag. Looks only.", suggestedPrice = 79 },
+	{
+		key = "DoubleStardust",
+		id = 0,
+		name = "2x Stardust",
+		description = "Earn double Stardust forever.",
+		suggestedPrice = 199,
+	},
+	{
+		key = "StarMagnet",
+		id = 0,
+		name = "Star Magnet",
+		description = "+50% catch radius forever.",
+		suggestedPrice = 149,
+	},
+	{
+		key = "LuckyCharm",
+		id = 0,
+		name = "Lucky Charm",
+		description = "Rare stars fall 25% more often.",
+		suggestedPrice = 249,
+	},
+	{
+		key = "CometTrail",
+		id = 0,
+		name = "Comet Trail",
+		description = "A rainbow trail and a ★ name tag. Looks only.",
+		suggestedPrice = 79,
+	},
 }
 Config.PassEffects = {
 	DoubleStardust = 2,
@@ -285,10 +383,36 @@ Config.PassEffects = {
 }
 
 Config.DevProducts = {
-	{ key = "MeteorShower", id = 0, name = "Call a Meteor Shower", description = "Starts a Meteor Shower for EVERYONE in the server.", suggestedPrice = 49 },
-	{ key = "Boost30", id = 0, name = "2x Boost (30 min)", description = "Double Stardust for 30 minutes.", suggestedPrice = 39 },
-	{ key = "PouchSmall", id = 0, name = "Stardust Pouch", description = "15 minutes of earnings, right now.", suggestedPrice = 25, minutes = 15 },
-	{ key = "PouchLarge", id = 0, name = "Stardust Chest", description = "90 minutes of earnings, right now.", suggestedPrice = 99, minutes = 90 },
+	{
+		key = "MeteorShower",
+		id = 0,
+		name = "Call a Meteor Shower",
+		description = "Starts a Meteor Shower for EVERYONE in the server.",
+		suggestedPrice = 49,
+	},
+	{
+		key = "Boost30",
+		id = 0,
+		name = "2x Boost (30 min)",
+		description = "Double Stardust for 30 minutes.",
+		suggestedPrice = 39,
+	},
+	{
+		key = "PouchSmall",
+		id = 0,
+		name = "Stardust Pouch",
+		description = "15 minutes of earnings, right now.",
+		suggestedPrice = 25,
+		minutes = 15,
+	},
+	{
+		key = "PouchLarge",
+		id = 0,
+		name = "Stardust Chest",
+		description = "90 minutes of earnings, right now.",
+		suggestedPrice = 99,
+		minutes = 90,
+	},
 }
 
 ---------------------------------------------------------------------------
@@ -1292,7 +1416,12 @@ local function claim(player: Player)
 				stored = type(stored) == "table" and stored or {}
 				local lock = stored[LOCK_KEY]
 				lockedElsewhere = false
-				if not force and type(lock) == "table" and lock.job ~= game.JobId and os.time() - (lock.at or 0) < LOCK_TIMEOUT then
+				if
+					not force
+					and type(lock) == "table"
+					and lock.job ~= game.JobId
+					and os.time() - (lock.at or 0) < LOCK_TIMEOUT
+				then
 					lockedElsewhere = true
 					return nil -- leave it alone; try again shortly
 				end
@@ -1337,7 +1466,11 @@ local function load(player: Player)
 		if storeOk and not temporary then
 			pcall(function()
 				store:UpdateAsync(keyFor(player), function(stored)
-					if type(stored) == "table" and type(stored[LOCK_KEY]) == "table" and stored[LOCK_KEY].job == game.JobId then
+					if
+						type(stored) == "table"
+						and type(stored[LOCK_KEY]) == "table"
+						and stored[LOCK_KEY].job == game.JobId
+					then
 						stored[LOCK_KEY] = nil
 						return stored
 					end
@@ -1432,7 +1565,9 @@ function DataService.start()
 		end)
 		if not probeOk then
 			storeOk = false
-			warn("[Data] Saving is OFF in Studio. Turn it on: Game Settings > Security > Enable Studio Access to API Services.")
+			warn(
+				"[Data] Saving is OFF in Studio. Turn it on: Game Settings > Security > Enable Studio Access to API Services."
+			)
 		end
 	end
 
@@ -1698,7 +1833,10 @@ local function tick()
 		phase = "idle"
 		schedule(cfg.every - cfg.duration)
 		broadcast()
-		S.Toasts.all("The Meteor Shower is over. Next one in " .. math.floor((cfg.every - cfg.duration) / 60) .. " minutes.", "info")
+		S.Toasts.all(
+			"The Meteor Shower is over. Next one in " .. math.floor((cfg.every - cfg.duration) / 60) .. " minutes.",
+			"info"
+		)
 	end
 end
 
@@ -1991,8 +2129,13 @@ local function crystal(position: Vector3, random: Random, color: Color3, parent)
 		part({
 			Name = "Crystal",
 			Size = Vector3.new(1.6, h, 1.6),
-			CFrame = CFrame.new(position + Vector3.new(random:NextNumber(-2, 2), h / 2 - 0.5, random:NextNumber(-2, 2)))
-				* CFrame.Angles(random:NextNumber(-0.35, 0.35), random:NextNumber(0, math.pi), random:NextNumber(-0.35, 0.35)),
+			CFrame = CFrame.new(
+				position + Vector3.new(random:NextNumber(-2, 2), h / 2 - 0.5, random:NextNumber(-2, 2))
+			) * CFrame.Angles(
+				random:NextNumber(-0.35, 0.35),
+				random:NextNumber(0, math.pi),
+				random:NextNumber(-0.35, 0.35)
+			),
 			Color = color,
 			Material = Enum.Material.Neon,
 			Transparency = 0.15,
@@ -2016,7 +2159,8 @@ local function pine(position: Vector3, random: Random, parent)
 		part({
 			Name = "Needles",
 			Size = Vector3.new(width, 3, width),
-			CFrame = CFrame.new(position + Vector3.new(0, height * 0.35 + i * 3, 0)) * CFrame.Angles(0, math.rad(45 * i), 0),
+			CFrame = CFrame.new(position + Vector3.new(0, height * 0.35 + i * 3, 0))
+				* CFrame.Angles(0, math.rad(45 * i), 0),
 			Color = i == 2 and Color3.fromRGB(240, 245, 255) or Color3.fromRGB(40, 110, 80),
 			Material = i == 2 and Enum.Material.Snow or Enum.Material.Grass,
 			CanCollide = false,
@@ -2140,7 +2284,8 @@ local function buildWelcomeSign()
 	text.TextScaled = true
 	text.TextColor3 = Color3.fromRGB(255, 215, 90)
 	text.RichText = true
-	text.Text = "★ STARFALL VALLEY ★\n<font color=\"#FFFFFF\">Run under falling stars to catch them.\nJump to catch them in the air for 1.5x!</font>"
+	text.Text =
+		'★ STARFALL VALLEY ★\n<font color="#FFFFFF">Run under falling stars to catch them.\nJump to catch them in the air for 1.5x!</font>'
 	text.Parent = gui
 	local pad = Instance.new("UIPadding")
 	pad.PaddingTop = UDim.new(0, 30)
@@ -2291,11 +2436,23 @@ local function buildZone(zone, random: Random)
 	label.Size = UDim2.fromOffset(360, 70)
 
 	-- side walls (front and back) so you can't fall off
-	invisibleWall(Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2), center + Vector3.new(0, WALL_HEIGHT / 2, HALF + 1), folder)
-	invisibleWall(Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2), center + Vector3.new(0, WALL_HEIGHT / 2, -HALF - 1), folder)
+	invisibleWall(
+		Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2),
+		center + Vector3.new(0, WALL_HEIGHT / 2, HALF + 1),
+		folder
+	)
+	invisibleWall(
+		Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2),
+		center + Vector3.new(0, WALL_HEIGHT / 2, -HALF - 1),
+		folder
+	)
 
 	if zone.id == 1 then
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, Config.ZoneSize), center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, 0), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, Config.ZoneSize),
+			center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, 0),
+			folder
+		)
 		scatter(1, 22, random, function(p)
 			tree(p, random, Color3.fromRGB(70, 150, 70), folder)
 		end)
@@ -2315,19 +2472,39 @@ local function buildZone(zone, random: Random)
 
 	-- the far end of the last zone is closed off
 	if zone.id == #Config.Zones then
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, Config.ZoneSize), center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, 0), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, Config.ZoneSize),
+			center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, 0),
+			folder
+		)
 	else
 		-- walls on the near side of the gap, leaving the bridge open
 		local sideLength = (Config.ZoneSize - BRIDGE_WIDTH) / 2
 		local sideOffset = BRIDGE_WIDTH / 2 + sideLength / 2
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, sideOffset), folder)
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, -sideOffset), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, sideOffset),
+			folder
+		)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, -sideOffset),
+			folder
+		)
 	end
 	if zone.id > 1 then
 		local sideLength = (Config.ZoneSize - BRIDGE_WIDTH) / 2
 		local sideOffset = BRIDGE_WIDTH / 2 + sideLength / 2
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, sideOffset), folder)
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, -sideOffset), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, sideOffset),
+			folder
+		)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, -sideOffset),
+			folder
+		)
 	end
 end
 
@@ -2392,7 +2569,13 @@ local function buildBridgeAndGate(zone)
 		CanQuery = false,
 		Parent = folder,
 	})
-	billboard(labelAnchor, "🔒 " .. zone.name, "★ " .. Formulas.formatNumber(zone.cost) .. " to unlock", zone.accent, 0)
+	billboard(
+		labelAnchor,
+		"🔒 " .. zone.name,
+		"★ " .. Formulas.formatNumber(zone.cost) .. " to unlock",
+		zone.accent,
+		0
+	)
 
 	-- the prompt lives on a small part at player height (prompts measure distance to their part)
 	local promptAnchor = part({
@@ -2586,10 +2769,7 @@ function Progression.supernova(player: Player)
 	S.Characters.refresh(player)
 	S.Characters.teleport(player, S.Map.spawnPoint(1))
 	S.State.push(player)
-	S.Toasts.all(
-		string.format("💥 %s went SUPERNOVA #%d!", player.DisplayName, data.novas),
-		"rare"
-	)
+	S.Toasts.all(string.format("💥 %s went SUPERNOVA #%d!", player.DisplayName, data.novas), "rare")
 	S.Toasts.send(
 		player,
 		string.format("Every catch now pays x%s, forever!", tostring(Formulas.supernovaMultiplier(data.novas))),
@@ -2725,7 +2905,11 @@ function Rewards.claimQuest(player: Player, index: number)
 	if allClaimed and not data.quests.bonusClaimed then
 		data.quests.bonusClaimed = true
 		S.Economy.grantBoost(player, Config.QuestAllDoneBoostMinutes)
-		S.Toasts.send(player, "All quests done! 2x Stardust for " .. Config.QuestAllDoneBoostMinutes .. " minutes.", "rare")
+		S.Toasts.send(
+			player,
+			"All quests done! 2x Stardust for " .. Config.QuestAllDoneBoostMinutes .. " minutes.",
+			"rare"
+		)
 	end
 	S.State.push(player)
 	return { ok = true, message = "+" .. Formulas.formatNumber(quest.reward) .. " Stardust" }
@@ -2791,7 +2975,11 @@ local function onLoaded(player: Player, data)
 	if awayDays >= WELCOME_BACK_DAYS then
 		local gift = S.Economy.minutesOfEarnings(player, WELCOME_BACK_MINUTES)
 		S.Economy.add(player, gift, "WelcomeBack")
-		S.Toasts.send(player, "Welcome back! Here's " .. Formulas.formatNumber(gift) .. " Stardust to get you going.", "rare")
+		S.Toasts.send(
+			player,
+			"Welcome back! Here's " .. Formulas.formatNumber(gift) .. " Stardust to get you going.",
+			"rare"
+		)
 	else
 		S.Toasts.send(player, "Welcome back!", "good")
 	end
@@ -2974,7 +3162,10 @@ function Shop.catalog()
 	end
 	for _, product in ipairs(Config.DevProducts) do
 		if product.id ~= 0 then
-			table.insert(products, { key = product.key, id = product.id, name = product.name, description = product.description })
+			table.insert(
+				products,
+				{ key = product.key, id = product.id, name = product.name, description = product.description }
+			)
 		end
 	end
 	return passes, products
@@ -3391,7 +3582,13 @@ local function build(player: Player)
 		book = data.book,
 		stats = data.stats,
 		funnel = data.funnel,
-		daily = { canClaim = canClaim, wait = dailyWait, day = dailyDay, streak = data.daily.streak, preview = S.Rewards.dailyPreview(player) },
+		daily = {
+			canClaim = canClaim,
+			wait = dailyWait,
+			day = dailyDay,
+			streak = data.daily.streak,
+			preview = S.Rewards.dailyPreview(player),
+		},
 		quests = S.Rewards.questList(player),
 		passes = S.Shop.ownedPasses(player),
 		catalog = { passes = passes, products = products },
@@ -3750,11 +3947,8 @@ function Effects.shake(strength: number)
 	task.spawn(function()
 		for i = 1, 6 do
 			local falloff = (7 - i) / 6
-			humanoid.CameraOffset = Vector3.new(
-				(math.random() - 0.5) * strength * falloff,
-				(math.random() - 0.5) * strength * falloff,
-				0
-			)
+			humanoid.CameraOffset =
+				Vector3.new((math.random() - 0.5) * strength * falloff, (math.random() - 0.5) * strength * falloff, 0)
 			task.wait(0.03)
 		end
 		humanoid.CameraOffset = Vector3.new()
@@ -3774,7 +3968,13 @@ function Effects.myCatch(position: Vector3, starType: string, info)
 	if info.combo >= 5 then
 		extra = (extra and (extra .. "  ") or "") .. "x" .. info.combo
 	end
-	Effects.popNumber(position, "+" .. Formulas.formatNumber(info.value), tier >= 2 and rarityColor or def.color, tier >= 2, extra)
+	Effects.popNumber(
+		position,
+		"+" .. Formulas.formatNumber(info.value),
+		tier >= 2 and rarityColor or def.color,
+		tier >= 2,
+		extra
+	)
 	-- the ping climbs a semitone-ish per combo step, capped
 	local pitch = 1 + math.min(info.combo - 1, Config.ComboMaxSteps) * 0.035
 	App.Sounds.play("Catch", pitch, tier >= 2 and 0.8 or 0.45)
@@ -3880,7 +4080,9 @@ local function apply(state)
 						label.Title.Text = "🔒 " .. zone.name
 						if state.bestZone == zone.id - 1 then
 							local short = math.max(zone.cost - state.stardust, 0)
-							label.Subtitle.Text = short > 0 and ("★ " .. Formulas.formatNumber(short) .. " more to unlock") or "Ready! Press to unlock"
+							label.Subtitle.Text = short > 0
+									and ("★ " .. Formulas.formatNumber(short) .. " more to unlock")
+								or "Ready! Press to unlock"
 						else
 							label.Subtitle.Text = "Unlock " .. Config.Zones[zone.id - 1].name .. " first"
 						end
@@ -3952,7 +4154,9 @@ local function nextGoal(state)
 		local zone = Config.Zones[state.bestZone + 1]
 		return "Unlock " .. zone.name, zone.cost, zone.accent
 	end
-	return "Go Supernova (x" .. tostring(Formulas.supernovaMultiplier(state.novas + 1)) .. " forever)", state.supernovaCost, App.Theme.Colors.Purple
+	return "Go Supernova (x" .. tostring(Formulas.supernovaMultiplier(state.novas + 1)) .. " forever)",
+		state.supernovaCost,
+		App.Theme.Colors.Purple
 end
 
 local function sideButton(parent, name: string, icon: string, color: Color3, order: number, onClick)
@@ -4214,16 +4418,21 @@ local function refresh(state)
 		return
 	end
 	-- multiplier line
-	local parts = { "<font color=\"#FFC83D\">x" .. string.format("%.2f", state.multiplier):gsub("%.?0+$", "") .. "</font> Stardust" }
+	local parts = {
+		'<font color="#FFC83D">x' .. string.format("%.2f", state.multiplier):gsub("%.?0+$", "") .. "</font> Stardust",
+	}
 	local boost = App.State.boostLeft()
 	if boost > 0 then
-		table.insert(parts, "<font color=\"#46D278\">2x BOOST " .. Formulas.formatTime(boost) .. "</font>")
+		table.insert(parts, '<font color="#46D278">2x BOOST ' .. Formulas.formatTime(boost) .. "</font>")
 	end
 	if state.friends > 0 then
-		table.insert(parts, "👥 +" .. math.floor(math.min(state.friends * Config.FriendBonusEach, Config.FriendBonusMax) * 100) .. "%")
+		table.insert(
+			parts,
+			"👥 +" .. math.floor(math.min(state.friends * Config.FriendBonusEach, Config.FriendBonusMax) * 100) .. "%"
+		)
 	end
 	if state.temporary then
-		table.insert(parts, "<font color=\"#EB4B5A\">(Studio: not saving)</font>")
+		table.insert(parts, '<font color="#EB4B5A">(Studio: not saving)</font>')
 	end
 	refs.multiplier.Text = table.concat(parts, "   ")
 
@@ -4235,7 +4444,8 @@ local function refresh(state)
 	if progress >= 1 then
 		refs.goalText.Text = "✔ " .. text .. ": ready!"
 	else
-		refs.goalText.Text = string.format("%s   %s / %s", text, Formulas.formatNumber(state.stardust), Formulas.formatNumber(cost))
+		refs.goalText.Text =
+			string.format("%s   %s / %s", text, Formulas.formatNumber(state.stardust), Formulas.formatNumber(cost))
 	end
 
 	-- red dots
@@ -4266,7 +4476,11 @@ function Hud.onEarn(_value: number, combo: number)
 	end
 	if combo >= 2 then
 		refs.combo.Visible = true
-		refs.combo.Text = "COMBO x" .. combo .. "  (+" .. math.floor((Formulas.comboMultiplier(combo) - 1) * 100 + 0.5) .. "%)"
+		refs.combo.Text = "COMBO x"
+			.. combo
+			.. "  (+"
+			.. math.floor((Formulas.comboMultiplier(combo) - 1) * 100 + 0.5)
+			.. "%)"
 		comboShownAt = os.clock()
 		if not App.Theme.reducedMotion() then
 			refs.comboScale.Scale = 1.25
@@ -4548,7 +4762,11 @@ local function updateUpgrades(content, state)
 	for i, upgrade in ipairs(Config.Upgrades) do
 		local info = state.upgrades[upgrade.id]
 		local r = row(content, i)
-		rowText(r, string.format("%s  <font color=\"#BEC3EB\">Lv %d/%d</font>", upgrade.name, info.level, upgrade.maxLevel), upgrade.description)
+		rowText(
+			r,
+			string.format('%s  <font color="#BEC3EB">Lv %d/%d</font>', upgrade.name, info.level, upgrade.maxLevel),
+			upgrade.description
+		)
 		progressBar(r, info.level / upgrade.maxLevel, C.Green)
 		if info.cost then
 			local afford = state.stardust >= info.cost
@@ -4567,7 +4785,16 @@ local function updateQuests(content, state)
 	clear(content)
 	for i, quest in ipairs(state.quests) do
 		local r = row(content, i)
-		rowText(r, quest.text, string.format("%d / %d   ·   reward ★ %s", quest.progress, quest.goal, Formulas.formatNumber(quest.reward)))
+		rowText(
+			r,
+			quest.text,
+			string.format(
+				"%d / %d   ·   reward ★ %s",
+				quest.progress,
+				quest.goal,
+				Formulas.formatNumber(quest.reward)
+			)
+		)
 		progressBar(r, quest.progress / quest.goal, C.Blue)
 		if quest.claimed then
 			rowButton(r, "✔ Done", C.Gray, nil)
@@ -4579,7 +4806,13 @@ local function updateQuests(content, state)
 			rowButton(r, math.floor(quest.progress / quest.goal * 100) .. "%", C.Gray, nil)
 		end
 	end
-	note(content, "Finish all three for <b>" .. Config.QuestAllDoneBoostMinutes .. " minutes of 2x Stardust</b>. New quests every day.", 99)
+	note(
+		content,
+		"Finish all three for <b>"
+			.. Config.QuestAllDoneBoostMinutes
+			.. " minutes of 2x Stardust</b>. New quests every day.",
+		99
+	)
 end
 
 local function updateDaily(content, state)
@@ -4666,7 +4899,15 @@ local function updateBook(content, state)
 			found += 1
 		end
 	end
-	note(content, string.format("<b>%d / %d</b> stars discovered. Rarer stars fall in later zones, and the Nova only falls during Meteor Showers.", found, #Config.Stars), 0)
+	note(
+		content,
+		string.format(
+			"<b>%d / %d</b> stars discovered. Rarer stars fall in later zones, and the Nova only falls during Meteor Showers.",
+			found,
+			#Config.Stars
+		),
+		0
+	)
 	for i, star in ipairs(Config.Stars) do
 		local count = state.book[star.id] or 0
 		local r = row(content, i, 60)
@@ -4687,9 +4928,23 @@ local function updateBook(content, state)
 		})
 		local rarityHex = Config.RarityColors[star.rarity]:ToHex()
 		if count > 0 then
-			rowText(holder, string.format("%s  <font color=\"#%s\">%s</font>", star.name, rarityHex, star.rarity), string.format("Worth ★%s each · caught %s", Formulas.formatNumber(star.value), Formulas.commas(count)), 0.95)
+			rowText(
+				holder,
+				string.format('%s  <font color="#%s">%s</font>', star.name, rarityHex, star.rarity),
+				string.format(
+					"Worth ★%s each · caught %s",
+					Formulas.formatNumber(star.value),
+					Formulas.commas(count)
+				),
+				0.95
+			)
 		else
-			rowText(holder, "???  <font color=\"#" .. rarityHex .. "\">" .. star.rarity .. "</font>", "Not found yet", 0.95)
+			rowText(
+				holder,
+				'???  <font color="#' .. rarityHex .. '">' .. star.rarity .. "</font>",
+				"Not found yet",
+				0.95
+			)
 		end
 	end
 end
@@ -4724,9 +4979,13 @@ local function updateShop(content, state)
 	end
 	local order = 0
 	if #state.catalog.passes + #state.catalog.products == 0 then
-		note(content, RunService:IsStudio()
-			and "<b>Shop is empty.</b> Create game passes and developer products in the Creator Dashboard, then paste their IDs into <b>Config.luau</b> (GamePasses / DevProducts). Items with ID 0 stay hidden."
-			or "The shop opens soon!", 1)
+		note(
+			content,
+			RunService:IsStudio()
+					and "<b>Shop is empty.</b> Create game passes and developer products in the Creator Dashboard, then paste their IDs into <b>Config.luau</b> (GamePasses / DevProducts). Items with ID 0 stay hidden."
+				or "The shop opens soon!",
+			1
+		)
 		return
 	end
 	note(content, "Everything here is optional. You can unlock every zone and star for free.", 0)
@@ -4799,7 +5058,7 @@ local function updateSupernova(content, state)
 	note(
 		content,
 		string.format(
-			"Go <b>Supernova</b> to start fresh with a permanent boost.\n\nYou keep: your Star Book, quests, daily streak and passes.\nYou reset: Stardust, upgrades and zones.\n\nYour bonus: <b>x%s</b> → <font color=\"#FFC83D\"><b>x%s</b></font> on every catch, forever. You also get a new aura color.",
+			'Go <b>Supernova</b> to start fresh with a permanent boost.\n\nYou keep: your Star Book, quests, daily streak and passes.\nYou reset: Stardust, upgrades and zones.\n\nYour bonus: <b>x%s</b> → <font color="#FFC83D"><b>x%s</b></font> on every catch, forever. You also get a new aura color.',
 			tostring(now),
 			tostring(next)
 		),
@@ -4808,21 +5067,26 @@ local function updateSupernova(content, state)
 	local r = row(content, 2, 72)
 	local ok, why = Formulas.canSupernova(state.stardust, state.bestZone, state.novas)
 	rowText(r, "Supernova #" .. (state.novas + 1), ok and "Ready!" or why)
-	local _, buttonLabel = rowButton(r, "★ " .. Formulas.formatNumber(state.supernovaCost), ok and C.Purple or C.Gray, function()
-		if not ok then
-			App.Toasts.show(why, "warn")
-			return
+	local _, buttonLabel = rowButton(
+		r,
+		"★ " .. Formulas.formatNumber(state.supernovaCost),
+		ok and C.Purple or C.Gray,
+		function()
+			if not ok then
+				App.Toasts.show(why, "warn")
+				return
+			end
+			if os.clock() - supernovaArmedAt > 3 then
+				-- one mis-tap shouldn't wipe your progress
+				supernovaArmedAt = os.clock()
+				App.Toasts.show("Tap again to go Supernova. This resets Stardust, upgrades and zones!", "warn")
+				return
+			end
+			supernovaArmedAt = 0
+			App.State.act("Supernova")
+			Panels.close()
 		end
-		if os.clock() - supernovaArmedAt > 3 then
-			-- one mis-tap shouldn't wipe your progress
-			supernovaArmedAt = os.clock()
-			App.Toasts.show("Tap again to go Supernova. This resets Stardust, upgrades and zones!", "warn")
-			return
-		end
-		supernovaArmedAt = 0
-		App.State.act("Supernova")
-		Panels.close()
-	end)
+	)
 	if ok and buttonLabel then
 		buttonLabel.Text = "★ " .. Formulas.formatNumber(state.supernovaCost) .. " · GO"
 	end
@@ -4851,7 +5115,9 @@ local signatures = {
 	Quests = function(state)
 		local parts = {}
 		for _, quest in ipairs(state.quests) do
-			local step = quest.claimed and "c" or quest.done and "d" or tostring(math.floor(quest.progress / quest.goal * 20))
+			local step = quest.claimed and "c"
+				or quest.done and "d"
+				or tostring(math.floor(quest.progress / quest.goal * 20))
 			table.insert(parts, step .. ":" .. quest.reward)
 		end
 		return table.concat(parts, ",")
@@ -5360,7 +5626,13 @@ function Theme.reducedMotion(): boolean
 	return ok and value == true
 end
 
-function Theme.tween(object: Instance, seconds: number, goal, style: Enum.EasingStyle?, direction: Enum.EasingDirection?)
+function Theme.tween(
+	object: Instance,
+	seconds: number,
+	goal,
+	style: Enum.EasingStyle?,
+	direction: Enum.EasingDirection?
+)
 	if Theme.reducedMotion() then
 		seconds = 0
 	end
@@ -5661,7 +5933,10 @@ function Toasts.start()
 		ZIndex = 50,
 		Parent = App.overlay,
 	})
-	Theme.new("UISizeConstraint", { MinSize = Vector2.new(260, 0), MaxSize = Vector2.new(520, math.huge), Parent = container })
+	Theme.new(
+		"UISizeConstraint",
+		{ MinSize = Vector2.new(260, 0), MaxSize = Vector2.new(520, math.huge), Parent = container }
+	)
 	Theme.new("UIListLayout", {
 		SortOrder = Enum.SortOrder.LayoutOrder,
 		Padding = UDim.new(0, 6),
@@ -5802,7 +6077,12 @@ function Tutorial.start()
 		local showBeam = false
 
 		if current == 1 then
-			setHint(string.format("Run under a falling star to catch it!  <font color=\"#FFFFFF\">%d/5</font>", state.stats.catches))
+			setHint(
+				string.format(
+					'Run under a falling star to catch it!  <font color="#FFFFFF">%d/5</font>',
+					state.stats.catches
+				)
+			)
 			local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 			local target = root and App.StarRenderer.nearest(root.Position)
 			if target and ensureBeam() then
@@ -5815,7 +6095,9 @@ function Tutorial.start()
 				setHint("Tap <b>Upgrades</b> and buy a <b>Bigger Net</b>!")
 				pulseTime += dt
 				local button = App.Hud.buttonFor("Upgrades")
-				local scale = button and button:FindFirstChild("Button") and button.Button:FindFirstChildOfClass("UIScale")
+				local scale = button
+					and button:FindFirstChild("Button")
+					and button.Button:FindFirstChildOfClass("UIScale")
 				if scale and not App.Panels.isOpen("Upgrades") and not Theme.reducedMotion() then
 					pulsing = scale
 					scale.Scale = 1 + math.abs(math.sin(pulseTime * 4)) * 0.12

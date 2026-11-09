@@ -114,7 +114,11 @@ function Rewards.claimQuest(player: Player, index: number)
 	if allClaimed and not data.quests.bonusClaimed then
 		data.quests.bonusClaimed = true
 		S.Economy.grantBoost(player, Config.QuestAllDoneBoostMinutes)
-		S.Toasts.send(player, "All quests done! 2x Stardust for " .. Config.QuestAllDoneBoostMinutes .. " minutes.", "rare")
+		S.Toasts.send(
+			player,
+			"All quests done! 2x Stardust for " .. Config.QuestAllDoneBoostMinutes .. " minutes.",
+			"rare"
+		)
 	end
 	S.State.push(player)
 	return { ok = true, message = "+" .. Formulas.formatNumber(quest.reward) .. " Stardust" }
@@ -180,7 +184,11 @@ local function onLoaded(player: Player, data)
 	if awayDays >= WELCOME_BACK_DAYS then
 		local gift = S.Economy.minutesOfEarnings(player, WELCOME_BACK_MINUTES)
 		S.Economy.add(player, gift, "WelcomeBack")
-		S.Toasts.send(player, "Welcome back! Here's " .. Formulas.formatNumber(gift) .. " Stardust to get you going.", "rare")
+		S.Toasts.send(
+			player,
+			"Welcome back! Here's " .. Formulas.formatNumber(gift) .. " Stardust to get you going.",
+			"rare"
+		)
 	else
 		S.Toasts.send(player, "Welcome back!", "good")
 	end

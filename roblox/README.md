@@ -15,7 +15,7 @@ You didn't have a Roblox game yet, so the last step builds one: **Starfall Valle
 | 4 | Apply them to your Roblox game | [`game/`](game/): **Starfall Valley**, an original game you can open in Roblox Studio and play right away |
 
 ## Start here
-- **Play the game:** download [`game/Starfall-Valley.rbxlx`](game/Starfall-Valley.rbxlx), open it in Roblox Studio, and press Play. Details in [`game/README.md`](game/README.md).
+- **Play the game:** run [`game/Install-Starfall-Valley.lua`](game/Install-Starfall-Valley.lua) in your open place (Model tab → Run Script), or open [`game/Starfall-Valley.rbxlx`](game/Starfall-Valley.rbxlx). Then press Play. Details in [`game/README.md`](game/README.md).
 - **Read the playbook:** [`PLAYBOOK.md`](PLAYBOOK.md), about 10 minutes.
 - **See the research:** [`research/notes/`](research/notes/), one file per topic.
 

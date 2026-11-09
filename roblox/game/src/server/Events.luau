@@ -73,7 +73,10 @@ local function tick()
 		phase = "idle"
 		schedule(cfg.every - cfg.duration)
 		broadcast()
-		S.Toasts.all("The Meteor Shower is over. Next one in " .. math.floor((cfg.every - cfg.duration) / 60) .. " minutes.", "info")
+		S.Toasts.all(
+			"The Meteor Shower is over. Next one in " .. math.floor((cfg.every - cfg.duration) / 60) .. " minutes.",
+			"info"
+		)
 	end
 end
 

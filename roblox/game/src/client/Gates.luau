@@ -54,7 +54,9 @@ local function apply(state)
 						label.Title.Text = "🔒 " .. zone.name
 						if state.bestZone == zone.id - 1 then
 							local short = math.max(zone.cost - state.stardust, 0)
-							label.Subtitle.Text = short > 0 and ("★ " .. Formulas.formatNumber(short) .. " more to unlock") or "Ready! Press to unlock"
+							label.Subtitle.Text = short > 0
+									and ("★ " .. Formulas.formatNumber(short) .. " more to unlock")
+								or "Ready! Press to unlock"
 						else
 							label.Subtitle.Text = "Unlock " .. Config.Zones[zone.id - 1].name .. " first"
 						end

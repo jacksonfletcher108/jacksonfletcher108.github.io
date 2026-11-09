@@ -124,8 +124,13 @@ local function crystal(position: Vector3, random: Random, color: Color3, parent)
 		part({
 			Name = "Crystal",
 			Size = Vector3.new(1.6, h, 1.6),
-			CFrame = CFrame.new(position + Vector3.new(random:NextNumber(-2, 2), h / 2 - 0.5, random:NextNumber(-2, 2)))
-				* CFrame.Angles(random:NextNumber(-0.35, 0.35), random:NextNumber(0, math.pi), random:NextNumber(-0.35, 0.35)),
+			CFrame = CFrame.new(
+				position + Vector3.new(random:NextNumber(-2, 2), h / 2 - 0.5, random:NextNumber(-2, 2))
+			) * CFrame.Angles(
+				random:NextNumber(-0.35, 0.35),
+				random:NextNumber(0, math.pi),
+				random:NextNumber(-0.35, 0.35)
+			),
 			Color = color,
 			Material = Enum.Material.Neon,
 			Transparency = 0.15,
@@ -149,7 +154,8 @@ local function pine(position: Vector3, random: Random, parent)
 		part({
 			Name = "Needles",
 			Size = Vector3.new(width, 3, width),
-			CFrame = CFrame.new(position + Vector3.new(0, height * 0.35 + i * 3, 0)) * CFrame.Angles(0, math.rad(45 * i), 0),
+			CFrame = CFrame.new(position + Vector3.new(0, height * 0.35 + i * 3, 0))
+				* CFrame.Angles(0, math.rad(45 * i), 0),
 			Color = i == 2 and Color3.fromRGB(240, 245, 255) or Color3.fromRGB(40, 110, 80),
 			Material = i == 2 and Enum.Material.Snow or Enum.Material.Grass,
 			CanCollide = false,
@@ -273,7 +279,8 @@ local function buildWelcomeSign()
 	text.TextScaled = true
 	text.TextColor3 = Color3.fromRGB(255, 215, 90)
 	text.RichText = true
-	text.Text = "★ STARFALL VALLEY ★\n<font color=\"#FFFFFF\">Run under falling stars to catch them.\nJump to catch them in the air for 1.5x!</font>"
+	text.Text =
+		'★ STARFALL VALLEY ★\n<font color="#FFFFFF">Run under falling stars to catch them.\nJump to catch them in the air for 1.5x!</font>'
 	text.Parent = gui
 	local pad = Instance.new("UIPadding")
 	pad.PaddingTop = UDim.new(0, 30)
@@ -424,11 +431,23 @@ local function buildZone(zone, random: Random)
 	label.Size = UDim2.fromOffset(360, 70)
 
 	-- side walls (front and back) so you can't fall off
-	invisibleWall(Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2), center + Vector3.new(0, WALL_HEIGHT / 2, HALF + 1), folder)
-	invisibleWall(Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2), center + Vector3.new(0, WALL_HEIGHT / 2, -HALF - 1), folder)
+	invisibleWall(
+		Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2),
+		center + Vector3.new(0, WALL_HEIGHT / 2, HALF + 1),
+		folder
+	)
+	invisibleWall(
+		Vector3.new(Config.ZoneSize, WALL_HEIGHT, 2),
+		center + Vector3.new(0, WALL_HEIGHT / 2, -HALF - 1),
+		folder
+	)
 
 	if zone.id == 1 then
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, Config.ZoneSize), center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, 0), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, Config.ZoneSize),
+			center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, 0),
+			folder
+		)
 		scatter(1, 22, random, function(p)
 			tree(p, random, Color3.fromRGB(70, 150, 70), folder)
 		end)
@@ -448,19 +467,39 @@ local function buildZone(zone, random: Random)
 
 	-- the far end of the last zone is closed off
 	if zone.id == #Config.Zones then
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, Config.ZoneSize), center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, 0), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, Config.ZoneSize),
+			center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, 0),
+			folder
+		)
 	else
 		-- walls on the near side of the gap, leaving the bridge open
 		local sideLength = (Config.ZoneSize - BRIDGE_WIDTH) / 2
 		local sideOffset = BRIDGE_WIDTH / 2 + sideLength / 2
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, sideOffset), folder)
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, -sideOffset), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, sideOffset),
+			folder
+		)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(HALF + 1, WALL_HEIGHT / 2, -sideOffset),
+			folder
+		)
 	end
 	if zone.id > 1 then
 		local sideLength = (Config.ZoneSize - BRIDGE_WIDTH) / 2
 		local sideOffset = BRIDGE_WIDTH / 2 + sideLength / 2
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, sideOffset), folder)
-		invisibleWall(Vector3.new(2, WALL_HEIGHT, sideLength), center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, -sideOffset), folder)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, sideOffset),
+			folder
+		)
+		invisibleWall(
+			Vector3.new(2, WALL_HEIGHT, sideLength),
+			center + Vector3.new(-HALF - 1, WALL_HEIGHT / 2, -sideOffset),
+			folder
+		)
 	end
 end
 
@@ -525,7 +564,13 @@ local function buildBridgeAndGate(zone)
 		CanQuery = false,
 		Parent = folder,
 	})
-	billboard(labelAnchor, "🔒 " .. zone.name, "★ " .. Formulas.formatNumber(zone.cost) .. " to unlock", zone.accent, 0)
+	billboard(
+		labelAnchor,
+		"🔒 " .. zone.name,
+		"★ " .. Formulas.formatNumber(zone.cost) .. " to unlock",
+		zone.accent,
+		0
+	)
 
 	-- the prompt lives on a small part at player height (prompts measure distance to their part)
 	local promptAnchor = part({

@@ -4,10 +4,17 @@ An original Roblox game built from [the playbook](../PLAYBOOK.md). Stars fall fr
 
 ![thumbnail](marketing/thumbnail-a.png)
 
-## Play it in 2 minutes
-1. Download **[`Starfall-Valley.rbxlx`](Starfall-Valley.rbxlx)**.
-2. Open it in **Roblox Studio** (File → Open from File).
-3. Press **Play** (F5).
+## Put it in the place you have open (1 minute)
+1. Download **[`Install-Starfall-Valley.lua`](Install-Starfall-Valley.lua)**.
+2. In Roblox Studio, with your place open, run it one of two ways:
+   - **Model tab → Run Script**, then pick the file; or
+   - **View tab → Command Bar**: open the file in any text editor, copy all of it, paste it into the Command Bar, and press Enter.
+3. The Output window says **"Installed 30 scripts"**, and the world appears: four zones, gates, signs and a night sky.
+4. Press **Play** (F5).
+
+The installer only adds its own scripts. If your place already has something with the same name, it renames yours to `..._Backup` instead of deleting it. Running it again just updates the game, and **Ctrl+Z** undoes it. It replaces the default Baseplate with the valley.
+
+**Or open it as a new place:** download [`Starfall-Valley.rbxlx`](Starfall-Valley.rbxlx), open it with File → Open from File, and press Play.
 
 That's it. The world, UI, sounds and lights are all built by the scripts, so there's nothing to set up. In Studio, saving is off until you turn on API access (step 2 below), and the HUD will say "Studio: not saving".
 
@@ -60,9 +67,11 @@ The scripts are plain `.luau` files laid out for [Rojo](https://rojo.space), the
 ```bash
 rojo serve                                   # live-sync into Studio (install the Rojo plugin)
 rojo build -o Starfall-Valley.rbxlx          # rebuild the place file
+python3 tools/make_installer.py              # rebuild Install-Starfall-Valley.lua
 selene src tests                             # lint (first run downloads the Roblox API list)
 stylua src tests                             # format
 lune run tests/run.luau                      # unit tests for the game math
+lune run tests/installer.luau                # checks the installer rebuilds src/ exactly
 ```
 
 Checks that passed before this was committed:
@@ -70,6 +79,7 @@ Checks that passed before this was committed:
 - Selene with the full Roblox API: 0 errors, 0 warnings.
 - 700 property and method uses checked against Roblox's API dump: 0 problems.
 - 21 unit tests on prices, pacing, odds, rewards and quests: all passing.
+- The installer, run against a pretend place, puts all 30 scripts in the same spots as Rojo's build with byte-identical code. Re-running it is safe, and existing scripts are kept as backups.
 - An independent code review found no runtime errors; its 9 fixes are in. They cover the phone layout clearing the jump button, anti-teleport-farming, culling far stars, the save lock, a two-tap Supernova confirm, and more.
 
 It has not been play-tested in Roblox Studio yet (it was built on a server without Studio), so press Play and tell Claude about anything that looks off.

@@ -144,7 +144,10 @@ function Shop.catalog()
 	end
 	for _, product in ipairs(Config.DevProducts) do
 		if product.id ~= 0 then
-			table.insert(products, { key = product.key, id = product.id, name = product.name, description = product.description })
+			table.insert(
+				products,
+				{ key = product.key, id = product.id, name = product.name, description = product.description }
+			)
 		end
 	end
 	return passes, products

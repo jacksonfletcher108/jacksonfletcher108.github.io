@@ -204,7 +204,11 @@ local function updateUpgrades(content, state)
 	for i, upgrade in ipairs(Config.Upgrades) do
 		local info = state.upgrades[upgrade.id]
 		local r = row(content, i)
-		rowText(r, string.format("%s  <font color=\"#BEC3EB\">Lv %d/%d</font>", upgrade.name, info.level, upgrade.maxLevel), upgrade.description)
+		rowText(
+			r,
+			string.format('%s  <font color="#BEC3EB">Lv %d/%d</font>', upgrade.name, info.level, upgrade.maxLevel),
+			upgrade.description
+		)
 		progressBar(r, info.level / upgrade.maxLevel, C.Green)
 		if info.cost then
 			local afford = state.stardust >= info.cost
@@ -223,7 +227,16 @@ local function updateQuests(content, state)
 	clear(content)
 	for i, quest in ipairs(state.quests) do
 		local r = row(content, i)
-		rowText(r, quest.text, string.format("%d / %d   ·   reward ★ %s", quest.progress, quest.goal, Formulas.formatNumber(quest.reward)))
+		rowText(
+			r,
+			quest.text,
+			string.format(
+				"%d / %d   ·   reward ★ %s",
+				quest.progress,
+				quest.goal,
+				Formulas.formatNumber(quest.reward)
+			)
+		)
 		progressBar(r, quest.progress / quest.goal, C.Blue)
 		if quest.claimed then
 			rowButton(r, "✔ Done", C.Gray, nil)
@@ -235,7 +248,13 @@ local function updateQuests(content, state)
 			rowButton(r, math.floor(quest.progress / quest.goal * 100) .. "%", C.Gray, nil)
 		end
 	end
-	note(content, "Finish all three for <b>" .. Config.QuestAllDoneBoostMinutes .. " minutes of 2x Stardust</b>. New quests every day.", 99)
+	note(
+		content,
+		"Finish all three for <b>"
+			.. Config.QuestAllDoneBoostMinutes
+			.. " minutes of 2x Stardust</b>. New quests every day.",
+		99
+	)
 end
 
 local function updateDaily(content, state)
@@ -322,7 +341,15 @@ local function updateBook(content, state)
 			found += 1
 		end
 	end
-	note(content, string.format("<b>%d / %d</b> stars discovered. Rarer stars fall in later zones, and the Nova only falls during Meteor Showers.", found, #Config.Stars), 0)
+	note(
+		content,
+		string.format(
+			"<b>%d / %d</b> stars discovered. Rarer stars fall in later zones, and the Nova only falls during Meteor Showers.",
+			found,
+			#Config.Stars
+		),
+		0
+	)
 	for i, star in ipairs(Config.Stars) do
 		local count = state.book[star.id] or 0
 		local r = row(content, i, 60)
@@ -343,9 +370,23 @@ local function updateBook(content, state)
 		})
 		local rarityHex = Config.RarityColors[star.rarity]:ToHex()
 		if count > 0 then
-			rowText(holder, string.format("%s  <font color=\"#%s\">%s</font>", star.name, rarityHex, star.rarity), string.format("Worth ★%s each · caught %s", Formulas.formatNumber(star.value), Formulas.commas(count)), 0.95)
+			rowText(
+				holder,
+				string.format('%s  <font color="#%s">%s</font>', star.name, rarityHex, star.rarity),
+				string.format(
+					"Worth ★%s each · caught %s",
+					Formulas.formatNumber(star.value),
+					Formulas.commas(count)
+				),
+				0.95
+			)
 		else
-			rowText(holder, "???  <font color=\"#" .. rarityHex .. "\">" .. star.rarity .. "</font>", "Not found yet", 0.95)
+			rowText(
+				holder,
+				'???  <font color="#' .. rarityHex .. '">' .. star.rarity .. "</font>",
+				"Not found yet",
+				0.95
+			)
 		end
 	end
 end
@@ -380,9 +421,13 @@ local function updateShop(content, state)
 	end
 	local order = 0
 	if #state.catalog.passes + #state.catalog.products == 0 then
-		note(content, RunService:IsStudio()
-			and "<b>Shop is empty.</b> Create game passes and developer products in the Creator Dashboard, then paste their IDs into <b>Config.luau</b> (GamePasses / DevProducts). Items with ID 0 stay hidden."
-			or "The shop opens soon!", 1)
+		note(
+			content,
+			RunService:IsStudio()
+					and "<b>Shop is empty.</b> Create game passes and developer products in the Creator Dashboard, then paste their IDs into <b>Config.luau</b> (GamePasses / DevProducts). Items with ID 0 stay hidden."
+				or "The shop opens soon!",
+			1
+		)
 		return
 	end
 	note(content, "Everything here is optional. You can unlock every zone and star for free.", 0)
@@ -455,7 +500,7 @@ local function updateSupernova(content, state)
 	note(
 		content,
 		string.format(
-			"Go <b>Supernova</b> to start fresh with a permanent boost.\n\nYou keep: your Star Book, quests, daily streak and passes.\nYou reset: Stardust, upgrades and zones.\n\nYour bonus: <b>x%s</b> → <font color=\"#FFC83D\"><b>x%s</b></font> on every catch, forever. You also get a new aura color.",
+			'Go <b>Supernova</b> to start fresh with a permanent boost.\n\nYou keep: your Star Book, quests, daily streak and passes.\nYou reset: Stardust, upgrades and zones.\n\nYour bonus: <b>x%s</b> → <font color="#FFC83D"><b>x%s</b></font> on every catch, forever. You also get a new aura color.',
 			tostring(now),
 			tostring(next)
 		),
@@ -464,21 +509,26 @@ local function updateSupernova(content, state)
 	local r = row(content, 2, 72)
 	local ok, why = Formulas.canSupernova(state.stardust, state.bestZone, state.novas)
 	rowText(r, "Supernova #" .. (state.novas + 1), ok and "Ready!" or why)
-	local _, buttonLabel = rowButton(r, "★ " .. Formulas.formatNumber(state.supernovaCost), ok and C.Purple or C.Gray, function()
-		if not ok then
-			App.Toasts.show(why, "warn")
-			return
+	local _, buttonLabel = rowButton(
+		r,
+		"★ " .. Formulas.formatNumber(state.supernovaCost),
+		ok and C.Purple or C.Gray,
+		function()
+			if not ok then
+				App.Toasts.show(why, "warn")
+				return
+			end
+			if os.clock() - supernovaArmedAt > 3 then
+				-- one mis-tap shouldn't wipe your progress
+				supernovaArmedAt = os.clock()
+				App.Toasts.show("Tap again to go Supernova. This resets Stardust, upgrades and zones!", "warn")
+				return
+			end
+			supernovaArmedAt = 0
+			App.State.act("Supernova")
+			Panels.close()
 		end
-		if os.clock() - supernovaArmedAt > 3 then
-			-- one mis-tap shouldn't wipe your progress
-			supernovaArmedAt = os.clock()
-			App.Toasts.show("Tap again to go Supernova. This resets Stardust, upgrades and zones!", "warn")
-			return
-		end
-		supernovaArmedAt = 0
-		App.State.act("Supernova")
-		Panels.close()
-	end)
+	)
 	if ok and buttonLabel then
 		buttonLabel.Text = "★ " .. Formulas.formatNumber(state.supernovaCost) .. " · GO"
 	end
@@ -507,7 +557,9 @@ local signatures = {
 	Quests = function(state)
 		local parts = {}
 		for _, quest in ipairs(state.quests) do
-			local step = quest.claimed and "c" or quest.done and "d" or tostring(math.floor(quest.progress / quest.goal * 20))
+			local step = quest.claimed and "c"
+				or quest.done and "d"
+				or tostring(math.floor(quest.progress / quest.goal * 20))
 			table.insert(parts, step .. ":" .. quest.reward)
 		end
 		return table.concat(parts, ",")

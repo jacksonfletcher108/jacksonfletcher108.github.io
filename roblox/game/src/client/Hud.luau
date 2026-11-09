@@ -32,7 +32,9 @@ local function nextGoal(state)
 		local zone = Config.Zones[state.bestZone + 1]
 		return "Unlock " .. zone.name, zone.cost, zone.accent
 	end
-	return "Go Supernova (x" .. tostring(Formulas.supernovaMultiplier(state.novas + 1)) .. " forever)", state.supernovaCost, App.Theme.Colors.Purple
+	return "Go Supernova (x" .. tostring(Formulas.supernovaMultiplier(state.novas + 1)) .. " forever)",
+		state.supernovaCost,
+		App.Theme.Colors.Purple
 end
 
 local function sideButton(parent, name: string, icon: string, color: Color3, order: number, onClick)
@@ -294,16 +296,21 @@ local function refresh(state)
 		return
 	end
 	-- multiplier line
-	local parts = { "<font color=\"#FFC83D\">x" .. string.format("%.2f", state.multiplier):gsub("%.?0+$", "") .. "</font> Stardust" }
+	local parts = {
+		'<font color="#FFC83D">x' .. string.format("%.2f", state.multiplier):gsub("%.?0+$", "") .. "</font> Stardust",
+	}
 	local boost = App.State.boostLeft()
 	if boost > 0 then
-		table.insert(parts, "<font color=\"#46D278\">2x BOOST " .. Formulas.formatTime(boost) .. "</font>")
+		table.insert(parts, '<font color="#46D278">2x BOOST ' .. Formulas.formatTime(boost) .. "</font>")
 	end
 	if state.friends > 0 then
-		table.insert(parts, "👥 +" .. math.floor(math.min(state.friends * Config.FriendBonusEach, Config.FriendBonusMax) * 100) .. "%")
+		table.insert(
+			parts,
+			"👥 +" .. math.floor(math.min(state.friends * Config.FriendBonusEach, Config.FriendBonusMax) * 100) .. "%"
+		)
 	end
 	if state.temporary then
-		table.insert(parts, "<font color=\"#EB4B5A\">(Studio: not saving)</font>")
+		table.insert(parts, '<font color="#EB4B5A">(Studio: not saving)</font>')
 	end
 	refs.multiplier.Text = table.concat(parts, "   ")
 
@@ -315,7 +322,8 @@ local function refresh(state)
 	if progress >= 1 then
 		refs.goalText.Text = "✔ " .. text .. ": ready!"
 	else
-		refs.goalText.Text = string.format("%s   %s / %s", text, Formulas.formatNumber(state.stardust), Formulas.formatNumber(cost))
+		refs.goalText.Text =
+			string.format("%s   %s / %s", text, Formulas.formatNumber(state.stardust), Formulas.formatNumber(cost))
 	end
 
 	-- red dots
@@ -346,7 +354,11 @@ function Hud.onEarn(_value: number, combo: number)
 	end
 	if combo >= 2 then
 		refs.combo.Visible = true
-		refs.combo.Text = "COMBO x" .. combo .. "  (+" .. math.floor((Formulas.comboMultiplier(combo) - 1) * 100 + 0.5) .. "%)"
+		refs.combo.Text = "COMBO x"
+			.. combo
+			.. "  (+"
+			.. math.floor((Formulas.comboMultiplier(combo) - 1) * 100 + 0.5)
+			.. "%)"
 		comboShownAt = os.clock()
 		if not App.Theme.reducedMotion() then
 			refs.comboScale.Scale = 1.25

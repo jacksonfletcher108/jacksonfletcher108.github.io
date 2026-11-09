@@ -39,7 +39,13 @@ function Theme.reducedMotion(): boolean
 	return ok and value == true
 end
 
-function Theme.tween(object: Instance, seconds: number, goal, style: Enum.EasingStyle?, direction: Enum.EasingDirection?)
+function Theme.tween(
+	object: Instance,
+	seconds: number,
+	goal,
+	style: Enum.EasingStyle?,
+	direction: Enum.EasingDirection?
+)
 	if Theme.reducedMotion() then
 		seconds = 0
 	end
