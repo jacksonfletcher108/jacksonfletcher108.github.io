@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-10";
+window.DATE_IDEAS_UPDATED = "2026-11-11";
 
 window.DATE_IDEAS = [
 
@@ -954,12 +954,12 @@ window.DATE_IDEAS = [
   {
     id: "theatre-99",
     title: "Improv at Theatre 99",
-    desc: "Charleston's improv comedy theater. Funnier than any Netflix special.",
+    desc: "Charleston's improv comedy crew, now in Mount Pleasant. Funnier than any Netflix special.",
     plan: ["Buy tickets ahead", "Dinner nearby first", "Shout a suggestion if you're brave"],
-    tip: "Weekend shows sell out, so buy tickets early.",
+    tip: "They moved off Meeting St in 2026. Shows are Wed, Fri and Sat, parking is free, and weekends sell out.",
     tier: "send", budget: 2, energy: "lazy", time: "short", when: "night",
-    area: "Downtown", cost: "~$20–30 each", duration: "~1.5 hrs",
-    place: "Theatre 99, Charleston, SC", verify: true,
+    area: "Mount Pleasant", cost: "~$20–30 each", duration: "~1.5 hrs",
+    place: "Theatre 99 at The Venue MTP, 627 Johnnie Dodds Blvd, Mount Pleasant, SC", verify: true,
     rainy: true
   },
   {
