@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-11";
+window.DATE_IDEAS_UPDATED = "2026-11-12";
 
 window.DATE_IDEAS = [
 
@@ -2256,6 +2256,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
     area: "Johns Island", cost: "Free (+ food and gifts)", duration: "~2 hrs",
     place: "Johns Island County Park, 2662 Mullet Hall Rd, Johns Island, SC", verify: true, start: "2026-12-05", end: "2026-12-05"
+  },
+  {
+    id: "towne-centre-lights-up-2026",
+    title: "Lights Up tree lighting",
+    desc: "Mount Pleasant Towne Centre lights its 44 foot Christmas tree with a laser show, live music and Santa.",
+    plan: ["Get there around 6 for the music and snacks", "Find a spot in front of Belk before 7:30", "Watch the tree and laser show, then walk the shops"],
+    tip: "The lighting is at 7:30. Park on the far side of the lot to skip the jam getting out.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "night",
+    area: "Mount Pleasant", cost: "Free", duration: "~2 hrs",
+    place: "Mount Pleasant Towne Centre, 1218 Belk Dr, Mount Pleasant, SC", verify: true, start: "2026-11-21", end: "2026-11-21"
   },
   {
     id: "folly-christmas-parade-2026",
