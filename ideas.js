@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-13";
+window.DATE_IDEAS_UPDATED = "2026-11-14";
 
 window.DATE_IDEAS = [
 
