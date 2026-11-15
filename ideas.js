@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-14";
+window.DATE_IDEAS_UPDATED = "2026-11-15";
 
 window.DATE_IDEAS = [
 
@@ -2198,16 +2198,6 @@ window.DATE_IDEAS = [
     place: "Park Circle, North Charleston, SC", verify: true, months: [12]
   },
   {
-    id: "holy-smokes-2026",
-    title: "Holy Smokes BBQ Festival",
-    desc: "All-you-can-eat barbecue from dozens of pitmasters at Riverfront Park, with live music.",
-    plan: ["Buy tickets ahead online", "Show up hungry around opening", "Walk the river path between rounds"],
-    tip: "Tickets cover all the food, and the money goes to kids' charities.",
-    tier: "send", budget: 3, energy: "chill", time: "half", when: "day",
-    area: "North Charleston", cost: "~$95 each", duration: "~4 hrs",
-    place: "Riverfront Park, North Charleston, SC", verify: true, start: "2026-11-14", end: "2026-11-14"
-  },
-  {
     id: "charleston-literary-festival-2026",
     title: "Charleston Literary Festival talk",
     desc: "Famous authors in conversation at the Dock Street Theatre. Pick one talk that sounds good to both of you.",
@@ -2226,16 +2216,6 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 1, energy: "chill", time: "short", when: "day",
     area: "North Charleston", cost: "~$8 each + gifts", duration: "~2 hrs",
     place: "North Charleston Coliseum, North Charleston, SC", verify: true, rainy: true, start: "2026-11-20", end: "2026-11-22"
-  },
-  {
-    id: "daniel-island-holiday-market-2026",
-    title: "Daniel Island Holiday Market",
-    desc: "A free holiday market with 40+ local vendors, handmade gifts, baked goods and chocolates.",
-    plan: ["Set a small gift budget for each other", "Shop the booths and grab a treat", "Walk the Daniel Island waterfront after"],
-    tip: "Free entry and free parking. Go early for the best pick.",
-    tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
-    area: "Daniel Island", cost: "Free (+ gifts)", duration: "~2 hrs",
-    place: "Daniel Island Rec Center, 160 Fairbanks Dr, Daniel Island, SC", verify: true, rainy: true, start: "2026-11-14", end: "2026-11-14"
   },
   {
     id: "mtp-holiday-market-2026",
