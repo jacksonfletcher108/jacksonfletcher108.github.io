@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-15";
+window.DATE_IDEAS_UPDATED = "2026-11-16";
 
 window.DATE_IDEAS = [
 
@@ -2196,16 +2196,6 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "lazy", time: "short", when: "any",
     area: "Park Circle (N. Charleston)", cost: "Free", duration: "~3 hrs",
     place: "Park Circle, North Charleston, SC", verify: true, months: [12]
-  },
-  {
-    id: "charleston-literary-festival-2026",
-    title: "Charleston Literary Festival talk",
-    desc: "Famous authors in conversation at the Dock Street Theatre. Pick one talk that sounds good to both of you.",
-    plan: ["Look through the lineup together", "Pick one talk and get tickets", "Dinner downtown after to talk it over"],
-    tip: "You don't need to have read the book. The talks are made for that.",
-    tier: "send", budget: 2, energy: "lazy", time: "short", when: "any",
-    area: "Downtown", cost: "~$25–50 each", duration: "~2 hrs",
-    place: "Dock Street Theatre, Charleston, SC", verify: true, rainy: true, start: "2026-11-06", end: "2026-11-15"
   },
   {
     id: "charleston-holiday-market-2026",
