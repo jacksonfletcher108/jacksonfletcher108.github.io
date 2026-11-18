@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-17";
+window.DATE_IDEAS_UPDATED = "2026-11-18";
 
 window.DATE_IDEAS = [
 
@@ -2236,6 +2236,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "night",
     area: "Mount Pleasant", cost: "Free", duration: "~2 hrs",
     place: "Mount Pleasant Towne Centre, 1218 Belk Dr, Mount Pleasant, SC", verify: true, start: "2026-11-21", end: "2026-11-21"
+  },
+  {
+    id: "pops-sounds-of-the-season-2026",
+    title: "POPS holiday concert",
+    desc: "The North Charleston POPS play a big holiday show with guest singers. Cozy, festive, and indoors.",
+    plan: ["Grab an early lunch nearby", "Get to your seats by 2:30", "Hum the carols the whole drive home"],
+    tip: "Sunday at 3, doors at 2. Parking is $10, so carpool in one car.",
+    tier: "send", budget: 2, energy: "lazy", time: "short", when: "day",
+    area: "North Charleston", cost: "~$30–50 each + $10 parking", duration: "~2 hrs",
+    place: "North Charleston Performing Arts Center, North Charleston, SC", verify: true, rainy: true, start: "2026-12-06", end: "2026-12-06"
   },
   {
     id: "folly-christmas-parade-2026",
