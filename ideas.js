@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-18";
+window.DATE_IDEAS_UPDATED = "2026-11-19";
 
 window.DATE_IDEAS = [
 
@@ -2246,6 +2246,16 @@ window.DATE_IDEAS = [
     tier: "send", budget: 2, energy: "lazy", time: "short", when: "day",
     area: "North Charleston", cost: "~$30–50 each + $10 parking", duration: "~2 hrs",
     place: "North Charleston Performing Arts Center, North Charleston, SC", verify: true, rainy: true, start: "2026-12-06", end: "2026-12-06"
+  },
+  {
+    id: "summerville-tree-lighting-2026",
+    title: "Summerville tree lighting",
+    desc: "Old Time Christmas in Hutchinson Square with a countdown tree lighting, food trucks, Santa and live window displays.",
+    plan: ["Get to Hutchinson Square around 5:30 and grab dinner from a food truck", "Count down the tree lighting at 6", "Walk Main St and vote on your favorite window display"],
+    tip: "It is a Tuesday night, so parking is easier than the weekend parade.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "night",
+    area: "Summerville", cost: "Free (+ food)", duration: "~2 hrs",
+    place: "Hutchinson Square, 102 S Main St, Summerville, SC", verify: true, start: "2026-12-01", end: "2026-12-01"
   },
   {
     id: "folly-christmas-parade-2026",
