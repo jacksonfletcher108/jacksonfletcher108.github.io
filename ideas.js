@@ -2260,8 +2260,8 @@ window.DATE_IDEAS = [
   {
     id: "iop-holiday-street-festival-2026",
     title: "Isle of Palms Holiday Street Festival",
-    desc: "Front Beach turns into a little holiday street fair with local vendors, music, Santa and the island tree lighting.",
-    plan: ["Get to Front Beach around 3 and shop the booths", "Walk down to the sand for sunset", "Stay for the tree lighting after dark"],
+    desc: "Front Beach turns into a little holiday street fair with local vendors, music and Santa, usually capped off with a tree lighting.",
+    plan: ["Get to Front Beach around 3 and shop the booths", "Walk down to the sand for sunset", "Stay after dark for the lights"],
     tip: "Runs 2 to 7. Roads near Front Beach close, so park a bit away and walk in.",
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
     area: "Isle of Palms", cost: "Free (+ food)", duration: "~3 hrs",
