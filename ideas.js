@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-20";
+window.DATE_IDEAS_UPDATED = "2026-11-21";
 
 window.DATE_IDEAS = [
 
@@ -2256,6 +2256,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "night",
     area: "Summerville", cost: "Free (+ food)", duration: "~2 hrs",
     place: "Hutchinson Square, 102 S Main St, Summerville, SC", verify: true, start: "2026-12-01", end: "2026-12-01"
+  },
+  {
+    id: "iop-holiday-street-festival-2026",
+    title: "Isle of Palms Holiday Street Festival",
+    desc: "Front Beach turns into a little holiday street fair with local vendors, music, Santa and the island tree lighting.",
+    plan: ["Get to Front Beach around 3 and shop the booths", "Walk down to the sand for sunset", "Stay for the tree lighting after dark"],
+    tip: "Runs 2 to 7. Roads near Front Beach close, so park a bit away and walk in.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
+    area: "Isle of Palms", cost: "Free (+ food)", duration: "~3 hrs",
+    place: "Front Beach, Isle of Palms, SC", verify: true, start: "2026-12-05", end: "2026-12-05"
   },
   {
     id: "folly-christmas-parade-2026",
