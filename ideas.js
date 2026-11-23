@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-22";
+window.DATE_IDEAS_UPDATED = "2026-11-23";
 
 window.DATE_IDEAS = [
 
@@ -2190,22 +2190,12 @@ window.DATE_IDEAS = [
   {
     id: "north-charleston-christmas-festival",
     title: "North Charleston Christmas Festival",
-    desc: "A parade and festival in Park Circle, usually on a Saturday in early December.",
-    plan: ["Check the date on the city's events page", "Get to Park Circle early", "Dinner on East Montague after"],
-    tip: "It got moved for rain last year, so check the forecast and the city's page.",
+    desc: "A free parade and festival in Park Circle with food, music and Santa. The tree lighting is the night before.",
+    plan: ["Get to Park Circle around 2 and walk the festival", "Grab a spot for the 3pm parade", "Dinner on East Montague after"],
+    tip: "Runs 2 to 6. It got moved for rain last year, so check the forecast and the city's page.",
     tier: "ease", budget: 0, energy: "lazy", time: "short", when: "any",
     area: "Park Circle (N. Charleston)", cost: "Free", duration: "~3 hrs",
-    place: "Park Circle, North Charleston, SC", verify: true, months: [12]
-  },
-  {
-    id: "charleston-holiday-market-2026",
-    title: "Charleston Holiday Market",
-    desc: "A big indoor holiday market at the Coliseum with local makers, gifts, and food.",
-    plan: ["Set a small gift budget for each other", "Split up for 20 minutes and shop in secret", "Meet back up and swap what you found"],
-    tip: "Tickets are only a few bucks. Go Friday or early Sunday to skip the biggest crowds.",
-    tier: "ease", budget: 1, energy: "chill", time: "short", when: "day",
-    area: "North Charleston", cost: "~$8 each + gifts", duration: "~2 hrs",
-    place: "North Charleston Coliseum, North Charleston, SC", verify: true, rainy: true, start: "2026-11-20", end: "2026-11-22"
+    place: "Park Circle Community Building, 4800 Park Circle, North Charleston, SC", verify: true, start: "2026-12-05", end: "2026-12-05"
   },
   {
     id: "mtp-holiday-market-2026",
@@ -2256,6 +2246,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "chill", time: "short", when: "day",
     area: "Isle of Palms", cost: "Free (+ food)", duration: "~3 hrs",
     place: "Front Beach, Isle of Palms, SC", verify: true, start: "2026-12-05", end: "2026-12-05"
+  },
+  {
+    id: "charleston-holiday-parade-2026",
+    title: "Charleston Holiday Parade and Tree Lighting",
+    desc: "The city parade marches up Broad and Meeting, then Marion Square lights the big tree with a light show.",
+    plan: ["Find a spot on Meeting St before the 3pm parade", "Grab an early dinner downtown", "Head to Marion Square for the tree lighting around 6"],
+    tip: "Roads downtown close early, so park on the upper peninsula and walk in.",
+    tier: "ease", budget: 0, energy: "chill", time: "half", when: "any",
+    area: "Downtown", cost: "Free (+ food)", duration: "~4 hrs",
+    place: "Marion Square, 329 Meeting St, Charleston, SC", verify: true, start: "2026-12-06", end: "2026-12-06"
   },
   {
     id: "folly-christmas-parade-2026",
