@@ -31,7 +31,7 @@
    months    Only show in these months (1 = Jan … 12 = Dec), e.g. [10, 11, 12]
    ===================================================================== */
 
-window.DATE_IDEAS_UPDATED = "2026-11-26";
+window.DATE_IDEAS_UPDATED = "2026-11-27";
 
 window.DATE_IDEAS = [
 
@@ -2256,6 +2256,16 @@ window.DATE_IDEAS = [
     tier: "ease", budget: 0, energy: "chill", time: "half", when: "any",
     area: "Downtown", cost: "Free (+ food)", duration: "~4 hrs",
     place: "Marion Square, 329 Meeting St, Charleston, SC", verify: true, start: "2026-12-06", end: "2026-12-06"
+  },
+  {
+    id: "daniel-island-tree-lighting-2026",
+    title: "Daniel Island tree lighting",
+    desc: "Credit One Stadium lights its big tree with a snow show, cookie decorating and Santa. Free and low-key.",
+    plan: ["Grab dinner on Daniel Island first", "Get to the stadium plaza when gates open at 6", "Decorate a cookie for each other and catch the 7pm lighting"],
+    tip: "Free to get in. Bring a jacket, it gets cold by the river.",
+    tier: "ease", budget: 0, energy: "chill", time: "short", when: "night",
+    area: "Daniel Island", cost: "Free", duration: "~2 hrs",
+    place: "Credit One Stadium, Daniel Island, SC", verify: true, start: "2026-12-04", end: "2026-12-04"
   },
   {
     id: "folly-christmas-parade-2026",
